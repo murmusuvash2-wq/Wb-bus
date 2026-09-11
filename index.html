@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>BusJatri — West Bengal Bus Timetable | বাস যাত্রী</title>
+  <meta name="description" content="West Bengal's largest bus timetable. Search buses, routes & stoppages across SBSTC, WBTC, NBSTC, private operators. Live timings for Bankura, Digha, Kolkata, Mukutmanipur & more." />
+  <meta name="theme-color" content="#b8791f" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b8791f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 16V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10'/%3E%3Cpath d='M4 16h16'/%3E%3Cpath d='M4 16v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2'/%3E%3Cpath d='M17 16v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2'/%3E%3Cpath d='M6 10h12'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;0,900;1,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Bengali:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container header-inner">
+      <div class="logo" onclick="location.hash='#/'">
+        <svg class="icon" viewBox="0 0 24 24" style="width:1.35rem;height:1.35rem;color:var(--amber);stroke-width:1.6"><path d="M4 16V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10"/><path d="M4 16h16"/><path d="M4 16v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2"/><path d="M17 16v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2"/><path d="M6 10h12"/></svg>
+        Bus<span>Jatri</span>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" id="themeBtn" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle dark mode"></button>
+        <div class="lang-group">
+          <button class="lang-btn active" id="langEN" onclick="setLang('en')">EN</button>
+          <button class="lang-btn" id="langBN" onclick="setLang('bn')">বাংলা</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div id="app"></div>
+
+  <footer class="footer">
+    <div class="container">
+      <p><strong>BusJatri</strong> — <span class="label-en">West Bengal's largest bus timetable</span><span class="label-bn">পশ্চিমবঙ্গের সবচেয়ে বড় বাস টাইম টেবিল</span></p>
+      <p>
+        <a href="#/about"><span class="label-en">About &amp; Data Sources</span><span class="label-bn">সম্পর্কে ও ডেটা সোর্স</span></a>
+        · Not affiliated with any transport corporation
+      </p>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
