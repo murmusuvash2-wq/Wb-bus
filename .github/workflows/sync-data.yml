@@ -1,4 +1,4 @@
-name: Sync data from Drive
+name: Sync app.js from Drive
 
 on:
   workflow_dispatch:
@@ -12,24 +12,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Download files from Google Drive
+      - name: Download app.js from Drive
         run: |
-          curl -sfL "https://drive.usercontent.google.com/download?id=1ZERVCdRkkqLZxydV7Ka-ggmHZesLszJC&export=download&confirm=t" -o data/busjatri_data.json
-          curl -sfL "https://drive.usercontent.google.com/download?id=1GgiV37LvxOSBssZZKqE4XVh-cSGB_vJK&export=download&confirm=t" -o js/app.js
+          curl -sfL "https://drive.usercontent.google.com/download?id=1asUs3ZElYy8WK9FMeVsbmsEyZGg7CIRb&export=download&confirm=t" -o js/app.js
 
-      - name: Validate downloads
-        run: |
-          python3 -c "import json; d=json.load(open('data/busjatri_data.json')); bs=d['buses']; assert isinstance(bs, list) and len(bs) > 1000, 'bad bus data'; print('data OK:', len(bs), 'buses,', d['meta']['version'])"
-          node --check js/app.js && echo "app.js syntax OK"
+      - name: Validate
+        run: node --check js/app.js && echo "app.js syntax OK"
 
       - name: Commit and push if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/busjatri_data.json js/app.js
+          git add js/app.js
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "Sync data + app.js from Drive (weather widget, embedded map, hide source field)"
+            git commit -m "Sync app.js from Drive (stoppage search, countdown, railway stations, embed removed)"
             git push
           fi

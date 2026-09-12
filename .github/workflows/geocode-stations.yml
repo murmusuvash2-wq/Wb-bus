@@ -1,0 +1,29 @@
+name: Geocode stops & attach railway stations
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  geocode:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run geocoding + nearest station
+        run: python3 scripts/add_railway_stations.py
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/busjatri_data.json data/stop_coords.json
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Attach nearest railway station to bus stops ($(date -u +%F))"
+            git push
+          fi
