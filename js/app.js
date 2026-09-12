@@ -361,6 +361,10 @@ function renderBus(el, id) {
     return;
   }
   const stops = b.stoppages || [];
+  let embedUrl = '';
+  if (b.origin && b.destination && b.origin !== '—' && b.destination !== '—') {
+    embedUrl = `https://maps.google.com/maps?saddr=${encodeURIComponent(b.origin + ', West Bengal')}&daddr=${encodeURIComponent(b.destination + ', West Bengal')}&output=embed`;
+  }
   const INITIAL = 8;
   const showAll = location.hash.includes('full=1');
   const visible = showAll ? stops : stops.slice(0, INITIAL);
@@ -389,9 +393,10 @@ function renderBus(el, id) {
         ${b.depot_name ? `<div class="info-item"><div class="lbl">Depot</div><div class="val">${esc(b.depot_name)}</div></div>` : ''}
         ${b.contact_number && b.contact_number !== 'Not Available !' ? `<div class="info-item"><div class="lbl">Contact</div><div class="val"><a href="tel:${esc(b.contact_number)}">${esc(b.contact_number)}</a></div></div>` : ''}
         <div class="info-item"><div class="lbl">Stops</div><div class="val">${stops.length || b.total_stoppages || 0}</div></div>
-        <div class="info-item"><div class="lbl">Source</div><div class="val" style="font-size:12px">${esc(b.source)}</div></div>
       </div>
       ${mapUrl ? `<a class="map-btn" href="${mapUrl}" target="_blank" rel="noopener">${icon('map')} <span class="label-en">View route on Google Maps</span><span class="label-bn">গুগল ম্যাপে রুট দেখুন</span></a>` : ''}
+      ${b.destination && b.destination !== '—' ? `<div class="info-item" id="weatherCard" data-dest="${esc(b.destination)}" style="margin-top:12px"><div class="lbl">Weather in ${esc(b.destination)} (now)</div><div class="val" id="weatherVal">Loading…</div></div>` : ''}
+      ${embedUrl ? `<div style="margin:18px 0;border-radius:14px;overflow:hidden;border:1px solid var(--border)"><iframe src="${embedUrl}" loading="lazy" style="width:100%;height:320px;border:0;display:block" title="Route map ${esc(b.origin)} to ${esc(b.destination)}"></iframe></div>` : ''}
       ${stops.length ? `
         <h3 class="timetable-title">${icon('ticket')} <span class="label-en">Route Timetable</span><span class="label-bn">রুট টাইমটেবিল</span></h3>
         <div class="timetable-head"><span>#</span><span><span class="label-en">Stoppage</span><span class="label-bn">স্টপ</span></span><span style="text-align:right">Up</span><span style="text-align:right">Down</span></div>
@@ -408,6 +413,33 @@ function renderBus(el, id) {
       ` : '<p style="color:var(--ink-dim);margin-top:12px">Stoppage details not available for this bus.</p>'}
     </div>
   </div>`;
+  loadWeather();
+}
+
+const WMO_CODES = { 0: 'Clear sky', 1: 'Mainly clear', 2: 'Partly cloudy', 3: 'Overcast',
+  45: 'Fog', 48: 'Fog', 51: 'Light drizzle', 53: 'Drizzle', 55: 'Heavy drizzle',
+  61: 'Light rain', 63: 'Rain', 65: 'Heavy rain', 66: 'Freezing rain', 67: 'Freezing rain',
+  71: 'Light snow', 73: 'Snow', 75: 'Heavy snow', 77: 'Snow', 80: 'Light showers',
+  81: 'Showers', 82: 'Heavy showers', 85: 'Snow showers', 86: 'Snow showers',
+  95: 'Thunderstorm', 96: 'Thunderstorm', 99: 'Thunderstorm' };
+
+async function loadWeather() {
+  const card = document.getElementById('weatherCard');
+  if (!card) return;
+  const dest = card.dataset.dest;
+  try {
+    const g = await fetch('https://geocoding-api.open-meteo.com/v1/search?count=1&language=en&format=json&name=' +
+      encodeURIComponent(dest + ', West Bengal, India')).then(r => r.json());
+    if (!g.results || !g.results.length) { card.style.display = 'none'; return; }
+    const r = g.results[0];
+    const w = await fetch('https://api.open-meteo.com/v1/forecast?latitude=' + r.latitude +
+      '&longitude=' + r.longitude + '&current=temperature_2m,relative_humidity_2m,weather_code&timezone=auto')
+      .then(x => x.json());
+    const c = w.current || {};
+    card.innerHTML = '<div class="lbl">Weather in ' + esc(dest) + ' (now)</div><div class="val">' +
+      Math.round(c.temperature_2m) + '°C · ' + (WMO_CODES[c.weather_code] || '—') +
+      ' · Humidity ' + c.relative_humidity_2m + '%</div>';
+  } catch (e) { card.style.display = 'none'; }
 }
 
 function renderRoute(el, key) {
