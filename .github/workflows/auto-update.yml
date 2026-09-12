@@ -25,7 +25,19 @@ jobs:
       - name: Scrape bussathi.in
         run: python3 scripts/scrape_bussathi.py "${{ github.event.inputs.max_buses || '1300' }}" scraped_bussathi.json
 
+      - name: Report only (dry run)
+        if: ${{ github.event.inputs.dry_run == 'true' }}
+        run: |
+          python3 - <<'EOF'
+          import json
+          buses = json.load(open('scraped_bussathi.json'))
+          print(f'DRY RUN OK: {len(buses)} buses parsed')
+          for b in buses[:2]:
+              print('SAMPLE', json.dumps(b, ensure_ascii=False)[:300])
+          EOF
+
       - name: Validate scrape
+        if: ${{ github.event.inputs.dry_run != 'true' }}
         run: |
           python3 - <<'EOF'
           import json
