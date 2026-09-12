@@ -133,10 +133,11 @@ def clean_bus(b):
             nm = nm.capitalize()
     return nm, regn
 
-def type_badges(bt):
+def type_badges(bt, nm=''):
     g = (bt or '').lower()
+    nl = (nm or '').lower()
     out = []
-    if 'gov' in g or 'sbstc' in g or 'nbstc' in g or 'wbtc' in g:
+    if 'gov' in g or 'sbstc' in g or 'nbstc' in g or 'wbtc' in g or 'sbstc' in nl or 'nbstc' in nl or 'wbtc' in nl:
         out.append('<span class="badge badge-govt"><span class="label-en">Govt</span><span class="label-bn">সরকারি</span></span>')
     else:
         out.append('<span class="badge badge-private"><span class="label-en">Private</span><span class="label-bn">প্রাইভেট</span></span>')
@@ -394,7 +395,7 @@ for (o, t), bs in route_meta.items():
         regn = f'<div class="bus-regn">{esc(r["regn"])}</div>' if r['regn'] else ''
         trows.append(
             f'<tr><td><div class="bus-name">{esc(r["nm"] or "—")}</div>{regn}</td>'
-            f'<td>{type_badges(r["type"])}</td>'
+            f'<td>{type_badges(r["type"], r["nm"])}</td>'
             f'<td class="time-cell">{dep}</td><td class="time-cell">{arr}</td>'
             f'<td class="stops-cell">{r["stops"] or "—"}</td></tr>')
     timetable = f'''<section class="section">
