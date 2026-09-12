@@ -14,7 +14,7 @@ jobs:
 
       - name: Download app.js from Drive
         run: |
-          curl -sfL "https://drive.usercontent.google.com/download?id=1asUs3ZElYy8WK9FMeVsbmsEyZGg7CIRb&export=download&confirm=t" -o js/app.js
+          curl -sfL "https://drive.usercontent.google.com/download?id=1mOdUOeZ9LiOPwhtqRVae7H0sdPX1OlxD&export=download&confirm=t" -o js/app.js
 
       - name: Validate
         run: node --check js/app.js && echo "app.js syntax OK"
@@ -27,6 +27,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "Sync app.js from Drive (stoppage search, countdown, railway stations, embed removed)"
+            git commit -m "Sync app.js from Drive (fares, direction arrows, Bengali places, better search, WhatsApp report)"
             git push
           fi
