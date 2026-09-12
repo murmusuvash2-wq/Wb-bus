@@ -15,7 +15,7 @@ jobs:
       - name: Download files from Google Drive
         run: |
           curl -sfL "https://drive.usercontent.google.com/download?id=1ZERVCdRkkqLZxydV7Ka-ggmHZesLszJC&export=download&confirm=t" -o data/busjatri_data.json
-          curl -sfL "https://drive.usercontent.google.com/download?id=1r-DtUa_NwaBANkTnv36IveHOFljCmfWC&export=download&confirm=t" -o js/app.js
+          curl -sfL "https://drive.usercontent.google.com/download?id=1GgiV37LvxOSBssZZKqE4XVh-cSGB_vJK&export=download&confirm=t" -o js/app.js
 
       - name: Validate downloads
         run: |
@@ -30,6 +30,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "Update data (1442 buses, +124 from wbbustime/whereismybus) + fix Show-all-stops bug"
+            git commit -m "Sync data + app.js from Drive (weather widget, embedded map, hide source field)"
             git push
           fi
