@@ -47,17 +47,11 @@ jobs:
           print(f'scrape OK: {len(buses)} buses, {with_stops} with stoppages')
           EOF
 
-      - name: Set up for imports
-        if: ${{ github.event.inputs.dry_run != 'true' }}
-        run: |
-          pip install pdfplumber
-          curl -sfL "https://transport.wb.gov.in/wp-content/uploads/2016/09/RouteTimeTableFareSBSTC.pdf" -o sbstc.pdf
-
       - name: Rebuild data + imports + SEO pages
         if: ${{ github.event.inputs.dry_run != 'true' }}
         run: |
           python3 scripts/rebuild_data.py
-          python3 scripts/import_sbstc.py sbstc.pdf sbstc_buses.json --merge
+          python3 scripts/import_sbstc.py data/sbstc_routes.json sbstc_buses.json --merge
           python3 scripts/enrich_wbtc.py
           python3 scripts/add_railway_stations.py
           python3 scripts/gen_seo_pages.py

@@ -1,4 +1,4 @@
-name: Deploy SEO pages
+name: Deploy files from Drive
 
 on:
   workflow_dispatch:
@@ -14,27 +14,30 @@ jobs:
 
       - name: Download and unzip from Drive
         run: |
-          curl -sfL "https://drive.usercontent.google.com/download?id=1mZ9NSCZK-XedNhXthKqd7wTrZZ2OiS67&export=download&confirm=t" -o scripts-only.zip
-          unzip -oq scripts-only.zip
-          rm scripts-only.zip
+          curl -sfL "https://drive.usercontent.google.com/download?id=1imQSZlxD3I5JjIJIVbz8qB8jLYH0Gswq&export=download&confirm=t" -o files.zip
+          unzip -oq files.zip
+          rm files.zip
 
       - name: Validate contents
         run: |
           test -f sitemap.xml && test -f robots.txt && test -f bus-time-table/index.html
           test -f scripts/scrape_bussathi.py && test -f scripts/rebuild_data.py && test -f scripts/gen_seo_pages.py
           test -f scripts/import_sbstc.py && test -f scripts/enrich_wbtc.py
+          test -f scripts/build_sbstc_snapshot.py && test -f scripts/sbstc_text.txt
+          test -f data/sbstc_routes.json
           test $(ls bus-time-table/*.html | wc -l) -gt 300
           python3 -c "import xml.dom.minidom; xml.dom.minidom.parse('sitemap.xml')"
+          python3 -c "import json; r = json.load(open('data/sbstc_routes.json')); assert len(r) >= 50, 'sbstc routes too few'"
           echo "validation OK"
 
       - name: Commit and push if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add bus-time-table scripts sitemap.xml robots.txt
+          git add bus-time-table scripts data/sbstc_routes.json sitemap.xml robots.txt
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "Add SBSTC import + WBTC enrichment scripts"
+            git commit -m "Add SBSTC routes snapshot + import scripts"
             git push
           fi

@@ -12,18 +12,9 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
 
-      - name: Install pdfplumber
-        run: pip install pdfplumber
-
-      - name: Download SBSTC route PDF
-        run: curl -sfL "https://transport.wb.gov.in/wp-content/uploads/2016/09/RouteTimeTableFareSBSTC.pdf" -o sbstc.pdf
-
-      - name: Import SBSTC routes with fares
-        run: python3 scripts/import_sbstc.py sbstc.pdf sbstc_buses.json --merge
+      - name: Import SBSTC routes with fares (from committed snapshot)
+        run: python3 scripts/import_sbstc.py data/sbstc_routes.json sbstc_buses.json --merge
 
       - name: Enrich WBTC stoppages
         run: python3 scripts/enrich_wbtc.py
