@@ -165,8 +165,12 @@ def merge_into_data(buses):
     print(f"merged: {len(data['buses'])} buses, {len(routes_out)} routes, {len(stops_out)} stops")
 
 if __name__ == '__main__':
-    routes = parse_pdf(PDF_FILE)
-    print(f'parsed routes: {len(routes)}')
+    if PDF_FILE.endswith('.json'):
+        routes = json.load(open(PDF_FILE))
+        print(f'loaded routes from JSON: {len(routes)}')
+    else:
+        routes = parse_pdf(PDF_FILE)
+        print(f'parsed routes: {len(routes)}')
     assert len(routes) >= 50, f'only {len(routes)} routes parsed - aborting'
     buses = make_buses(routes)
     assert len(buses) >= 100, f'only {len(buses)} buses generated - aborting'
