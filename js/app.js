@@ -354,6 +354,7 @@ function renderPlace(el, placeName) {
 }
 
 function renderBus(el, id) {
+  id = id.split('?')[0];  // strip query (?full=1) so the bus ID resolves
   const b = BUSES[id];
   if (!b) {
     el.innerHTML = `<div class="container" style="padding:40px"><div class="empty-state">${icon('alert')}<p>Bus not found.</p></div><div class="back-btn" onclick="location.hash='#/'">${icon('chevronLeft')} Back</div></div>`;
