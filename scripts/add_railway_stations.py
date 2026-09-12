@@ -5,8 +5,9 @@
 - Geocodes stops via Open-Meteo (free, no key), cached in data/stop_coords.json
 - Writes stops[name].nearest_station = {name, code, km} (straight-line km)
 Run from repo root."""
-import json, math, os, time
+import json, math, os
 import urllib.request, urllib.parse
+from concurrent.futures import ThreadPoolExecutor
 
 STATIONS_URL = 'https://raw.githubusercontent.com/datameet/railways/master/stations.json'
 STATES = {'West Bengal', 'Jharkhand', 'Bihar', 'Odisha', 'Assam', 'Sikkim'}
@@ -29,10 +30,10 @@ def geocode(name):
         d = json.loads(get('https://geocoding-api.open-meteo.com/v1/search?count=1&language=en&format=json&name=' + q))
         res = d.get('results') or []
         if res:
-            return [res[0]['latitude'], res[0]['longitude']]
+            return name, [res[0]['latitude'], res[0]['longitude']]
     except Exception:
         pass
-    return None
+    return name, None
 
 def load_stations():
     raw = json.loads(get(STATIONS_URL))
@@ -54,22 +55,17 @@ def main():
         cache = json.load(open('data/stop_coords.json'))
     stops = data.get('stops') or {}
 
-    geocoded = failed = 0
-    for i, name in enumerate(stops):
-        if name in cache:
-            continue
-        c = geocode(name)
-        cache[name] = c
-        if c:
-            geocoded += 1
-        else:
-            failed += 1
-        if (i + 1) % 50 == 0:
-            print(f'geocoding {i + 1}/{len(stops)} (new={geocoded} failed={failed})', flush=True)
-        time.sleep(0.35)
+    todo = [n for n in stops if n not in cache]
+    print(f'stops={len(stops)} to_geocode={len(todo)}', flush=True)
+    if todo:
+        with ThreadPoolExecutor(max_workers=8) as ex:
+            for i, (name, c) in enumerate(ex.map(geocode, todo)):
+                cache[name] = c
+                if (i + 1) % 100 == 0:
+                    print(f'geocoded {i + 1}/{len(todo)}', flush=True)
     json.dump(cache, open('data/stop_coords.json', 'w'), ensure_ascii=False)
 
-    have = 0
+    have = geocoded = failed = 0
     for name, s in stops.items():
         s.pop('nearest_station', None)
         c = cache.get(name)
@@ -83,9 +79,14 @@ def main():
         if best:
             s['nearest_station'] = {'name': best['name'], 'code': best['code'] or '', 'km': round(bd, 1)}
             have += 1
+    for c in cache.values():
+        if c:
+            geocoded += 1
+        else:
+            failed += 1
     data['stops'] = stops
     json.dump(data, open('data/busjatri_data.json', 'w'), ensure_ascii=False, separators=(',', ':'))
-    print(f'stops={len(stops)} newly_geocoded={geocoded} failed={failed} with_station={have}')
+    print(f'coords ok={geocoded} failed={failed} stops_with_station={have}')
 
 if __name__ == '__main__':
     main()
