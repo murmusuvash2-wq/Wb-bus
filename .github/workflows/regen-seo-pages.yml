@@ -1,0 +1,36 @@
+name: Regenerate SEO pages
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  regen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Regenerate bus-time-table pages
+        run: python3 scripts/gen_seo_pages.py
+
+      - name: Validate
+        run: |
+          test $(ls bus-time-table/*.html | wc -l) -gt 300
+          python3 -c "import xml.dom.minidom; xml.dom.minidom.parse('sitemap.xml')"
+          grep -q "label-bn" bus-time-table/index.html
+          grep -q "label-bn" bus-time-table/asansol-to-digha.html
+          ! grep -rq "var(--panel)" bus-time-table/
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add bus-time-table sitemap.xml robots.txt
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Regenerate SEO pages with bilingual EN/Bangla template"
+            git push
+          fi
