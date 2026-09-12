@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://murmusuvash2-wq.github.io/Wb-bus/sitemap.xml
+Sitemap: https://wb-bus.vercel.app/sitemap.xml
