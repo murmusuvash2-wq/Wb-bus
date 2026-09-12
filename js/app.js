@@ -28,6 +28,32 @@ const ICONS = {
   data: '<svg class="icon" viewBox="0 0 24 24"><path d="M4 6c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3Z"/><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>',
 };
 
+const BN_PLACES = {
+  'Bankura': 'বাঁকুড়া', 'Digha': 'দীঘা', 'Kolkata': 'কলকাতা', 'Medinipur': 'মেদিনীপুর',
+  'Bardhaman': 'বর্ধমান', 'Burdwan': 'বর্ধমান', 'Kharagpur': 'খড়্গপুর', 'Siliguri': 'শিলিগুড়ি',
+  'Cooch Behar': 'কোচবিহার', 'Asansol': 'আসানসোল', 'Durgapur': 'দুর্গাপুর', 'Purulia': 'পুরুলিয়া',
+  'Jhargram': 'ঝাড়গ্রাম', 'Contai': 'কাঁথি', 'Tamluk': 'তমলুক', 'Bishnupur': 'বিষ্ণুপুর',
+  'Khatra': 'খাতড়া', 'Alipurduar': 'আলিপুরদুয়ার', 'Dinhata': 'দিনহাটা', 'Mathabhanga': 'মাথাভাঙ্গা',
+  'Ghatal': 'ঘাটাল', 'Nabadwip': 'নবদ্বীপ', 'Arambagh': 'আরামবাগ', 'Manbazar': 'মানবাজার',
+  'Tarkeshwar': 'তারকেশ্বর', 'Mecheda': 'মেছেদা', 'Haldia': 'হলদিয়া', 'Baruipur': 'বারুইপুর',
+  'Esplanade': 'এসপ্ল্যানেড', 'Howrah': 'হাওড়া', 'Ranaghat': 'রানাঘাট', 'Krishnanagar': 'কৃষ্ণনগর',
+  'Malda': 'মালদা', 'Raiganj': 'রায়গঞ্জ', 'Balurghat': 'বালুরঘাট', 'Suri': 'সিউড়ি',
+  'Sainthia': 'সাঁইথিয়া', 'Bolpur': 'বোলপুর', 'Kalna': 'কালনা', 'Guskara': 'গুসকরা',
+  'Katwa': 'কাটোয়া', 'Bandel': 'বান্দেল', 'Chandannagar': 'চন্দননগর', 'Kalyani': 'কল্যাণী',
+  'Barasat': 'বারাসাত', 'Barrackpore': 'ব্যারাকপুর', 'Garia': 'গড়িয়া', 'Berhampore': 'বহরমপুর',
+  'Berhampur': 'বহরমপুর', 'Salar': 'সালার', 'Kirnahar': 'কীর্ণাহার', 'Karunamoyee': 'করুণাময়ী',
+  'Belpahari': 'বেলপাহাড়ি', 'Sonamukhi': 'সোনামুখী', 'Patrasayer': 'পাত্রসায়ের', 'Onda': 'অন্ড়াল',
+  'Mukutmanipur': 'মুকুটমণিপুর', 'Ranibandh': 'রানিবাঁধ', 'Simlapal': 'সিমলাপাল',
+  'Kharagpur (Town)': 'খড়্গপুর (টাউন)', 'Egra': 'এগরা', 'Ramnagar': 'রামনগর', 'Kalinagar': 'কালীনগর',
+  'Kakdwip': 'কাকদ্বীপ', 'Namkhana': 'নামখানা', 'Falta': 'ফল্টা', 'Diamond Harbour': 'ডায়মন্ড হারবার',
+  'Jaynagar': 'জয়নগর', 'Bagnan': 'বাগনান', 'Amtala': 'আমতলা', 'Behala': 'বেহালা',
+  'Nabadwip Dham': 'নবদ্বীপ ধাম', 'Sainthia Town': 'সাঁইথিয়া টাউন', 'Panagarh': 'পানাগড়়',
+  'Durgapur (Station)': 'দুর্গাপুর (স্টেশন)', 'Bishnupur (Bankura)': 'বিষ্ণুপুর (বাঁকুড়া)',
+};
+function pn(s) {
+  return (LANG === 'bn' && BN_PLACES[s]) ? BN_PLACES[s] : s;
+}
+
 const PLACE_ICONS = {
   Mukutmanipur: 'waves', Digha: 'waves', Bankura: 'landmark', Kolkata: 'building',
   Asansol: 'factory', Burdwan: 'train', Jhargram: 'trees', Purulia: 'mountain',
@@ -279,27 +305,22 @@ function renderSearch(el) {
       (b.route || '').toLowerCase().includes(q) ||
       (b.stoppages || []).some(s => (s.name || '').toLowerCase().includes(q))
     );
+    if (!results.length && q.length >= 3) {
+      const partial = q.slice(0, 5);
+      results = Object.values(BUSES).filter(b =>
+        (b.origin || '').toLowerCase().startsWith(partial) ||
+        (b.destination || '').toLowerCase().startsWith(partial) ||
+        (b.stoppages || []).some(s => (s.name || '').toLowerCase().startsWith(partial)));
+    }
   }
 
   const now = minutesNow();
-  results.sort((a, b) => {
-    const ta = parseTime(a.departure_time);
-    const tb = parseTime(b.departure_time);
-    if (ta == null && tb == null) return 0;
-    if (ta == null) return 1;
-    if (tb == null) return -1;
-    const da = Math.min(Math.abs(ta - now), Math.abs(ta + 1440 - now));
-    const db = Math.min(Math.abs(tb - now), Math.abs(tb + 1440 - now));
-    if (da <= 180 && db > 180) return -1;
-    if (db <= 180 && da > 180) return 1;
-    return ta - tb;
-  });
+  const rel = t => (t == null ? Infinity : (t < now ? t + 1440 : t) - now);
+  results.sort((a, b) => rel(parseTime(a.departure_time)) - rel(parseTime(b.departure_time)));
 
   const near = results.filter(b => {
     const t = parseTime(b.departure_time);
-    if (t == null) return false;
-    const d = Math.min(Math.abs(t - now), Math.abs(t + 1440 - now));
-    return d <= 180;
+    return t != null && rel(t) <= 180;
   });
 
   const emptyState = `
@@ -315,19 +336,29 @@ function renderSearch(el) {
   <div class="container" style="padding-top:22px;padding-bottom:40px">
     <div class="back-btn" onclick="location.hash='#/'">${icon('chevronLeft')} <span class="label-en">Back</span><span class="label-bn">পিছনে</span></div>
     <h2 class="page-title"><span class="label-en">Search Results</span><span class="label-bn">সার্চ ফলাফল</span> <span style="color:var(--ink-dim);font-family:var(--font-mono);font-size:1rem">(${results.length})</span></h2>
+    <p style="font-size:12px;color:var(--ink-dim);margin:2px 0 4px">Data updated: ${esc(DATA.meta?.last_updated || '')}</p>
     ${from || to ? `<p style="color:var(--ink-dim);font-size:13.5px;margin-bottom:18px">${esc(from || '…')} → ${esc(to || '…')}</p>` : ''}
     ${near.length ? `<p class="near-label">${icon('clock')} <span class="label-en">${near.length} buses around current time</span><span class="label-bn">${near.length} বাস বর্তমান সময়ের কাছাকাছি</span></p>` : ''}
     ${results.length ? results.map((b, i) => {
       const t = parseTime(b.departure_time);
-      const isNear = t != null && Math.min(Math.abs(t - now), Math.abs(t + 1440 - now)) <= 180;
+      const isNear = t != null && rel(t) <= 180;
+      const stopInfo = (() => {
+        const q = from || to;
+        if (!q) return '';
+        const s = (b.stoppages || []).find(x => (x.name || '').toLowerCase().includes(q));
+        if (!s || !s.up_time) return '';
+        return `<div style="font-size:12.5px;color:var(--amber);font-weight:600;margin-top:2px"><span class="label-en">at your stop (${esc(s.name)}): ${esc(s.up_time)}</span><span class="label-bn">আপনার স্টপ (${esc(pn(s.name))}): ${esc(s.up_time)}</span></div>`;
+      })();
       return `<div class="result-item ${isNear ? 'near' : ''}" style="--i:${i}" onclick="location.hash='#/bus/${encodeURIComponent(b.id)}'">
         <div class="ri-main">
-          ${isNear ? `<div class="near-label">${icon('clock')} Near now</div>` : ''}
+          ${isNear ? `<div class="near-label">${icon('clock')} <span class="label-en">Coming up</span><span class="label-bn">আসছে</span></div>` : ''}
           <div class="name">${esc(b.bus_name)} ${b.reg_no ? `<span class="reg">${esc(b.reg_no)}</span>` : ''} ${busTypeBadge(b.bus_type)}</div>
-          <div class="route">${esc(b.origin)} → ${esc(b.destination)}</div>
+          <div class="route">${esc(pn(b.origin))} → ${esc(pn(b.destination))}</div>
+          ${stopInfo}
           <div class="meta">
             <span>${icon('stops')} ${b.total_stoppages || (b.stoppages || []).length} stops</span>
             ${b.operator ? `<span>${esc(b.operator)}</span>` : ''}
+            ${b.fare ? `<span>${esc(b.fare)}</span>` : ''}
           </div>
         </div>
         ${b.departure_time ? `<span class="time-pill">${icon('clock')} ${esc(b.departure_time)}</span>` : ''}
@@ -447,7 +478,7 @@ function renderBus(el, id) {
     <div class="back-btn" onclick="history.length>1?history.back():location.hash='#/'">${icon('chevronLeft')} <span class="label-en">Back</span><span class="label-bn">পিছনে</span></div>
     <div class="bus-detail">
       <h2>${esc(b.bus_name)} ${b.reg_no ? `<span style="font-size:14px;color:var(--ink-dim);font-weight:500;font-family:var(--font-mono)">${esc(b.reg_no)}</span>` : ''}</h2>
-      <div class="route-line">${esc(b.origin)} → ${esc(b.destination)} ${busTypeBadge(b.bus_type)}</div>
+      <div class="route-line">${esc(pn(b.origin))} → ${esc(pn(b.destination))} ${busTypeBadge(b.bus_type)}</div>
       <div class="info-grid">
         ${b.departure_time ? `<div class="info-item"><div class="lbl">Departure</div><div class="val">${esc(b.departure_time)}</div></div>` : ''}
         ${b.arrival_time ? `<div class="info-item"><div class="lbl">Arrival</div><div class="val">${esc(b.arrival_time)}</div></div>` : ''}
@@ -455,16 +486,19 @@ function renderBus(el, id) {
         ${b.depot_name ? `<div class="info-item"><div class="lbl">Depot</div><div class="val">${esc(b.depot_name)}</div></div>` : ''}
         ${b.contact_number && b.contact_number !== 'Not Available !' ? `<div class="info-item"><div class="lbl">Contact</div><div class="val"><a href="tel:${esc(b.contact_number)}">${esc(b.contact_number)}</a></div></div>` : ''}
         <div class="info-item"><div class="lbl">Stops</div><div class="val">${stops.length || b.total_stoppages || 0}</div></div>
+        ${b.fare ? `<div class="info-item"><div class="lbl">Fare</div><div class="val">${esc(b.fare)}</div></div>` : ''}
       </div>
+      <p style="font-size:12px;color:var(--ink-dim);margin:10px 0 0">Data updated: ${esc(DATA.meta?.last_updated || '')}</p>
       ${mapUrl ? `<a class="map-btn" href="${mapUrl}" target="_blank" rel="noopener">${icon('map')} <span class="label-en">View route on Google Maps</span><span class="label-bn">গুগল ম্যাপে রুট দেখুন</span></a>` : ''}
+      <a class="map-btn" href="https://wa.me/?text=${encodeURIComponent('BusJatri — ' + b.bus_name + ' (' + b.origin + ' to ' + b.destination + ')' + (b.departure_time ? ', ' + b.departure_time : '') + '. Time galat hai? is message ko reply karo.')}" target="_blank" rel="noopener">${icon('info')} <span class="label-en">Share / report on WhatsApp</span><span class="label-bn">শেয়ার / রিপোর্ট করুন</span></a>
       ${b.destination && b.destination !== '—' ? `<div class="info-item" id="weatherCard" data-dest="${esc(b.destination)}" style="margin-top:12px"><div class="lbl">Weather in ${esc(b.destination)} (now)</div><div class="val" id="weatherVal">Loading…</div></div>` : ''}
       ${stops.length ? `
         <h3 class="timetable-title">${icon('ticket')} <span class="label-en">Route Timetable</span><span class="label-bn">রুট টাইমটেবিল</span></h3>
-        <div class="timetable-head"><span>#</span><span><span class="label-en">Stoppage</span><span class="label-bn">স্টপ</span></span><span style="text-align:right">Up</span><span style="text-align:right">Down</span></div>
+        <div class="timetable-head"><span>#</span><span><span class="label-en">Stoppage</span><span class="label-bn">স্টপ</span></span><span style="text-align:right">→ ${esc(pn(b.destination))}</span><span style="text-align:right">← ${esc(pn(b.origin))}</span></div>
         <div class="stops-list">
           ${visible.map(s => `<div class="stop-row">
             <span class="stop-dot"></span>
-            <span class="stop-name"><a href="#/stop/${slug(s.name)}">${esc(s.name)}</a>${stationBadge(s.name)}</span>
+            <span class="stop-name"><a href="#/stop/${slug(s.name)}">${esc(pn(s.name))}</a>${stationBadge(s.name)}</span>
             ${timeOrDash(s.up_time)}
             ${timeOrDash(s.down_time)}
           </div>`).join('')}
@@ -538,14 +572,14 @@ function renderStop(el, slugKey) {
   el.innerHTML = `
   <div class="container" style="padding-top:22px;padding-bottom:40px">
     <div class="back-btn" onclick="location.hash='#/'">${icon('chevronLeft')} Back</div>
-    <h2 class="page-title">${esc(stop.name)}</h2>
+    <h2 class="page-title">${esc(LANG === 'bn' ? (pn(stop.name)) : stop.name)}</h2>
     <p style="color:var(--ink-dim);margin-bottom:14px">${buses.length} buses pass through</p>
     ${stn ? `<div class="info-item" style="margin:0 0 16px"><div class="lbl">${icon('train')} <span class="label-en">Nearest railway station</span><span class="label-bn">নিকটতম রেলওয়ে স্টেশন</span></div><div class="val">${esc(stn.name)}${stn.code ? ' (' + esc(stn.code) + ')' : ''} · ~${stn.km} km</div></div>` : ''}
     ${next.length ? `<h3 class="timetable-title" style="margin-top:8px">${icon('clock')} <span class="label-en">Next buses from ${esc(stop.name)}</span><span class="label-bn">${esc(stop.name)} থেকে পরবর্তী বাস</span></h3>
       ${next.map(n => `<div class="result-item" onclick="location.hash='#/bus/${encodeURIComponent(n.b.id)}'">
         <div class="ri-main">
           <div class="name">${esc(n.b.bus_name)}</div>
-          <div class="route">${esc(n.b.origin)} → ${esc(n.b.destination)}</div>
+          <div class="route">${esc(pn(n.b.origin))} → ${esc(pn(n.b.destination))}</div>
         </div>
         <span class="time-pill">${icon('clock')} ${fmtTime(n.t)} · <span style="color:var(--amber);font-weight:700" data-nbdep="${n.t}">${countdownText(n.diff)}</span></span>
       </div>`).join('')}` : ''}
