@@ -12,16 +12,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Download and unzip SEO pages from Drive
+      - name: Download and unzip from Drive
         run: |
-          curl -sfL "https://drive.usercontent.google.com/download?id=1J8GWL5mMbWLYFhUxirpKpw0D4pdQenIs&export=download&confirm=t" -o seo-pages.zip
-          unzip -oq seo-pages.zip
-          rm seo-pages.zip
+          curl -sfL "https://drive.usercontent.google.com/download?id=1mZ9NSCZK-XedNhXthKqd7wTrZZ2OiS67&export=download&confirm=t" -o scripts-only.zip
+          unzip -oq scripts-only.zip
+          rm scripts-only.zip
 
       - name: Validate contents
         run: |
           test -f sitemap.xml && test -f robots.txt && test -f bus-time-table/index.html
           test -f scripts/scrape_bussathi.py && test -f scripts/rebuild_data.py && test -f scripts/gen_seo_pages.py
+          test -f scripts/import_sbstc.py && test -f scripts/enrich_wbtc.py
           test $(ls bus-time-table/*.html | wc -l) -gt 300
           python3 -c "import xml.dom.minidom; xml.dom.minidom.parse('sitemap.xml')"
           echo "validation OK"
@@ -34,6 +35,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "Add 342 SEO bus-time-table pages + pipeline scripts + sitemap.xml + robots.txt"
+            git commit -m "Add SBSTC import + WBTC enrichment scripts"
             git push
           fi
