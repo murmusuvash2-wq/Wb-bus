@@ -63,17 +63,25 @@ def parse(txt, url):
     seg = txt
     i = txt.find('Route Timetable')
     if i >= 0:
-        seg = txt[i: i + 4000]
+        j = txt.find('Bus Information', i)
+        seg = txt[i: j if j > i else i + 4000]
+    seg2 = seg.replace('No time data', ' ::X:: ')
+    ROW = r'(?<![:\d])(\d{1,2})(?![\d:])\s+([A-Za-z][A-Za-z0-9 ()/.&\']{1,45}?)\s+'
     stops = []
-    for sm in re.finditer(r'(\d{1,2})\s+([A-Za-z][A-Za-z0-9 ()/.&\']{1,45}?)\s+' + T + r'(?:\s+' + T + r')?', seg):
+    for sm in re.finditer(ROW + T + r'(?:\s+' + T + r')?', seg2):
         n, name, up, down = int(sm.group(1)), clean(sm.group(2)), clean(sm.group(3)), clean(sm.group(4) or '')
-        if 1 <= n <= 40 and len(name) > 1:
-            stops.append({'no': n, 'name': name, 'up_time': up, 'down_time': down})
-    # dedupe by stop number, keep order
+        stops.append((n, name, up, down))
+    for sm in re.finditer(ROW + r'::X::', seg2):
+        n, name = int(sm.group(1)), clean(sm.group(2))
+        stops.append((n, name, '', ''))
+    stops = [s for s in stops if 1 <= s[0] <= 40 and len(s[1]) > 1
+             and s[1] not in ('AM', 'PM', 'Noon', 'stops')]
+    stops.sort(key=lambda s: s[0])
     seen, uniq = set(), []
-    for s in stops:
-        if s['no'] not in seen:
-            seen.add(s['no']); uniq.append(s)
+    for n, name, up, down in stops:
+        if n not in seen:
+            seen.add(n)
+            uniq.append({'no': n, 'name': name, 'up_time': up, 'down_time': down})
     b['stoppages'] = uniq
     b['total_stoppages'] = total or len(uniq)
     b['detail_url'] = url
