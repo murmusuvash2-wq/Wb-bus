@@ -14,8 +14,8 @@ jobs:
 
       - name: Download files from Google Drive
         run: |
-          curl -sL "https://drive.google.com/uc?export=download&id=1ZERVCdRkkqLZxydV7Ka-ggmHZesLszJC" -o data/busjatri_data.json
-          curl -sL "https://drive.google.com/uc?export=download&id=1r-DtUa_NwaBANkTnv36IveHOFljCmfWC" -o js/app.js
+          curl -sfL "https://drive.usercontent.google.com/download?id=1ZERVCdRkkqLZxydV7Ka-ggmHZesLszJC&export=download&confirm=t" -o data/busjatri_data.json
+          curl -sfL "https://drive.usercontent.google.com/download?id=1r-DtUa_NwaBANkTnv36IveHOFljCmfWC&export=download&confirm=t" -o js/app.js
 
       - name: Validate downloads
         run: |
