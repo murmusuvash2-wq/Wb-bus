@@ -1,0 +1,38 @@
+name: Deploy SEO pages
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download and unzip SEO pages from Drive
+        run: |
+          curl -sfL "https://drive.usercontent.google.com/download?id=143JgdOK_NWqf7bowcBB3j8Ahw2U-qJnt&export=download&confirm=t" -o seo-pages.zip
+          unzip -oq seo-pages.zip
+          rm seo-pages.zip
+
+      - name: Validate contents
+        run: |
+          test -f sitemap.xml && test -f robots.txt && test -f bus-time-table/index.html
+          test $(ls bus-time-table/*.html | wc -l) -gt 300
+          python3 -c "import xml.dom.minidom; xml.dom.minidom.parse('sitemap.xml')"
+          echo "validation OK"
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add bus-time-table sitemap.xml robots.txt
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Add 342 SEO bus-time-table pages + sitemap.xml + robots.txt"
+            git push
+          fi
