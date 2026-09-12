@@ -1,0 +1,55 @@
+name: Auto-update from bussathi.in
+
+on:
+  schedule:
+    - cron: '30 0 * * 1'   # every Monday 06:00 IST
+  workflow_dispatch:
+    inputs:
+      max_buses:
+        description: 'Max bus IDs to scan (use 8 for a quick test)'
+        default: '1300'
+      dry_run:
+        description: 'true = scrape & validate only, no commit'
+        default: 'false'
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Scrape bussathi.in
+        run: python3 scripts/scrape_bussathi.py "${{ github.event.inputs.max_buses || '1300' }}" scraped_bussathi.json
+
+      - name: Validate scrape
+        run: |
+          python3 - <<'EOF'
+          import json
+          buses = json.load(open('scraped_bussathi.json'))
+          assert len(buses) >= 700, f'only {len(buses)} buses parsed - aborting, not committing'
+          with_stops = sum(1 for b in buses if b['stoppages'])
+          print(f'scrape OK: {len(buses)} buses, {with_stops} with stoppages')
+          EOF
+
+      - name: Rebuild data + SEO pages
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: |
+          python3 scripts/rebuild_data.py
+          python3 scripts/gen_seo_pages.py
+
+      - name: Commit and push if changed
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/busjatri_data.json bus-time-table sitemap.xml robots.txt
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Auto-update: refresh bussathi.in data ($(date -u +%F))"
+            git push
+          fi
