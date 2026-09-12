@@ -1,0 +1,47 @@
+name: Import govt data (SBSTC + WBTC) and fix railway stations
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install pdfplumber
+        run: pip install pdfplumber
+
+      - name: Download SBSTC route PDF
+        run: curl -sfL "https://transport.wb.gov.in/wp-content/uploads/2016/09/RouteTimeTableFareSBSTC.pdf" -o sbstc.pdf
+
+      - name: Import SBSTC routes with fares
+        run: python3 scripts/import_sbstc.py sbstc.pdf sbstc_buses.json --merge
+
+      - name: Enrich WBTC stoppages
+        run: python3 scripts/enrich_wbtc.py
+
+      - name: Attach railway stations
+        run: python3 scripts/add_railway_stations.py
+
+      - name: Regenerate SEO pages
+        run: python3 scripts/gen_seo_pages.py
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/busjatri_data.json data/stop_coords.json bus-time-table sitemap.xml robots.txt
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Import SBSTC (routes+fares), enrich WBTC, fix railway stations ($(date -u +%F))"
+            git push
+          fi
