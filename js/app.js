@@ -252,17 +252,32 @@ function renderSearch(el) {
   let results = Object.values(BUSES);
 
   if (from && to) {
-    results = results.filter(b =>
-      (b.origin || '').toLowerCase().includes(from) && (b.destination || '').toLowerCase().includes(to)
-      || (b.origin || '').toLowerCase().includes(to) && (b.destination || '').toLowerCase().includes(from)
-    );
+    const posIn = (b, q) => {
+      if ((b.origin || '').toLowerCase().includes(q)) return 0;
+      const sts = b.stoppages || [];
+      const idx = sts.findIndex(s => (s.name || '').toLowerCase().includes(q));
+      if (idx >= 0) return idx + 1;
+      if ((b.destination || '').toLowerCase().includes(q)) return sts.length + 2;
+      return -1;
+    };
+    results = results.filter(b => {
+      const fi = posIn(b, from), ti = posIn(b, to);
+      return fi >= 0 && ti >= 0 && fi < ti;
+    });
+    if (!results.length) {
+      results = Object.values(BUSES).filter(b => {
+        const fi = posIn(b, from), ti = posIn(b, to);
+        return fi >= 0 && ti >= 0;
+      });
+    }
   } else if (from || to) {
     const q = from || to;
     results = results.filter(b =>
       (b.origin || '').toLowerCase().includes(q) ||
       (b.destination || '').toLowerCase().includes(q) ||
       (b.bus_name || '').toLowerCase().includes(q) ||
-      (b.route || '').toLowerCase().includes(q)
+      (b.route || '').toLowerCase().includes(q) ||
+      (b.stoppages || []).some(s => (s.name || '').toLowerCase().includes(q))
     );
   }
 
@@ -353,6 +368,57 @@ function renderPlace(el, placeName) {
   </div>`;
 }
 
+function stationBadge(name) {
+  const st = (STOPS[name] || {}).nearest_station;
+  if (!st) return '';
+  const code = st.code ? ` (${esc(st.code)})` : '';
+  return `<div style="font-size:11px;color:var(--ink-dim);font-weight:500;margin-top:1px">${icon('train')} Railway: ${esc(st.name)}${code} · ~${st.km} km</div>`;
+}
+
+function countdownText(min) {
+  if (min <= 0) return 'now';
+  const h = Math.floor(min / 60), m = min % 60;
+  return h ? `${h}h ${m}m` : `${m}m`;
+}
+
+function fmtTime(min) {
+  let h = Math.floor(min / 60) % 24;
+  const m = min % 60;
+  const ap = h >= 12 ? 'PM' : 'AM';
+  h = h % 12 || 12;
+  return `${h}:${String(m).padStart(2, '0')} ${ap}`;
+}
+
+function stopDepartures(slugKey, busIds, limit) {
+  const now = minutesNow();
+  const out = [];
+  for (const id of busIds) {
+    const b = BUSES[id];
+    if (!b) continue;
+    const s = (b.stoppages || []).find(x => slug(x.name) === slugKey);
+    let t = s ? parseTime(s.up_time) : null;
+    if (t == null && slug(b.origin) === slugKey) t = parseTime(b.departure_time);
+    if (t == null) continue;
+    let diff = t - now;
+    if (diff < 0) diff += 1440;
+    out.push({ b, t, diff });
+  }
+  out.sort((x, y) => x.diff - y.diff);
+  return out.slice(0, limit);
+}
+
+let nbTicker = null;
+function startNextBusTicker() {
+  clearInterval(nbTicker);
+  nbTicker = setInterval(() => {
+    document.querySelectorAll('[data-nbdep]').forEach(el => {
+      let d = parseInt(el.dataset.nbdep, 10) - minutesNow();
+      if (d < 0) d += 1440;
+      el.textContent = countdownText(d);
+    });
+  }, 30000);
+}
+
 function renderBus(el, id) {
   id = id.split('?')[0];  // strip query (?full=1) so the bus ID resolves
   const b = BUSES[id];
@@ -361,10 +427,6 @@ function renderBus(el, id) {
     return;
   }
   const stops = b.stoppages || [];
-  let embedUrl = '';
-  if (b.origin && b.destination && b.origin !== '—' && b.destination !== '—') {
-    embedUrl = `https://maps.google.com/maps?saddr=${encodeURIComponent(b.origin + ', West Bengal')}&daddr=${encodeURIComponent(b.destination + ', West Bengal')}&output=embed`;
-  }
   const INITIAL = 8;
   const showAll = location.hash.includes('full=1');
   const visible = showAll ? stops : stops.slice(0, INITIAL);
@@ -396,14 +458,13 @@ function renderBus(el, id) {
       </div>
       ${mapUrl ? `<a class="map-btn" href="${mapUrl}" target="_blank" rel="noopener">${icon('map')} <span class="label-en">View route on Google Maps</span><span class="label-bn">গুগল ম্যাপে রুট দেখুন</span></a>` : ''}
       ${b.destination && b.destination !== '—' ? `<div class="info-item" id="weatherCard" data-dest="${esc(b.destination)}" style="margin-top:12px"><div class="lbl">Weather in ${esc(b.destination)} (now)</div><div class="val" id="weatherVal">Loading…</div></div>` : ''}
-      ${embedUrl ? `<div style="margin:18px 0;border-radius:14px;overflow:hidden;border:1px solid var(--border)"><iframe src="${embedUrl}" loading="lazy" style="width:100%;height:320px;border:0;display:block" title="Route map ${esc(b.origin)} to ${esc(b.destination)}"></iframe></div>` : ''}
       ${stops.length ? `
         <h3 class="timetable-title">${icon('ticket')} <span class="label-en">Route Timetable</span><span class="label-bn">রুট টাইমটেবিল</span></h3>
         <div class="timetable-head"><span>#</span><span><span class="label-en">Stoppage</span><span class="label-bn">স্টপ</span></span><span style="text-align:right">Up</span><span style="text-align:right">Down</span></div>
         <div class="stops-list">
           ${visible.map(s => `<div class="stop-row">
             <span class="stop-dot"></span>
-            <span class="stop-name"><a href="#/stop/${slug(s.name)}">${esc(s.name)}</a></span>
+            <span class="stop-name"><a href="#/stop/${slug(s.name)}">${esc(s.name)}</a>${stationBadge(s.name)}</span>
             ${timeOrDash(s.up_time)}
             ${timeOrDash(s.down_time)}
           </div>`).join('')}
@@ -472,11 +533,22 @@ function renderStop(el, slugKey) {
     return;
   }
   const buses = (stop.bus_ids || []).map(id => BUSES[id]).filter(Boolean);
+  const stn = stop.nearest_station;
+  const next = stopDepartures(slugKey, stop.bus_ids || [], 6);
   el.innerHTML = `
   <div class="container" style="padding-top:22px;padding-bottom:40px">
     <div class="back-btn" onclick="location.hash='#/'">${icon('chevronLeft')} Back</div>
     <h2 class="page-title">${esc(stop.name)}</h2>
     <p style="color:var(--ink-dim);margin-bottom:14px">${buses.length} buses pass through</p>
+    ${stn ? `<div class="info-item" style="margin:0 0 16px"><div class="lbl">${icon('train')} <span class="label-en">Nearest railway station</span><span class="label-bn">নিকটতম রেলওয়ে স্টেশন</span></div><div class="val">${esc(stn.name)}${stn.code ? ' (' + esc(stn.code) + ')' : ''} · ~${stn.km} km</div></div>` : ''}
+    ${next.length ? `<h3 class="timetable-title" style="margin-top:8px">${icon('clock')} <span class="label-en">Next buses from ${esc(stop.name)}</span><span class="label-bn">${esc(stop.name)} থেকে পরবর্তী বাস</span></h3>
+      ${next.map(n => `<div class="result-item" onclick="location.hash='#/bus/${encodeURIComponent(n.b.id)}'">
+        <div class="ri-main">
+          <div class="name">${esc(n.b.bus_name)}</div>
+          <div class="route">${esc(n.b.origin)} → ${esc(n.b.destination)}</div>
+        </div>
+        <span class="time-pill">${icon('clock')} ${fmtTime(n.t)} · <span style="color:var(--amber);font-weight:700" data-nbdep="${n.t}">${countdownText(n.diff)}</span></span>
+      </div>`).join('')}` : ''}
     <a class="map-btn" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(stop.name + ', West Bengal, India')}" target="_blank" rel="noopener">${icon('map')} View on Google Maps</a>
     ${buses.map((b, i) => `
       <div class="result-item" style="--i:${i}" onclick="location.hash='#/bus/${encodeURIComponent(b.id)}'">
@@ -487,6 +559,7 @@ function renderStop(el, slugKey) {
         ${b.departure_time ? `<span class="time-pill">${icon('clock')} ${esc(b.departure_time)}</span>` : ''}
       </div>`).join('')}
   </div>`;
+  startNextBusTicker();
 }
 
 function renderAbout(el) {
