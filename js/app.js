@@ -58,8 +58,7 @@ const PLACE_ICONS = {
   Mukutmanipur: 'waves', Digha: 'waves', Bankura: 'landmark', Kolkata: 'building',
   Asansol: 'factory', Burdwan: 'train', Jhargram: 'trees', Purulia: 'mountain',
   Durgapur: 'cog', Khatra: 'bus', Bishnupur: 'dome', Medinipur: 'pin',
-  Sundarban: 'trees', Shantiniketan: 'landmark', Mandarmani: 'waves',
-  Kurseong: 'mountain', Bakreshwar: 'sun',
+  Tarapith: 'dome', Mayapur: 'dome', Darjeeling: 'mountain',
 };
 const FEATURED_PLACES = ['Kolkata', 'Digha'];
 
@@ -69,13 +68,13 @@ const POPULAR_PLACES = [
   { name: 'Bishnupur', tag: 'Terracotta Temples' },
   { name: 'Jhargram', tag: 'Forest & Palaces' },
   { name: 'Purulia', tag: 'Hills & Falls' },
-  { name: 'Sundarban', tag: 'Mangrove Forest' },
-  { name: 'Shantiniketan', tag: 'Tagore Home' },
+  { name: 'Tarapith', tag: 'Temple Town' },
+  { name: 'Mayapur', tag: 'Pilgrimage' },
+  { name: 'Bolpur', tag: 'Shantiniketan' },
   { name: 'Kolkata', tag: 'City of Joy' },
   { name: 'Mandarmani', tag: 'Beach Resort' },
   { name: 'Bankura', tag: 'Heritage Trails' },
-  { name: 'Kurseong', tag: 'Tea Gardens' },
-  { name: 'Bakreshwar', tag: 'Hot Springs' },
+  { name: 'Darjeeling', tag: 'Hill Station' },
 ];
 
 function icon(name) { return ICONS[name] || ''; }

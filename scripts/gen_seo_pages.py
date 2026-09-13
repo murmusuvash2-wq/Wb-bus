@@ -1739,19 +1739,31 @@ def generate_via_page(origin, destination, via_stop, buses):
             it = seq.index(destination, ic + 1)
         except ValueError:
             continue
+        # --- FIX: filter garbage buses (no dep/arr) ---
+        dep_raw = b.get('departure_time', '')
+        arr_raw = b.get('arrival_time', '')
+        dep_min = _t2m(dep_raw)
+        arr_min = _t2m(arr_raw)
+        if dep_min is None or arr_min is None:
+            continue
         op = operator_name(b)
         key = (op or '').lower()
         if key in seen:
             continue
         seen.add(key)
         st = next((s for s in (b.get('stoppages') or []) if clean_text(s.get('name')) == via_stop), {})
-        rows.append({'operator': op or '—', 'dep': parse_time(b.get('departure_time')), 'via': parse_time(st.get('up_time')), 'arr': parse_time(b.get('arrival_time')), 'stops': total_stops(b), 'bus_type': bus_type_label(b.get('bus_type') or '')})
+        # --- FIX: pick correct via time (not always up_time) ---
+        up_min = _t2m(st.get('up_time', ''))
+        down_min = _t2m(st.get('down_time', ''))
+        via_min = _pick_via_time(dep_min, arr_min, up_min, down_min)
+        via_str = _m2t(via_min) if via_min is not None else '—'
+        rows.append({'operator': op or '—', 'dep': parse_time(dep_raw), 'via': via_str, 'arr': parse_time(arr_raw), 'stops': total_stops(b), 'bus_type': bus_type_label(b.get('bus_type') or '')})
     rows.sort(key=lambda r: r['dep'] if r['dep'] is not None else 9999)
     n = len(rows)
     if n < 2:
         return None, None
     dep_times = [r['dep'] for r in rows if r['dep'] is not None]
-    via_times = [r['via'] for r in rows if r['via'] is not None]
+    via_times_raw = [r['via'] for r in rows if r['via'] != '—']
     first = format_time(min(dep_times)) if dep_times else '—'
     last = format_time(max(dep_times)) if dep_times else '—'
     ntot = len(buses)
@@ -1765,7 +1777,7 @@ def generate_via_page(origin, destination, via_stop, buses):
     trows = ''
     for r in rows:
         dep_f = format_time(r['dep'])
-        via_f = format_time(r['via'])
+        via_f = r['via']
         arr_f = format_time(r['arr'])
         type_html = ''
         if r['bus_type']:
@@ -1781,13 +1793,14 @@ def generate_via_page(origin, destination, via_stop, buses):
         ('What is the last bus from ' + origin + ' to ' + destination + ' via ' + via_stop + '?', 'The last bus passing through ' + via_stop + ' departs ' + origin + ' at ' + last + '.' if dep_times else 'No reliable departure time available.'),
         ('Do I have to change buses at ' + via_stop + '?', 'No, these are through-buses. They pass through ' + via_stop + ' on the way from ' + origin + ' to ' + destination + '.'),
     ]
-    if via_times:
-        vf = format_time(min(via_times))
-        vl = format_time(max(via_times))
-        faqs.append(('When do buses reach ' + via_stop + ' from ' + origin + '?', 'The first bus reaches ' + via_stop + ' at about ' + vf + '; the last at about ' + vl + '.'))
+    if via_times_raw:
+        faq_html_inner = '<details style="border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin-bottom:10px"><summary style="cursor:pointer;font-weight:600">' + esc('When do buses reach ' + via_stop + ' from ' + origin + '?') + '</summary><p style="margin:8px 0 0;color:var(--ink-dim);font-size:14px">' + esc('Buses reach ' + via_stop + ' between ' + via_times_raw[0] + ' and ' + via_times_raw[-1] + ' depending on departure time.') + '</p></details>'
+    else:
+        faq_html_inner = ''
     faq_html = ''
     for q, a in faqs:
         faq_html += '<details style="border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin-bottom:10px"><summary style="cursor:pointer;font-weight:600">' + esc(q) + '</summary><p style="margin:8px 0 0;color:var(--ink-dim);font-size:14px">' + esc(a) + '</p></details>'
+    faq_html += faq_html_inner
     related_links = '<a href="' + slug(origin) + '-to-' + slug(destination) + '.html" style="display:block;padding:12px 14px;border-bottom:1px solid var(--border);text-decoration:none">Direct ' + esc(origin) + ' to ' + esc(destination) + ' route <span style="float:right;color:var(--ink-dim);font-size:13px">' + str(ntot) + ' buses</span></a>'
     if (origin, via_stop) in route_meta:
         related_links += '<a href="' + slug(origin) + '-to-' + slug(via_stop) + '.html" style="display:block;padding:12px 14px;border-bottom:1px solid var(--border);text-decoration:none">' + esc(origin) + ' to ' + esc(via_stop) + ' <span style="float:right;color:var(--ink-dim);font-size:13px">' + str(len(route_meta[(origin, via_stop)])) + ' buses</span></a>'
@@ -1816,6 +1829,53 @@ def generate_via_page(origin, destination, via_stop, buses):
     body += '</section>'
     schema = faq_schema(faqs) + chr(10) + breadcrumb_schema([('Home', '/'), ('Bus Timetable', '/bus-time-table/'), (origin + ' to ' + destination + ' via ' + via_stop, '/bus-time-table/' + filename)])
     return filename, shell(title, description, canonical, body, schema)
+
+
+# --- time helpers ---
+import re as _re
+
+def _t2m(t):
+    """Convert '6:15 AM' to minutes since midnight (375). None if invalid."""
+    if not t or not isinstance(t, str):
+        return None
+    m = _re.match(r'(\d+):(\d+)\s*(AM|PM)', t.strip())
+    if not m:
+        return None
+    h, mn, ap = int(m.group(1)), int(m.group(2)), m.group(3)
+    if ap == 'PM' and h != 12:
+        h += 12
+    if ap == 'AM' and h == 12:
+        h = 0
+    return h * 60 + mn
+
+def _m2t(m):
+    """Convert minutes since midnight to '6:15 AM' format."""
+    if m is None:
+        return None
+    h = m // 60 % 24
+    mn = m % 60
+    if h == 0:
+        h12, ap = 12, 'AM'
+    elif h < 12:
+        h12, ap = h, 'AM'
+    elif h == 12:
+        h12, ap = 12, 'PM'
+    else:
+        h12, ap = h - 12, 'PM'
+    return f'{h12}:{mn:02d} {ap}'
+
+def _pick_via_time(dep_min, arr_min, up_min, down_min):
+    """Pick the via-stop time that falls between dep and arr. Handle overnight."""
+    if dep_min is None or arr_min is None:
+        return None
+    end = arr_min + 24 * 60 if arr_min < dep_min else arr_min
+    for t in [down_min, up_min]:
+        if t is None:
+            continue
+        t_adj = t + 24 * 60 if t < dep_min else t
+        if dep_min <= t_adj <= end:
+            return t
+    return None
 
 os.makedirs(OUT, exist_ok=True)
 
