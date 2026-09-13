@@ -68,3 +68,44 @@ body.lang-bn .rstop-km { font-family: var(--font-body); }
   .route-dash { margin: 20px -20px 0; }
   .rstop-row { grid-template-columns: 24px 1fr 72px; }
 }
+
+/* ---------- All Routes: search box (ticket-stub card) ---------- */
+.search-card { background: var(--surface); border: 1.5px solid color-mix(in srgb, var(--amber) 45%, var(--line-strong)); border-radius: var(--radius-lg); padding: 20px 22px; box-shadow: var(--shadow); margin-top: 18px; }
+.sc-row { display: flex; align-items: center; gap: 12px; border-bottom: 2px dashed var(--line-strong); padding-bottom: 14px; }
+.sc-icon { width: 20px; height: 20px; color: var(--amber-ink); flex-shrink: 0; }
+#routeSearch { flex: 1; border: none; outline: none; background: transparent; font-size: 17px; font-family: var(--font-body); color: var(--ink); min-width: 0; }
+#routeSearch::placeholder { color: var(--ink-dim); opacity: .75; }
+.sc-hint { font-family: var(--font-mono); font-size: 11px; color: var(--ink-dim); margin-top: 10px; letter-spacing: .04em; }
+body.lang-bn .sc-hint { font-family: var(--font-body); letter-spacing: 0; }
+.sr-list { margin-top: 6px; }
+.sr-item { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; padding: 9px 12px; border-radius: var(--radius); text-decoration: none; color: var(--ink); font-weight: 500; font-size: 14px; }
+.sr-item:hover { background: var(--amber-soft); color: var(--amber-ink); }
+.sr-place { font-family: var(--font-display); }
+body.lang-bn .sr-place { font-family: var(--font-body); }
+.sr-bn { color: var(--ink-dim); font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sr-empty { padding: 12px; color: var(--ink-dim); font-size: 14px; }
+
+/* ---------- District sections ---------- */
+.district-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); margin-bottom: 14px; overflow: hidden; }
+.district-card summary { cursor: pointer; padding: 16px 20px; font-family: var(--font-display); font-weight: 700; font-size: 16.5px; display: flex; align-items: center; gap: 10px; list-style: none; }
+body.lang-bn .district-card summary { font-family: var(--font-body); }
+.district-card summary::-webkit-details-marker { display: none; }
+.district-card summary .icon { width: 16px; height: 16px; color: var(--amber-ink); flex-shrink: 0; }
+.district-card summary:hover { color: var(--amber-ink); }
+.dist-count { margin-left: auto; font-family: var(--font-mono); font-size: 11px; font-weight: 600; color: var(--ink-dim); background: var(--amber-soft); border: 1px solid color-mix(in srgb, var(--amber) 30%, transparent); padding: 3px 10px; border-radius: 999px; white-space: nowrap; }
+body.lang-bn .dist-count { font-family: var(--font-body); }
+.district-card[open] summary { border-bottom: 1px dashed var(--line-strong); }
+.place-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; padding: 16px 20px 18px; }
+.place-card { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 10px 12px; text-decoration: none; display: flex; flex-direction: column; gap: 3px; }
+.place-card:hover { border-color: var(--amber); box-shadow: var(--shadow-sm); }
+.pc-name { font-weight: 600; font-size: 13.5px; color: var(--ink); font-family: var(--font-display); }
+body.lang-bn .pc-name { font-family: var(--font-body); }
+.pc-count { font-family: var(--font-mono); font-size: 10.5px; color: var(--ink-dim); }
+body.lang-bn .pc-count { font-family: var(--font-body); }
+
+/* ---------- All routes A-Z (collapsed) ---------- */
+.all-list { border: 1px dashed var(--line-strong); border-radius: var(--radius-lg); margin-top: 20px; }
+.all-list summary { cursor: pointer; padding: 14px 18px; font-weight: 600; font-size: 14px; color: var(--ink-dim); display: flex; align-items: center; gap: 8px; list-style: none; }
+.all-list summary::-webkit-details-marker { display: none; }
+.all-list summary .icon { width: 15px; height: 15px; }
+.all-list[open] summary { border-bottom: 1px dashed var(--line-strong); }
