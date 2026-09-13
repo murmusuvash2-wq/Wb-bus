@@ -1,0 +1,52 @@
+name: Deploy data v3
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download and unzip from Drive
+        run: |
+          curl -sfL "https://drive.usercontent.google.com/download?id=1VIbKvasBfFP1oUVE3NN0B2IT4M8MagxP&export=download&confirm=t" -o files.zip
+          unzip -oq files.zip
+          rm files.zip
+
+      - name: Validate data
+        run: |
+          test -f data/busjatri_data.json
+          python3 - <<'EOF'
+          import json
+          d = json.load(open('data/busjatri_data.json'))
+          assert len(d['buses']) >= 3900, f"too few buses: {len(d['buses'])}"
+          assert len(set(b['id'] for b in d['buses'])) == len(d['buses']), "duplicate ids"
+          assert isinstance(d['routes'], dict) and isinstance(d['stops'], dict), "wrong index format"
+          ns = sum(1 for v in d['stops'].values() if v.get('nearest_station'))
+          print(f"OK: {len(d['buses'])} buses, {len(d['routes'])} routes, {len(d['stops'])} stops, {ns} with nearest_station")
+          EOF
+
+      - name: Regenerate SEO pages
+        run: |
+          rm -rf bus-time-table
+          python3 scripts/gen_seo_pages.py
+          test $(ls bus-time-table/*.html | wc -l) -gt 1500
+          python3 -c "import xml.dom.minidom; xml.dom.minidom.parse('sitemap.xml')"
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data scripts bus-time-table sitemap.xml robots.txt
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Data v3.0: 4,018 buses (KTR + SBSTC + Shyamoli + NBSTC + kolbusopedia merge) + regen SEO pages"
+            git push
+          fi
