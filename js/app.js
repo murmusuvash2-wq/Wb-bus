@@ -58,13 +58,24 @@ const PLACE_ICONS = {
   Mukutmanipur: 'waves', Digha: 'waves', Bankura: 'landmark', Kolkata: 'building',
   Asansol: 'factory', Burdwan: 'train', Jhargram: 'trees', Purulia: 'mountain',
   Durgapur: 'cog', Khatra: 'bus', Bishnupur: 'dome', Medinipur: 'pin',
+  Sundarban: 'trees', Shantiniketan: 'landmark', Mandarmani: 'waves',
+  Kurseong: 'mountain', Bakreshwar: 'sun',
 };
 const FEATURED_PLACES = ['Kolkata', 'Digha'];
 
 const POPULAR_PLACES = [
-  { name: 'Mukutmanipur' }, { name: 'Digha' }, { name: 'Bankura' }, { name: 'Kolkata' },
-  { name: 'Asansol' }, { name: 'Burdwan' }, { name: 'Jhargram' }, { name: 'Purulia' },
-  { name: 'Durgapur' }, { name: 'Khatra' }, { name: 'Bishnupur' }, { name: 'Medinipur' },
+  { name: 'Digha', tag: 'Sea Beach' },
+  { name: 'Mukutmanipur', tag: 'Lake & Dam' },
+  { name: 'Bishnupur', tag: 'Terracotta Temples' },
+  { name: 'Jhargram', tag: 'Forest & Palaces' },
+  { name: 'Purulia', tag: 'Hills & Falls' },
+  { name: 'Sundarban', tag: 'Mangrove Forest' },
+  { name: 'Shantiniketan', tag: 'Tagore Home' },
+  { name: 'Kolkata', tag: 'City of Joy' },
+  { name: 'Mandarmani', tag: 'Beach Resort' },
+  { name: 'Bankura', tag: 'Heritage Trails' },
+  { name: 'Kurseong', tag: 'Tea Gardens' },
+  { name: 'Bakreshwar', tag: 'Hot Springs' },
 ];
 
 function icon(name) { return ICONS[name] || ''; }
@@ -183,6 +194,12 @@ function doSearch() {
   location.hash = '#/search?' + q.toString();
 }
 
+function swapFromTo() {
+  const f = document.getElementById('fromInput');
+  const t = document.getElementById('toInput');
+  const tmp = f.value; f.value = t.value; t.value = tmp;
+}
+
 function quickSearch(name) {
   const q = new URLSearchParams();
   q.set('from', name);
@@ -224,13 +241,12 @@ function renderHome(el) {
   const placeCards = POPULAR_PLACES.map((p, i) => {
     const stop = Object.values(STOPS).find(s => s.name.toLowerCase() === p.name.toLowerCase())
       || Object.values(STOPS).find(s => s.name.toLowerCase().includes(p.name.toLowerCase()));
-    const count = stop ? stop.bus_ids.length : 0;
     const iconName = PLACE_ICONS[p.name] || 'pin';
     const featured = FEATURED_PLACES.includes(p.name) ? ' featured' : '';
     return `<div class="place-card${featured}" style="--i:${i}" onclick="location.hash='#/place/${encodeURIComponent(p.name)}'">
       <div class="icon-badge">${icon(iconName)}</div>
       <div class="name">${esc(p.name)}</div>
-      <div class="count">${count ? count + ' buses' : 'Explore'}</div>
+      <div class="place-tag">${esc(p.tag || 'Explore')}</div>
     </div>`;
   }).join('');
 
@@ -248,12 +264,13 @@ function renderHome(el) {
             <label>${icon('pin')} <span class="label-en">From</span><span class="label-bn">কোথা থেকে</span></label>
             <input id="fromInput" list="stopList" placeholder="e.g. Bankura" onkeydown="if(event.key==='Enter')doSearch()">
           </div>
+          <button class="swap-btn" onclick="swapFromTo()" title="Swap From & To" aria-label="Swap origin and destination">${icon('compass')}</button>
           <div class="search-field">
             <label>${icon('compass')} <span class="label-en">To</span><span class="label-bn">কোথায়</span></label>
             <input id="toInput" list="stopList" placeholder="e.g. Digha" onkeydown="if(event.key==='Enter')doSearch()">
           </div>
           <div class="search-field">
-            <label>${icon('ticket')} <span class="label-en">Via (optional)</span><span class="label-bn">মার্গে (ঐচ্ছিক)</span></label>
+            <label>${icon('ticket')} Via <span class="via-hint">(optional)</span></label>
             <input id="viaInput" list="stopList" placeholder="e.g. Bishnupur" onkeydown="if(event.key==='Enter')doSearch()">
           </div>
         </div>
@@ -262,16 +279,11 @@ function renderHome(el) {
         </div>
         <datalist id="stopList">${Object.values(STOPS).slice(0, 800).map(s => `<option value="${esc(s.name)}">`).join('')}</datalist>
       </div>
-      <div class="stats">
-        <div class="stat"><div class="num" data-target="${DATA.meta.total_buses || 0}">0</div><div class="label"><span class="label-en">Buses</span><span class="label-bn">বাস</span></div></div>
-        <div class="stat"><div class="num" data-target="${DATA.meta.total_routes || 0}">0</div><div class="label"><span class="label-en">Routes</span><span class="label-bn">রুট</span></div></div>
-        <div class="stat"><div class="num" data-target="${DATA.meta.total_stops || 0}">0</div><div class="label"><span class="label-en">Stops</span><span class="label-bn">স্টপ</span></div></div>
-      </div>
-    </div>
+      <p class="stats-inline">${icon('bus')} ${(DATA.meta.total_buses || 0).toLocaleString('en-IN')}+ <span class="label-en">buses</span><span class="label-bn">টি বাস</span> &middot; ${(DATA.meta.total_routes || 0).toLocaleString('en-IN')}+ <span class="label-en">routes</span><span class="label-bn">টি রুট</span> &middot; ${(DATA.meta.total_stops || 0).toLocaleString('en-IN')}+ <span class="label-en">stops</span><span class="label-bn">টি স্টপ</span></p>
   </div>
   <div class="section">
     <div class="container">
-      <div class="section-title">${icon('pin')} <span class="label-en">Popular Places</span><span class="label-bn">জনপ্রিয় স্থান</span></div>
+      <div class="section-title">${icon('pin')} <span class="label-en">Popular Destinations</span><span class="label-bn">জনপ্রিয় স্থান</span></div>
       <div class="place-cards">${placeCards}</div>
     </div>
   </div>`;
