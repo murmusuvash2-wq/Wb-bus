@@ -1,5 +1,4 @@
 name: Regenerate SEO pages
-
 on:
   workflow_dispatch:
 
@@ -9,8 +8,22 @@ permissions:
 jobs:
   regen:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
+
+      - name: Apply generator patches (district browse + search + FAQ fix)
+        run: |
+          if grep -q "district_section" scripts/gen_seo_pages.py; then
+            echo "generator already patched"
+          else
+            python3 scripts/patches/patch_gen1.py
+            python3 scripts/patches/patch_gen2.py
+            python3 scripts/patches/patch_gen3.py
+          fi
+
+      - name: Attach railway stations (bbox filter + name matching)
+        run: python3 scripts/add_railway_stations.py
 
       - name: Regenerate bus-time-table pages
         run: python3 scripts/gen_seo_pages.py
@@ -20,6 +33,9 @@ jobs:
           test $(ls bus-time-table/*.html | wc -l) -gt 300
           python3 -c "import xml.dom.minidom; xml.dom.minidom.parse('sitemap.xml')"
           grep -q "label-bn" bus-time-table/index.html
+          grep -q "district-card" bus-time-table/index.html
+          grep -q "routeSearch" bus-time-table/index.html
+          test -s bus-time-table/search-index.json
           grep -q "label-bn" bus-time-table/asansol-to-digha.html
           ! grep -rq "var(--panel)" bus-time-table/
 
@@ -27,10 +43,10 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add bus-time-table sitemap.xml robots.txt
+          git add bus-time-table sitemap.xml robots.txt data/busjatri_data.json data/stop_coords.json scripts/gen_seo_pages.py
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "Regenerate SEO pages with bilingual EN/Bangla template"
+            git commit -m "Regenerate SEO pages (district browse + search + station fix)"
             git push
           fi
