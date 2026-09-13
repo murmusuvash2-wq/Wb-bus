@@ -22,6 +22,13 @@ jobs:
             python3 scripts/patches/patch_gen3.py
           fi
 
+      - name: Generate og-image (social share card)
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-beng-extra
+          python3 -m pip install --quiet pillow
+          python3 scripts/make_og_image.py
+
       - name: Attach railway stations (bbox filter + name matching)
         run: python3 scripts/add_railway_stations.py
 
@@ -38,12 +45,13 @@ jobs:
           test -s bus-time-table/search-index.json
           grep -q "label-bn" bus-time-table/asansol-to-digha.html
           ! grep -rq "var(--panel)" bus-time-table/
+          python3 -c "from PIL import Image; Image.open('og-image.png').verify(); print('og-image OK')"
 
       - name: Commit and push if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add bus-time-table sitemap.xml robots.txt data/busjatri_data.json data/stop_coords.json scripts/gen_seo_pages.py
+          git add bus-time-table sitemap.xml robots.txt data/busjatri_data.json data/stop_coords.json scripts/gen_seo_pages.py og-image.png
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
