@@ -1,0 +1,85 @@
+    # Paschim Medinipur
+    'kharagpur': 'Paschim Medinipur', 'medinipur': 'Paschim Medinipur',
+    'midnapore': 'Paschim Medinipur', 'midnapur': 'Paschim Medinipur',
+    'garhbeta': 'Paschim Medinipur', 'chandrakona': 'Paschim Medinipur',
+    'ghatal': 'Paschim Medinipur', 'goaltore': 'Paschim Medinipur',
+    'khirpai': 'Paschim Medinipur', 'keshargarh': 'Paschim Medinipur',
+    'godapiasal': 'Paschim Medinipur', 'dantan': 'Paschim Medinipur',
+    'gangadharpur': 'Paschim Medinipur', 'hoomgarh': 'Paschim Medinipur',
+    # Purba Medinipur
+    'tamluk': 'Purba Medinipur', 'haldia': 'Purba Medinipur',
+    'contai': 'Purba Medinipur', 'digha': 'Purba Medinipur',
+    'mecheda': 'Purba Medinipur', 'panskura': 'Purba Medinipur',
+    'panshkura': 'Purba Medinipur', 'egra': 'Purba Medinipur',
+    'ramnagar': 'Purba Medinipur', 'nandigram': 'Purba Medinipur',
+    'moyna': 'Purba Medinipur', 'bhagabanpur': 'Purba Medinipur',
+    'sonachura': 'Purba Medinipur', 'boga': 'Purba Medinipur',
+    # Nadia
+    'krishnanagar': 'Nadia', 'ranaghat': 'Nadia', 'kalyani': 'Nadia',
+    'nabadwip': 'Nadia', 'karimpur': 'Nadia', 'gayeshpur': 'Nadia',
+    'palashipara': 'Nadia', 'duttaphulia': 'Nadia', 'krishnabati': 'Nadia',
+    # Murshidabad
+    'berhampore': 'Murshidabad', 'baharampur': 'Murshidabad',
+    'kandi': 'Murshidabad', 'jangipur': 'Murshidabad', 'dhulian': 'Murshidabad',
+    'dhuliyan': 'Murshidabad', 'lalgola': 'Murshidabad', 'domkal': 'Murshidabad',
+    'khagraghat': 'Murshidabad', 'sagarpara': 'Murshidabad',
+    'panchthupi': 'Murshidabad',
+    # Malda
+    'malda': 'Malda', 'gazole': 'Malda', 'chanchal': 'Malda',
+    # Uttar Dinajpur
+    'raiganj': 'Uttar Dinajpur', 'islampur': 'Uttar Dinajpur',
+    'dalkhola': 'Uttar Dinajpur',
+    # Dakshin Dinajpur
+    'balurghat': 'Dakshin Dinajpur', 'gangarampur': 'Dakshin Dinajpur',
+    'tapan': 'Dakshin Dinajpur',
+    # Darjeeling
+    'siliguri': 'Darjeeling', 'darjeeling': 'Darjeeling',
+    'kurseong': 'Darjeeling', 'kharibari': 'Darjeeling',
+    # Jalpaiguri
+    'jalpaiguri': 'Jalpaiguri', 'moynaguri': 'Jalpaiguri',
+    'dhupguri': 'Jalpaiguri', 'malbazar': 'Jalpaiguri',
+    'mainaguri': 'Jalpaiguri',
+    # Alipurduar
+    'alipurduar': 'Alipurduar',
+    # Cooch Behar
+    'cooch behar': 'Cooch Behar', 'mathabhanga': 'Cooch Behar',
+    'dinhata': 'Cooch Behar', 'tufanganj': 'Cooch Behar',
+    # Outside West Bengal
+    'dhanbad': 'Outside West Bengal', 'ranchi': 'Outside West Bengal',
+    'tatanagar': 'Outside West Bengal', 'delhi': 'Outside West Bengal',
+    'bangalore': 'Outside West Bengal', 'bhubaneswar': 'Outside West Bengal',
+    'sasaram': 'Outside West Bengal', 'gorakhpur': 'Outside West Bengal',
+    'lucknow': 'Outside West Bengal', 'aurangabad bihar': 'Outside West Bengal',
+    'gopalganj bihar': 'Outside West Bengal', 'puri': 'Outside West Bengal',
+    # Birbhum (was missing entirely!)
+    'bolpur': 'Birbhum', 'suri': 'Birbhum', 'santiniketan': 'Birbhum',
+    'rampurhat': 'Birbhum', 'tarapith': 'Birbhum', 'sainthia': 'Birbhum',
+    'labhpur': 'Birbhum', 'kirnahar': 'Birbhum', 'nanur': 'Birbhum',
+    'illambazar': 'Birbhum', 'patharchapuri': 'Birbhum', 'moham': 'Birbhum',
+    # extra Howrah
+    'amta': 'Howrah', 'udaynarayanpur': 'Howrah', 'gadiara': 'Howrah',
+    'belurmath': 'Howrah', 'dumurjola': 'Howrah', 'bankra bazar': 'Howrah',
+    'kadamtala': 'Howrah',
+    # extra North 24 Parganas
+    'dakshineswar': 'North 24 Parganas', 'airport': 'North 24 Parganas',
+    'bonhooghly': 'North 24 Parganas', 'nahata': 'North 24 Parganas',
+    'rahara': 'North 24 Parganas', 'noapara': 'North 24 Parganas',
+    'fatikgachi': 'North 24 Parganas', 'mohishpota': 'North 24 Parganas',
+    'chakla': 'North 24 Parganas', 'bichali ghat': 'North 24 Parganas',
+    'samshernagar': 'North 24 Parganas', 'mahishbathan': 'North 24 Parganas',
+    'shapoorji': 'North 24 Parganas', 'dumdum cantonment': 'North 24 Parganas',
+    'dumdum canton': 'North 24 Parganas',
+    # extra South 24 Parganas
+    'burul': 'South 24 Parganas', 'noorpur': 'South 24 Parganas',
+    'dhamakhali': 'South 24 Parganas', 'julpia': 'South 24 Parganas',
+    'baisnabghata': 'South 24 Parganas', 'akra': 'South 24 Parganas',
+    'itaberia': 'South 24 Parganas', 'gadkhali': 'South 24 Parganas',
+    'kantakhali': 'South 24 Parganas', 'pailan': 'South 24 Parganas',
+    'sapuipara': 'South 24 Parganas', 'shirakole': 'South 24 Parganas',
+    'polerhat': 'South 24 Parganas', 'dihibhursut': 'South 24 Parganas',
+    'choto finga': 'South 24 Parganas', 'solpatta': 'South 24 Parganas',
+    'garchakraberia': 'South 24 Parganas', 'old dakghar': 'South 24 Parganas',
+    'nabatkati': 'South 24 Parganas', 'birlapur': 'South 24 Parganas',
+    # extra Kolkata
+    'parnasree': 'Kolkata', 'sakher bazar': 'Kolkata', 'taratala': 'Kolkata',
+    'kidderpore': 'Kolkata', 'barisha': 'Kolkata', 'haridevpur': 'Kolkata',
