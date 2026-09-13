@@ -1,0 +1,90 @@
+Bus<span style="color:var(--amber);font-style:italic">Jatri</span></a>
+</div></header>
+<main class="wrap" __MARKER__>
+<div class="crumb"><a href="../index.html">Home</a> / Bus Timetable</div>
+<h1>West Bengal Bus Time Table</h1>
+<p class="intro">Complete bus timetable for West Bengal — SBSTC, WBTC, NBSTC and private operators. __NB__ buses on __NR__ routes, grouped by district. Search any route below or open a route for full timings, stoppages and operators.</p>
+<div class="statrow">
+<div class="stat"><b>__NR__</b> routes</div>
+<div class="stat"><b>__NB__</b> buses</div>
+<div class="stat"><b>__ND__</b> districts</div>
+</div>
+<div class="qwrap"><input id="q" type="search" placeholder='Search route — try "kolkata to digha" or "asansol"' autocomplete="off" aria-label="Search routes">
+<div class="qmeta" id="qmeta"></div></div>
+<nav class="dnav" aria-label="Districts">
+__CHIPS__
+</nav>
+<div id="nores">No routes match — try a place name like "Digha" or "Esplanade".</div>
+__SECTIONS__
+<footer>BusJatri — West Bengal bus timetable &middot; <a href="../index.html">Search buses</a> &middot; Not affiliated with any transport corporation</footer>
+</main>
+<script>
+(function(){
+var q=document.getElementById('q'),total=__NR__,meta=document.getElementById('qmeta');
+var rts=[].slice.call(document.querySelectorAll('.rt'));
+function filter(){
+var t=q.value.trim().toLowerCase(),vis=0;
+for(var i=0;i<rts.length;i++){var m=!t||rts[i].getAttribute('data-s').indexOf(t)>-1;
+rts[i].style.display=m?'':'none';if(m)vis++;}
+var hubs=[].slice.call(document.querySelectorAll('.hub'));
+for(var j=0;j<hubs.length;j++){var any=false,as=hubs[j].querySelectorAll('.rt');
+for(var k=0;k<as.length;k++){if(as[k].style.display!=='none'){any=true;break}}
+hubs[j].style.display=any?'':'none';}
+var ds=[].slice.call(document.querySelectorAll('.dist'));
+for(var x=0;x<ds.length;x++){var a2=false,rs=ds[x].querySelectorAll('.rt');
+for(var y=0;y<rs.length;y++){if(rs[y].style.display!=='none'){a2=true;break}}
+ds[x].style.display=a2?'':'none';}
+document.getElementById('nores').style.display=vis?'none':'';
+meta.textContent=t?('Showing '+vis+' of '+total+' routes'):'';
+}
+q.addEventListener('input',filter);
+})();
+</script>
+</body>
+</html>'''
+
+    # attach data-s attributes: rebuild sections with data-s on pills
+    # (we re-generate pills here with data-s to keep filter fast)
+    sections2 = []
+    chips2 = []
+    for d in DISTRICT_ORDER:
+        if d not in by_district:
+            continue
+        hubs = by_district[d]
+        n_routes = sum(len(v) for v in hubs.values())
+        did = 'd-' + slugify(d)
+        chips2.append('<a class="chip" href="#' + did + '">' + _html.escape(d) + '<b>' + str(n_routes) + '</b></a>')
+        hub_items = sorted(hubs.items(), key=lambda kv: (-sum(x[2] for x in kv[1]), kv[0]))
+        hub_html = []
+        for hub, rl in hub_items:
+            rl_sorted = sorted(rl, key=lambda x: x[1].lower())
+            n_buses = sum(x[2] for x in rl)
+            pills = ''.join(
+                '<a class="rt" data-s="' + _html.escape(lab.lower().replace('\u2192', ' to ')) + '" href="' + h + '">'
+                + _html.escape(lab) + '<span>' + str(c) + '</span></a>'
+                for h, lab, c in rl_sorted)
+            hub_html.append(
+                '<div class="hub"><h3>' + _html.escape(hub)
+                + '<span>' + str(len(rl)) + ' route' + ('s' if len(rl) > 1 else '')
+                + ' \u00b7 ' + str(n_buses) + ' buses</span></h3>'
+                '<div class="rg">' + pills + '</div></div>')
+        sections2.append(
+            '<section class="dist" id="' + did + '"><h2>' + _html.escape(d)
+            + '<span>' + str(n_routes) + ' routes</span></h2>'
+            + ''.join(hub_html) + '</section>')
+
+    page = (page
+            .replace('__MARKER__', MARKER)
+            .replace('__BASE__', BASE)
+            .replace('__NR__', str(len(routes)))
+            .replace('__NB__', str(total_buses))
+            .replace('__ND__', str(n_districts))
+            .replace('__CHIPS__', ''.join(chips2))
+            .replace('__SECTIONS__', ''.join(sections2)))
+
+    open(INDEX_PATH, 'w', encoding='utf-8').write(page)
+    print(f'redesign_seo_index: rebuilt — {len(routes)} routes, {n_districts} districts, '
+          f'{len(page)//1024}KB (was {len(src)//1024}KB)')
+
+if __name__ == '__main__':
+    main()
