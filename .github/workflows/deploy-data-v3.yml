@@ -30,6 +30,7 @@ jobs:
         run: |
           python3 scripts/patches/apply_ui_polish.py
           python3 scripts/patches/fix_places.py
+          python3 scripts/patches/fix_animation.py
 
       - name: Regenerate SEO pages
         run: |
@@ -37,6 +38,9 @@ jobs:
           python3 scripts/gen_seo_pages.py
           test $(ls bus-time-table/*.html | wc -l) -gt 1500
           test $(ls bus-time-table/ | grep -c '\-via\-') -gt 50
+          cat scripts/patches/rx_parts/rx_p1 scripts/patches/rx_parts/rx_p2 scripts/patches/rx_parts/rx_p3 scripts/patches/rx_parts/rx_p4 scripts/patches/rx_parts/rx_p5 scripts/patches/rx_parts/rx_p6 > scripts/patches/redesign_seo_index.py
+          python3 scripts/patches/redesign_seo_index.py
+          test $(stat -c%s bus-time-table/index.html) -lt 500000
           python3 -c "import xml.dom.minidom; xml.dom.minidom.parse('sitemap.xml')"
 
       - name: Commit and push if changed
@@ -44,9 +48,9 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data scripts css js bus-time-table sitemap.xml robots.txt
-          if git diff --cached --quiet; then
+          if git diff --cached -quiet; then
             echo "No changes to commit"
           else
-            git commit -m "Data + via pages + UI polish + fix places: regenerate"
+            git commit -m "Data + via + UI + animation + SEO index redesign: regenerate"
             git push
           fi
