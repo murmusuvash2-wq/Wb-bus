@@ -195,7 +195,7 @@ for (o, t), vv_ in sorted(VIA.items(), key=lambda kv: -len(route_meta[kv[0]])):
 </section>'''
 
         body = crumbs(f'{esc(o)} {lbl("to", "থেকে")} {esc(t)} {lbl("via", "হয়ে")} {esc(c)}') + hero + stats + timetable + faq_section + rel_html
-        schema = faq_schema(faqs_en) + '\n' + breadcrumb(
+        schema = faq_schema(faqs_en) + chr(10) + breadcrumb(
             [('Home', '/'), ('Bus Time Table', '/bus-time-table/'), (f'{o} to {t} via {c}', f'/bus-time-table/{fname}')])
         open(f'{OUT}/{fname}', 'w').write(shell(title, desc, f'{BASE}/bus-time-table/{fname}', body, schema))
         sitemap.append(f'{BASE}/bus-time-table/{fname}')
