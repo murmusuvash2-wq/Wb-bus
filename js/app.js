@@ -175,9 +175,11 @@ function timeOrDash(t) {
 function doSearch() {
   const from = (document.getElementById('fromInput')?.value || '').trim();
   const to = (document.getElementById('toInput')?.value || '').trim();
+  const via = (document.getElementById('viaInput')?.value || '').trim();
   const q = new URLSearchParams();
   if (from) q.set('from', from);
   if (to) q.set('to', to);
+  if (via) q.set('via', via);
   location.hash = '#/search?' + q.toString();
 }
 
@@ -250,6 +252,10 @@ function renderHome(el) {
             <label>${icon('compass')} <span class="label-en">To</span><span class="label-bn">কোথায়</span></label>
             <input id="toInput" list="stopList" placeholder="e.g. Digha" onkeydown="if(event.key==='Enter')doSearch()">
           </div>
+          <div class="search-field">
+            <label>${icon('ticket')} <span class="label-en">Via (optional)</span><span class="label-bn">মার্গে (ঐচ্ছিক)</span></label>
+            <input id="viaInput" list="stopList" placeholder="e.g. Bishnupur" onkeydown="if(event.key==='Enter')doSearch()">
+          </div>
         </div>
         <div class="search-actions">
           <button class="search-btn" onclick="doSearch()">${icon('search')} <span class="label-en">Search buses</span><span class="label-bn">খুঁজুন</span></button>
@@ -275,6 +281,7 @@ function renderSearch(el) {
   const params = new URLSearchParams(location.hash.split('?')[1] || '');
   const from = (params.get('from') || '').toLowerCase().trim();
   const to = (params.get('to') || '').toLowerCase().trim();
+  const via = (params.get('via') || '').toLowerCase().trim();
   let results = Object.values(BUSES);
 
   if (from && to) {
@@ -288,9 +295,14 @@ function renderSearch(el) {
     };
     results = results.filter(b => {
       const fi = posIn(b, from), ti = posIn(b, to);
-      return fi >= 0 && ti >= 0 && fi < ti;
+      if (!(fi >= 0 && ti >= 0 && fi < ti)) return false;
+      if (via) {
+        const vi = posIn(b, via);
+        if (!(vi > fi && vi < ti)) return false;
+      }
+      return true;
     });
-    if (!results.length) {
+    if (!results.length && !via) {
       results = Object.values(BUSES).filter(b => {
         const fi = posIn(b, from), ti = posIn(b, to);
         return fi >= 0 && ti >= 0;
@@ -337,7 +349,7 @@ function renderSearch(el) {
     <div class="back-btn" onclick="location.hash='#/'">${icon('chevronLeft')} <span class="label-en">Back</span><span class="label-bn">পিছনে</span></div>
     <h2 class="page-title"><span class="label-en">Search Results</span><span class="label-bn">সার্চ ফলাফল</span> <span style="color:var(--ink-dim);font-family:var(--font-mono);font-size:1rem">(${results.length})</span></h2>
     <p style="font-size:12px;color:var(--ink-dim);margin:2px 0 4px">Data updated: ${esc(DATA.meta?.last_updated || '')}</p>
-    ${from || to ? `<p style="color:var(--ink-dim);font-size:13.5px;margin-bottom:18px">${esc(from || '…')} → ${esc(to || '…')}</p>` : ''}
+    ${from || to ? `<p style="color:var(--ink-dim);font-size:13.5px;margin-bottom:18px">${esc(from || '…')} → ${esc(to || '…')}${via ? ` <span class="badge badge-ac">via ${esc(via)}</span>` : ''}</p>` : ''}
     ${near.length ? `<p class="near-label">${icon('clock')} <span class="label-en">${near.length} buses around current time</span><span class="label-bn">${near.length} বাস বর্তমান সময়ের কাছাকাছি</span></p>` : ''}
     ${results.length ? results.map((b, i) => {
       const t = parseTime(b.departure_time);
