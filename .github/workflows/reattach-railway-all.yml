@@ -1,0 +1,54 @@
+name: Reattach railway all distances
+on:
+  workflow_dispatch:
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install fixed coords + ensure script
+        run: |
+          python3 - <<'PY'
+          import base64, gzip, urllib.request
+          from pathlib import Path
+          Path("data").mkdir(exist_ok=True)
+          Path("scripts").mkdir(exist_ok=True)
+          # Force Garhbeta to GBA in existing stop_coords
+          import json
+          coords_path = Path("data/stop_coords.json")
+          coords = {}
+          if coords_path.is_file():
+              raw = json.loads(coords_path.read_text(encoding="utf-8"))
+              for k,v in raw.items():
+                  if isinstance(v, dict) and "lat" in v:
+                      coords[k] = v
+                  elif isinstance(v, (list,tuple)) and len(v)>=2:
+                      coords[k] = {"lat": float(v[0]), "lon": float(v[1])}
+          # GBA from datameet
+          stations = json.loads(urllib.request.urlopen(
+              "https://raw.githubusercontent.com/datameet/railways/master/stations.json").read())
+          for f in stations.get("features") or []:
+              p = f.get("properties") or {}
+              if (p.get("code") or "").upper() == "GBA":
+                  c = f["geometry"]["coordinates"]
+                  coords["Garhbeta"] = {
+                      "lat": c[1], "lon": c[0],
+                      "confidence": "high", "score": 145, "source": "rail-snap:GBA"
+                  }
+                  print("Garhbeta set to GBA", c[1], c[0])
+                  break
+          coords_path.write_text(json.dumps(coords, ensure_ascii=False, indent=2), encoding="utf-8")
+          print("coords count", len(coords))
+          PY
+      - name: Reattach railway (any distance, no hide)
+        run: |
+          python3 scripts/reattach_railway_all.py
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/stop_coords.json data/busjatri_data.json scripts/reattach_railway_all.py
+          git diff --staged --quiet || git commit -m "data: railway any-distance — Garhbeta GBA 0km, far stations kept"
+          git push
