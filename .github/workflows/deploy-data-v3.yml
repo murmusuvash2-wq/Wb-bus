@@ -1,5 +1,4 @@
 name: Deploy data v3
-
 on:
   workflow_dispatch:
 
@@ -32,11 +31,15 @@ jobs:
           print(f"OK: {len(d['buses'])} buses, {len(d['routes'])} routes, {len(d['stops'])} stops, {ns} with nearest_station")
           EOF
 
+      - name: Apply via system patches
+        run: python3 scripts/patches/apply_via.py
+
       - name: Regenerate SEO pages
         run: |
           rm -rf bus-time-table
           python3 scripts/gen_seo_pages.py
           test $(ls bus-time-table/*.html | wc -l) -gt 1500
+          test $(ls bus-time-table/ | grep -c '\-via\-') -gt 50
           python3 -c "import xml.dom.minidom; xml.dom.minidom.parse('sitemap.xml')"
 
       - name: Commit and push if changed
@@ -47,6 +50,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "Data v3.0: 4,018 buses (KTR + SBSTC + Shyamoli + NBSTC + kolbusopedia merge) + regen SEO pages"
+            git commit -m "Data v3 + via pages: regenerate SEO pages"
             git push
           fi
