@@ -1,0 +1,82 @@
+#!/usr/bin/env python3
+"""Redesign bus-time-table/index.html: district-wise grouped, searchable,
+compact pill links instead of a flat 800KB link dump. Idempotent.
+
+Runs AFTER gen_seo_pages.py. Reads the generated index, extracts every route
+link (href, origin -> destination, bus count), maps the origin hub to a WB
+district, and rebuilds the page with:
+  - proper H1 + intro (SEO)
+  - live search box (client-side filter)
+  - district jump chips
+  - district sections (H2) with hub groups (H3)
+  - compact CSS-class pills (~75% smaller HTML)
+All links stay crawlable (in DOM, not JS-rendered).
+"""
+
+import re
+import html as _html
+
+INDEX_PATH = 'bus-time-table/index.html'
+BASE = 'https://wb-bus.vercel.app'
+
+MARKER = '<!-- redesigned-index-v1 -->'
+
+# ---------------- district mapping ----------------
+DISTRICTS = {
+    # Kolkata (KMC core + city)
+    'esplanade': 'Kolkata', 'kolkata': 'Kolkata', 'babughat': 'Kolkata',
+    'bbd bag': 'Kolkata', 'rajabazar': 'Kolkata', 'shyambazar': 'Kolkata',
+    'ahiritola': 'Kolkata', 'bagbazar': 'Kolkata', 'park circus': 'Kolkata',
+    'golf green': 'Kolkata', 'alipore zoo': 'Kolkata', 'sealdah': 'Kolkata',
+    'park street': 'Kolkata', 'rashbehari': 'Kolkata', 'golpark': 'Kolkata',
+    'high court': 'Kolkata', 'rabindra sadan': 'Kolkata', 'chetla park': 'Kolkata',
+    'kankurgachi': 'Kolkata', 'phoolbagan': 'Kolkata', 'belgachia': 'Kolkata',
+    'cossipore': 'Kolkata', 'tangra': 'Kolkata', 'topsia': 'Kolkata',
+    'picnic garden': 'Kolkata', 'jodhpur park': 'Kolkata', 'ruby': 'Kolkata',
+    'mukundapur': 'Kolkata', 'anandapur': 'Kolkata', 'science city': 'Kolkata',
+    'garh bhowanipore': 'Kolkata', 'ballygunge station': 'Kolkata',
+    'aliah university': 'Kolkata', 'uttar panchannagram': 'Kolkata',
+    'new alipore': 'Kolkata', 'kamal talkies': 'Kolkata', 'vip bazar': 'Kolkata',
+    'kasba rathtala': 'Kolkata', 'bansdroni': 'Kolkata', 'kudghat': 'Kolkata',
+    'tollygunge': 'Kolkata', 'jadavpur 8b': 'Kolkata', 'jadavpore': 'Kolkata',
+    'baghajatin': 'Kolkata', 'mahamayatala': 'Kolkata', 'nayabad': 'Kolkata',
+    'patuli': 'Kolkata', 'dhakuria': 'Kolkata', 'behala 14 no': 'Kolkata',
+    'behala chowrasta': 'Kolkata', 'behala airport': 'Kolkata',
+    'thakurpukur': 'Kolkata', 'metiabruz': 'Kolkata', 'sarsuna': 'Kolkata',
+    'garia': 'Kolkata', 'camac street': 'Kolkata',
+    # North 24 Parganas
+    'barasat': 'North 24 Parganas', 'karunamoyee': 'North 24 Parganas',
+    'saltlake': 'North 24 Parganas', 'sector v': 'North 24 Parganas',
+    'newtown': 'North 24 Parganas', 'dunlop': 'North 24 Parganas',
+    'ultadanga': 'North 24 Parganas', 'dumdum': 'North 24 Parganas',
+    'birati': 'North 24 Parganas', 'baguiati': 'North 24 Parganas',
+    'bangur avenue': 'North 24 Parganas', 'nager bazar': 'North 24 Parganas',
+    'madhyamgram': 'North 24 Parganas', 'habra': 'North 24 Parganas',
+    'basirhat': 'North 24 Parganas', 'bongaon': 'North 24 Parganas',
+    'baduria': 'North 24 Parganas', 'barrackpore': 'North 24 Parganas',
+    'kanchrapara': 'North 24 Parganas', 'naihati': 'North 24 Parganas',
+    'khardaha': 'North 24 Parganas', 'sodepur': 'North 24 Parganas',
+    'belgharia': 'North 24 Parganas', 'belghoria': 'North 24 Parganas',
+    'agarpara': 'North 24 Parganas', 'kamarhati': 'North 24 Parganas',
+    'laketown': 'North 24 Parganas', 'lake town': 'North 24 Parganas',
+    'sinthi': 'North 24 Parganas', 'derozio college': 'North 24 Parganas',
+    'ghatakpukur': 'North 24 Parganas', 'rajarhat': 'North 24 Parganas',
+    'chingrighata': 'North 24 Parganas', 'ecospace': 'North 24 Parganas',
+    'unitech': 'North 24 Parganas', 'technopolis': 'North 24 Parganas',
+    'amity university': 'North 24 Parganas', 'aquatica': 'North 24 Parganas',
+    'greenfield city': 'North 24 Parganas', 'hasnabad': 'North 24 Parganas',
+    'hemnagar': 'North 24 Parganas', 'taki': 'North 24 Parganas',
+    'sohai bazar': 'North 24 Parganas', 'nazat': 'North 24 Parganas',
+    'haroa': 'North 24 Parganas', 'bibirhat': 'North 24 Parganas',
+    'berachampa': 'North 24 Parganas', 'ariadaha': 'North 24 Parganas',
+    'hatiara': 'North 24 Parganas', 'sajirhat': 'North 24 Parganas',
+    'nimta bazar': 'North 24 Parganas', 'new barrackpore': 'North 24 Parganas',
+    'gouripur': 'North 24 Parganas', 'birati tantkal': 'North 24 Parganas',
+    # South 24 Parganas
+    'baruipur': 'South 24 Parganas', 'sonarpur': 'South 24 Parganas',
+    'kamalgazi': 'South 24 Parganas', 'amtala': 'South 24 Parganas',
+    'bakkhali': 'South 24 Parganas', 'diamond harbour': 'South 24 Parganas',
+    'diamond': 'South 24 Parganas', 'kakdwip': 'South 24 Parganas',
+    'gangasagar': 'South 24 Parganas', 'kachuberia': 'South 24 Parganas',
+    'namkhana': 'South 24 Parganas', 'canning': 'South 24 Parganas',
+    'joynagar': 'South 24 Parganas', 'bhangore': 'South 24 Parganas',
