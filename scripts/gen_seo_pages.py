@@ -55,6 +55,69 @@ BN = {
  'Shyambazar':'শ্যামবাজার','Amtala':'আমতলা','Bakra':'বাকড়া','Farakka':'ফরাক্কা',
 }
 
+
+# ---------------------------------------------------------------------------
+# District grouping for the All Routes page (curated; unmapped -> 'Other')
+# ---------------------------------------------------------------------------
+DISTRICTS = {
+ 'Bankura': 'Bankura', 'Bishnupur': 'Bankura', 'Khatra': 'Bankura', 'Ranibandh': 'Bankura',
+ 'Sonamukhi': 'Bankura', 'Patrasayer': 'Bankura', 'Kotulpur': 'Bankura', 'Simlapal': 'Bankura',
+ 'Kenjakura': 'Bankura', 'Sarenga': 'Bankura', 'Fulkusma': 'Bankura', 'Raipur': 'Bankura',
+ 'Ramgarh': 'Bankura', 'Jhantipahari': 'Bankura', 'Lakshmisagar': 'Bankura', 'Guniada': 'Bankura',
+ 'Baksi': 'Bankura', 'Chendapathar': 'Bankura', 'Kutni': 'Bankura', 'Khetua': 'Bankura',
+ 'Raskundu': 'Bankura', 'Bhutsahar': 'Bankura', 'Ramsagar': 'Bankura',
+ 'Purulia': 'Purulia', 'Manbazar': 'Purulia', 'Bandwan': 'Purulia', 'Balarampur': 'Purulia',
+ 'Barabazar': 'Purulia', 'Ajodhya Hills': 'Purulia', 'Chelyama': 'Purulia',
+ 'Asansol': 'Paschim Bardhaman', 'Durgapur (Station)': 'Paschim Bardhaman',
+ 'Durgapur (City Center)': 'Paschim Bardhaman', 'Raniganj': 'Paschim Bardhaman',
+ 'Barakar': 'Paschim Bardhaman', 'Chittaranjan': 'Paschim Bardhaman', 'Benachity': 'Paschim Bardhaman',
+ 'Pandaveswar': 'Paschim Bardhaman', 'Jamtoria': 'Paschim Bardhaman', 'Chandankyari': 'Paschim Bardhaman',
+ 'Bardhaman': 'Purba Bardhaman', 'Kalna': 'Purba Bardhaman', 'Katwa': 'Purba Bardhaman',
+ 'Madanmohanpur': 'Purba Bardhaman',
+ 'Medinipur': 'Paschim Medinipur', 'Kharagpur': 'Paschim Medinipur',
+ 'Chandrakona Road': 'Paschim Medinipur', 'Chandrakona Town': 'Paschim Medinipur',
+ 'Ghatal': 'Paschim Medinipur', 'Dantan': 'Paschim Medinipur', 'Hijli Sorif': 'Paschim Medinipur',
+ 'Jhargram': 'Jhargram', 'Silda': 'Jhargram', 'Lalgarh': 'Jhargram', 'Belpahari': 'Jhargram',
+ 'Binpur': 'Jhargram', 'Amlasuli': 'Jhargram',
+ 'Digha': 'Purba Medinipur', 'Contai': 'Purba Medinipur', 'Haldia': 'Purba Medinipur',
+ 'Egra': 'Purba Medinipur', 'Panskura': 'Purba Medinipur', 'Mecheda': 'Purba Medinipur',
+ 'Moyna': 'Purba Medinipur', 'Gadiara': 'Purba Medinipur', 'Bhagabanpur': 'Purba Medinipur',
+ 'Chichra': 'Purba Medinipur', 'Itaberia': 'Purba Medinipur', 'Balaipanda': 'Purba Medinipur',
+ 'Runakuraghat': 'Purba Medinipur', 'Patharmora': 'Purba Medinipur', 'Shikarpur': 'Purba Medinipur',
+ 'Samaspur': 'Purba Medinipur', 'Solpatta': 'Purba Medinipur',
+ 'Howrah': 'Howrah', 'Kukrahati': 'Howrah',
+ 'Kolkata': 'Kolkata', 'Kolkata (Esplanade)': 'Kolkata', 'Garia': 'Kolkata',
+ 'Shyambazar': 'Kolkata', 'Jadavpore': 'Kolkata', 'Parnasree': 'Kolkata',
+ 'Tarkeshwar': 'Hooghly', 'Arambagh': 'Hooghly', 'Chuchura': 'Hooghly',
+ 'Krishnanagar': 'Nadia', 'Nabadwip': 'Nadia', 'Karimpur': 'Nadia',
+ 'Bolpur': 'Birbhum', 'Patharchapuri': 'Birbhum',
+ 'Baharampur': 'Murshidabad', 'Domkal': 'Murshidabad', 'Salar': 'Murshidabad', 'Sagarpara': 'Murshidabad',
+ 'Cooch Behar': 'Cooch Behar', 'Mathabhanga': 'Cooch Behar', 'Dinhata': 'Cooch Behar', 'Tufanganj': 'Cooch Behar',
+ 'Alipurduar': 'Alipurduar',
+ 'Tatanagar': 'Jharkhand', 'Ranchi': 'Jharkhand',
+ 'Bhubaneswar': 'Odisha',
+}
+DISTRICT_META = {
+ 'Bankura': ('Bankura District', 'বাঁকুড়া জেলা'),
+ 'Purulia': ('Purulia District', 'পুরুলিয়া জেলা'),
+ 'Paschim Bardhaman': ('Paschim Bardhaman District', 'পশ্চিম বর্ধমান জেলা'),
+ 'Purba Bardhaman': ('Purba Bardhaman District', 'পূর্ব বর্ধমান জেলা'),
+ 'Paschim Medinipur': ('Paschim Medinipur District', 'পশ্চিম মেদিনীপুর জেলা'),
+ 'Jhargram': ('Jhargram District', 'ঝাড়গ্রাম জেলা'),
+ 'Purba Medinipur': ('Purba Medinipur District', 'পূর্ব মেদিনীপুর জেলা'),
+ 'Howrah': ('Howrah District', 'হাওড়া জেলা'),
+ 'Kolkata': ('Kolkata', 'কলকাতা'),
+ 'Hooghly': ('Hooghly District', 'হুগলি জেলা'),
+ 'Nadia': ('Nadia District', 'নদীয়া জেলা'),
+ 'Birbhum': ('Birbhum District', 'বীরভূম জেলা'),
+ 'Murshidabad': ('Murshidabad District', 'মুরশিদাবাদ জেলা'),
+ 'Cooch Behar': ('Cooch Behar District', 'কোচবিহার জেলা'),
+ 'Alipurduar': ('Alipurduar District', 'আলিপুরদুয়ার জেলা'),
+ 'Jharkhand': ('Jharkhand (outside WB)', 'ঝাড়খণ্ড'),
+ 'Odisha': ('Odisha (outside WB)', 'ওডিশা'),
+ 'Other': ('More Places', 'আরও জায়গা'),
+}
+
 # ---------------------------------------------------------------------------
 # helpers
 # ---------------------------------------------------------------------------
@@ -124,6 +187,11 @@ def clean_bus(b):
             nm = head.strip()
             if not regn and rest.strip():
                 regn = rest.split()[0]
+    # 'govtb8'-style codes are internal source IDs, not real registrations
+    if regn and re.match(r'^govt?b?[0-9]+$', regn.strip(), re.I):
+        regn = ''
+    if regn:
+        regn = regn.strip().upper()
     # title-case nicer names (keep govt acronyms as-is)
     ACRO = {'SBSTC', 'NBSTC', 'WBTC', 'CSTC'}
     if nm and nm.isupper() and len(nm) > 3:
@@ -184,10 +252,18 @@ def merged_rows(bs):
             out.append((key, cur))
         else:
             r = row[1]
-            if r['dep'] is None: r['dep'], r['dep_raw'] = cur['dep'], cur['dep_raw']
-            if r['arr'] is None: r['arr'], r['arr_raw'] = cur['arr'], cur['arr_raw']
-            if not r['type']: r['type'] = cur['type']
-            if not r['stops']: r['stops'] = cur['stops']
+            # same regn = same physical bus duplicated across sources;
+            # no regn + one side has no times = incomplete duplicate row.
+            # otherwise two same-named buses are different trips - keep both.
+            cur_empty = cur['dep'] is None and cur['arr'] is None
+            r_empty = r['dep'] is None and r['arr'] is None
+            if regn or cur_empty or r_empty:
+                if r['dep'] is None: r['dep'], r['dep_raw'] = cur['dep'], cur['dep_raw']
+                if r['arr'] is None: r['arr'], r['arr_raw'] = cur['arr'], cur['arr_raw']
+                if not r['type']: r['type'] = cur['type']
+                if not r['stops']: r['stops'] = cur['stops']
+            else:
+                out.append((key, cur))
     rows = [r for _, r in out]
     rows.sort(key=lambda r: r['dep'] if r['dep'] is not None else 9999)
     return rows
@@ -214,6 +290,8 @@ def shell(title, desc, canonical, body, extra_schema='', og_type='article'):
 <meta property="og:url" content="{canonical}">
 <meta property="og:site_name" content="BusJatri">
 <meta name="twitter:card" content="summary">
+<meta property="og:image" content="{BASE}/og-image.png">
+<meta name="twitter:image" content="{BASE}/og-image.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b8791f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 16V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10'/%3E%3Cpath d='M4 16h16'/%3E%3Cpath d='M4 16v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2'/%3E%3Cpath d='M17 16v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2'/%3E%3Cpath d='M6 10h12'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -343,10 +421,13 @@ for (o, t), bs in route_meta.items():
         faqs_en.append((f'What is the last bus from {o} to {t}?',
                         f'The last bus from {o} to {t} departs at {q_last}.'))
         faqs_bn.append(('শেষ বাস কখন ছাড়ে?', f'শেষ বাস {bn_time(lastm)}-এ ছাড়ে।'))
+    g = len(groups[tuple(sorted([o, t]))])
+    n_word = f'{n} bus' if n == 1 else f'{n} buses'
     faqs_en.append((f'How many buses run from {o} to {t}?',
-                    f'Around {n} bus services operate between {o} and {t} daily, including both directions.'
+                    f'{n_word.capitalize()} run directly from {o} to {t} each day; counting both directions, '
+                    f'{g} bus services connect the two places.'
                     + (f' Major operators: {", ".join(ops[:4])}.' if ops else '')))
-    faqs_bn.append(('দিনে কতগুলো বাস চলে?', f'দিনে প্রায় {bnum(n)}টি বাস {bo or o}–{bt_ or t} রুটে চলে।'
+    faqs_bn.append(('দিনে কতগুলো বাস চলে?', f'সরাসরি {bnum(n)}টি বাস {bo or o} থেকে {bt_ or t} চলে; দুই দিকে মিলিয়ে মোট {bnum(g)}টি।'
                     + (f' প্রধান অপারেটর: {", ".join(ops[:4])}।' if ops else '')))
     if med_dur:
         faqs_en.append((f'How long does the bus take from {o} to {t}?',
@@ -379,7 +460,7 @@ for (o, t), bs in route_meta.items():
 </section>'''
 
     stats = f'''<div class="stats" role="list">
-<div class="stat" role="listitem"><div class="num">{n}</div><div class="label">{lbl('Buses', 'টি বাস')}</div></div>
+<div class="stat" role="listitem"><div class="num">{n}</div><div class="label">{lbl('Direct buses', 'সরাসরি বাস')}</div></div>
 <div class="stat" role="listitem"><div class="num">{lbl(q_first, bn_time(firstm) if firstm is not None else '—')}</div><div class="label">{lbl('First bus', 'প্রথম বাস')}</div></div>
 <div class="stat" role="listitem"><div class="num">{lbl(q_last, bn_time(lastm) if lastm is not None else '—')}</div><div class="label">{lbl('Last bus', 'শেষ বাস')}</div></div>
 {f'<div class="stat" role="listitem"><div class="num">' + lbl(fmt_dur(med_dur), bn_dur(med_dur)) + '</div><div class="label">' + lbl('Duration', 'সময় লাগে') + '</div></div>' if med_dur else ''}
@@ -475,9 +556,13 @@ for b in BUSES:
     o = b.get('origin')
     if o and o != '—':
         place_buses[o].append(b)
-top_places = sorted(place_buses, key=lambda p: -len(place_buses[p]))[:30]
+by_place = defaultdict(list)
+for (o, t) in route_meta:
+    by_place[o].append((o, t))
+hub_places = sorted(by_place, key=lambda p: -len(by_place[p]))
+top_places = hub_places[:30]
 
-for p in top_places:
+for p in hub_places:
     bs = place_buses[p]
     n = len(bs)
     bn_p = bn(p)
@@ -511,23 +596,115 @@ for p in top_places:
 # ---------------------------------------------------------------------------
 # index page
 # ---------------------------------------------------------------------------
-by_place = defaultdict(list)
-for (o, t) in route_meta:
-    by_place[o].append((o, t))
 idx_rows = ''.join(
     f'<section class="section" style="padding-top:14px"><h2 class="section-title">{place(p)} <span class="count">({len(routes)})</span></h2><div class="chip-row">'
     + ' '.join(f'<a class="sugg-chip" href="{slug(o)}-to-{slug(t)}.html">{place(o)} → {place(t)}</a>' for o, t in sorted(routes))
     + '</div></section>'
     for p, routes in sorted(by_place.items(), key=lambda kv: -len(kv[1])))
-places_links = ' '.join(f'<a class="sugg-chip" href="buses-from-{slug(p)}.html">{place(p)}</a>' for p in top_places[:20])
-body = f'''<section class="route-hero">
+# ---- district sections ----
+dist_map = defaultdict(list)
+for p, routes_ in by_place.items():
+    dist_map[DISTRICTS.get(p, 'Other')].append((p, routes_))
+dist_order = sorted(dist_map, key=lambda d: (d == 'Other', -sum(len(r) for _, r in dist_map[d])))
+
+PIN = '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>'
+
+def district_section(d):
+    places_ = dist_map[d]
+    en_d, bn_d = DISTRICT_META[d]
+    nroutes = sum(len(r) for _, r in places_)
+    cards = ''.join(
+        f'<a class="place-card" href="buses-from-{slug(p)}.html">'
+        f'<span class="pc-name">{place(p)}</span>'
+        f'<span class="pc-count">{lbl(f"{len(rs)} routes", f"{bnum(len(rs))}টি রুট")}</span></a>'
+        for p, rs in sorted(places_, key=lambda kv: -len(kv[1])))
+    open_attr = ' open' if d in dist_order[:3] else ''
+    return (f'<details class="district-card"{open_attr}>'
+            f'<summary>{PIN}{lbl(en_d, bn_d)}'
+            f'<span class="dist-count">{lbl(f"{nroutes} routes", f"{bnum(nroutes)}টি রুট")}</span></summary>'
+            f'<div class="place-cards">{cards}</div></details>')
+
+districts_html = ''.join(district_section(d) for d in dist_order)
+
+# ---- search card (plain string, JS braces must not hit the f-string) ----
+search_js = """
+<script>
+(function () {
+  var IDX = null;
+  var input = document.getElementById('routeSearch');
+  var list = document.getElementById('srList');
+  if (!input || !list) return;
+  fetch('search-index.json').then(function (r) { return r.json(); }).then(function (x) { IDX = x; });
+  input.addEventListener('input', function () {
+    if (!IDX) return;
+    var q = input.value.trim().toLowerCase();
+    list.innerHTML = '';
+    if (!q) return;
+    var out = [];
+    for (var i = 0; i < IDX.length && out.length < 14; i++) {
+      var e = IDX[i];
+      if (e.en.toLowerCase().indexOf(q) !== -1 || (e.bn && e.bn.indexOf(q) !== -1)) out.push(e);
+    }
+    if (!out.length) {
+      var d = document.createElement('div');
+      d.className = 'sr-empty';
+      d.innerHTML = '__EMPTY__';
+      list.appendChild(d);
+      return;
+    }
+    var frag = document.createDocumentFragment();
+    out.forEach(function (e) {
+      var a = document.createElement('a');
+      a.className = 'sr-item' + (e.t === 'p' ? ' sr-place' : '');
+      a.href = e.u;
+      var s1 = document.createElement('span');
+      s1.className = 'sr-en'; s1.textContent = e.en;
+      a.appendChild(s1);
+      if (e.bn) {
+        var s2 = document.createElement('span');
+        s2.className = 'sr-bn'; s2.textContent = e.bn;
+        a.appendChild(s2);
+      }
+      frag.appendChild(a);
+    });
+    list.appendChild(frag);
+  });
+})();
+</script>
+"""
+search_js = search_js.replace('__EMPTY__', lbl('No matching route or place', 'কোনো রুট বা জায়গা পাওয়া যায়নি'))
+
+search_card = f"""
+<section class="search-card" id="searchCard" aria-label="{esc('Search routes and places')}">
+<div class="sc-row">
+<svg class="icon sc-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+<input type="search" id="routeSearch" autocomplete="off"
+ placeholder="{esc('Search: Digha / দীঘা / Bankura / বাঁকুড়া ...')}" aria-label="{esc('Search routes and places')}">
+</div>
+<div class="sc-hint">{lbl(f'{len(route_meta)} routes', f'{bnum(len(route_meta))}টি রুট')} · {lbl('English and বাংলা both work', 'ইংরেজি ও বাংলা দুটোই চলবে')}</div>
+<div class="sr-list" id="srList" aria-live="polite"></div>
+{search_js}
+</section>"""
+
+all_list = (f'<details class="all-list"><summary><svg class="icon" viewBox="0 0 24 24" aria-hidden="true">'
+            f'<path d="M4 6h16M4 12h16M4 18h16"/></svg>'
+            + lbl('All routes A-Z', 'সব রুট A-Z')
+            + f' <span class="dist-count">{lbl(f"{len(route_meta)}", f"{bnum(len(route_meta))}")}</span></summary>{idx_rows}</details>')
+
+body = f"""
+<section class="route-hero">
 <p class="route-eyebrow">{lbl('All Routes', 'সব রুট')}</p>
 <h1 class="route-main"><span class="route-end"><span class="place">{lbl('West Bengal Bus Time Tables', 'পশ্চিমবঙ্গের বাস টাইম টেবিল')}</span></span></h1>
 <div class="route-dash"><span class="stamp">{lbl(f'Updated {LASTMOD}', f'আপডেট {LASTMOD}')}</span></div>
 </section>
 <div class="stats" role="list"><div class="stat" role="listitem"><div class="num">{len(route_meta)}</div><div class="label">{lbl('Routes', 'রুট')}</div></div><div class="stat" role="listitem"><div class="num">{len(BUSES)}</div><div class="label">{lbl('Buses', 'বাস')}</div></div></div>
-<section class="section"><h2 class="section-title">{lbl('Popular places', 'জনপ্রিয় জায়গা')}</h2><div class="chip-row">{places_links}</div></section>
-{idx_rows}'''
+{search_card}
+<section class="section" style="padding-top:0"><h2 class="section-title">{PIN}{lbl('Browse by District', 'জেলা অনুযায়ী দেখুন')}</h2></section>
+{districts_html}
+{all_list}
+"""
+
+
 schema = f'<script type="application/ld+json">{{"@context":"https://schema.org","@type":"WebSite","name":"BusJatri","url":"{BASE}"}}</script>'
 open(f'{OUT}/index.html', 'w').write(shell('West Bengal Bus Time Tables — All Routes | BusJatri',
     f'Complete bus timetables for {len(route_meta)} routes across West Bengal with timings, operators and stoppages.',
@@ -541,8 +718,22 @@ sm += f'<url><loc>{BASE}/</loc><lastmod>{LASTMOD}</lastmod><priority>1.0</priori
 for u in [f'{BASE}/bus-time-table/'] + sitemap:
     sm += f'<url><loc>{u}</loc><lastmod>{LASTMOD}</lastmod><priority>0.8</priority></url>\n'
 sm += '</urlset>'
+# search index (client-side search on the All Routes page)
+search = []
+for (o, t) in route_meta:
+    bo_, bt_2 = bn(o), bn(t)
+    search.append({'t': 'r', 'u': f'{slug(o)}-to-{slug(t)}.html',
+                   'en': f'{o} to {t}',
+                   'bn': f'{bo_} থেকে {bt_2}' if bo_ and bt_2 else ''})
+for p_ in hub_places:
+    bp_ = bn(p_)
+    search.append({'t': 'p', 'u': f'buses-from-{slug(p_)}.html',
+                   'en': f'Buses from {p_}',
+                   'bn': f'{bp_} থেকে বাস' if bp_ else ''})
+json.dump(search, open(f'{OUT}/search-index.json', 'w'), ensure_ascii=False, separators=(',', ':'))
+
 open('sitemap.xml', 'w').write(sm)
 open('robots.txt', 'w').write(f'User-agent: *\nAllow: /\n\nSitemap: {BASE}/sitemap.xml\n')
 
-print(json.dumps({'route_pages': len(route_meta), 'place_pages': len(top_places),
+print(json.dumps({'route_pages': len(route_meta), 'place_pages': len(hub_places),
                   'total_pages': len(written) + 1, 'sitemap_urls': len(sitemap) + 1}))
