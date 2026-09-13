@@ -1,1 +1,24 @@
-PLACEHOLDER_REPORT
+{
+  "filled": 0,
+  "fixed": 25,
+  "failed": [],
+  "kept": 0,
+  "railway_attached": 269,
+  "exact_name_matches": 80,
+  "low_skipped": 0,
+  "no_coord": 408,
+  "samples_fixed": [
+    {"name": "Garhbeta", "lat": 22.844562, "lon": 87.320972, "score": 145, "confidence": "high", "source": "rail-snap"},
+    {"name": "Beliatore", "lat": 23.315257, "lon": 87.222953, "score": 105, "confidence": "high", "source": "nominatim+open-meteo"},
+    {"name": "Khatra", "lat": 22.975325, "lon": 86.853961, "score": 118, "confidence": "high", "source": "nominatim+open-meteo"},
+    {"name": "Ranibandh", "lat": 22.863611, "lon": 86.781702, "score": 118, "confidence": "high", "source": "nominatim+open-meteo"},
+    {"name": "Bandwan", "lat": 22.78333, "lon": 86.5, "score": 90, "confidence": "high", "source": "open-meteo"},
+    {"name": "Barabazar", "lat": 23.0279, "lon": 86.36069, "score": 110, "confidence": "high", "source": "nominatim+open-meteo"},
+    {"name": "Simulia", "lat": 22.35778, "lon": 88.19222, "score": 75, "confidence": "high", "source": "open-meteo"},
+    {"name": "Daspur", "lat": 22.607579, "lon": 87.722846, "score": 108, "confidence": "high", "source": "nominatim+open-meteo"},
+    {"name": "Ghatal", "lat": 22.66453, "lon": 87.733857, "score": 108, "confidence": "high", "source": "nominatim+open-meteo"},
+    {"name": "Khirpai", "lat": 22.70996, "lon": 87.61768, "score": 110, "confidence": "high", "source": "nominatim+open-meteo"}
+  ],
+  "samples_filled": [],
+  "note": "Local run: --only-suspects --limit 25. Garhbeta pinned to railway GBA (0.0 km). Full busjatri_data nearest_station refresh pending Actions or full push."
+}
