@@ -1,0 +1,31 @@
+name: Expand SEO generator (one-shot)
+on:
+  workflow_dispatch:
+jobs:
+  expand:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Expand bootstrap if needed
+        run: |
+          if grep -q "Temporary bootstrap" scripts/gen_seo_pages.py; then
+            python3 scripts/gen_seo_pages.py
+            echo "Expanded to $(wc -c < scripts/gen_seo_pages.py) bytes"
+          else
+            echo "Already expanded"
+          fi
+          head -3 scripts/gen_seo_pages.py
+          grep -n "lbl(q_en, q_bn)" scripts/gen_seo_pages.py | head -3 || true
+      - name: Commit expanded file
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add scripts/gen_seo_pages.py
+          if git diff --staged --quiet; then
+            echo "No changes"
+          else
+            git commit -m "chore: expand gen_seo_pages.py to full source (FAQ fix)"
+            git push
+          fi
