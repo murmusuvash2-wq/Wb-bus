@@ -1,0 +1,104 @@
+name: Fix railway nearest (Garhbeta + name match)
+on:
+  workflow_dispatch:
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch script name-match + Garhbeta coords
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          p = Path('scripts/add_railway_stations.py')
+          src = p.read_text(encoding='utf-8')
+          # norm aliases
+          old = '''def norm(s):
+    return re.sub(r"[^a-z]", "", (s or "").lower())
+'''
+          new = '''def norm(s):
+    s = re.sub(r"[^a-z]", "", (s or "").lower())
+    aliases = {
+        "garbeta": "garhbeta",
+        "garhbeta": "garhbeta",
+        "midnapore": "medinipur",
+        "midnapur": "medinipur",
+        "medinipur": "medinipur",
+        "burdwan": "bardhaman",
+        "barddhaman": "bardhaman",
+        "tarakeswar": "tarkeshwar",
+        "tarkeswar": "tarkeshwar",
+    }
+    return aliases.get(s, s)
+'''
+          if old in src:
+              src = src.replace(old, new)
+          old_pick = '''def pick_railway(coord, stations, stop_name):
+    """Prefer exact name match within 15 km, else nearest station."""
+    best, bd = None, 1e9
+    exact, ed = None, 1e9
+    for st in stations:
+        d = haversine(coord, (st["lat"], st["lon"]))
+        if d < bd:
+            bd, best = d, st
+        if d < NAME_MATCH_STATION_KM and norm(st["name"]) == norm(stop_name) and d < ed:
+            ed, exact = d, st
+    pick = exact or best
+    km = ed if exact else bd
+    return pick, km, bool(exact)
+'''
+          new_pick = '''def pick_railway(coord, stations, stop_name):
+    """Prefer station with matching name (even if coords are off), else nearest."""
+    best, bd = None, 1e9
+    exact, ed = None, 1e9
+    nstop = norm(stop_name)
+    for st in stations:
+        d = haversine(coord, (st["lat"], st["lon"]))
+        if d < bd:
+            bd, best = d, st
+        nst = norm(st["name"])
+        if nst == nstop and d < ed:
+            ed, exact = d, st
+        elif (
+            exact is None
+            and len(nstop) >= 5
+            and (nstop in nst or nst in nstop)
+            and d < 25
+            and d < ed
+        ):
+            ed, exact = d, st
+    if exact is not None and ed <= 50:
+        return exact, ed, True
+    return best, bd, False
+'''
+          if old_pick in src:
+              src = src.replace(old_pick, new_pick)
+          p.write_text(src, encoding='utf-8')
+          print('script patched', 'garbeta' in src, 'ed <= 50' in src)
+
+          import json
+          c = json.loads(Path('data/stop_coords.json').read_text())
+          c['Garhbeta'] = [22.844562, 87.320972]
+          Path('data/stop_coords.json').write_text(json.dumps(c, ensure_ascii=False))
+          print('coords Garhbeta', c['Garhbeta'])
+          PY
+      - name: Re-attach railways
+        run: |
+          SKIP_GEOCODE=1 python3 scripts/add_railway_stations.py
+          python3 - <<'PY'
+          import json
+          d = json.load(open('data/busjatri_data.json'))
+          ns = (d.get('stops') or {}).get('Garhbeta', {}).get('nearest_station')
+          print('Garhbeta nearest_station =>', ns)
+          assert ns and str(ns.get('code','')).upper() == 'GBA', ns
+          PY
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/stop_coords.json data/busjatri_data.json scripts/add_railway_stations.py
+          git diff --staged --quiet || git commit -m "fix: Garhbeta → GARHBETA (GBA) not Salboni; name-first railway match"
+          git push
