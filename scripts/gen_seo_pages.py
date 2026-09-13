@@ -1,10 +1,2018 @@
 #!/usr/bin/env python3
-"""Temporary bootstrap — run once: python3 scripts/gen_seo_pages.py
-It will self-replace with the full SEO generator (FAQ-fixed)."""
-import base64, gzip, pathlib, sys
-B64 = """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"""
-path = pathlib.Path(__file__)
-path.write_bytes(gzip.decompress(base64.b64decode(B64)))
-print("Restored", path, "size", path.stat().st_size)
-print("Re-run: python3 scripts/gen_seo_pages.py")
-sys.exit(0)
+"""
+Generate static SEO pages for BusJatri.
+
+Generates:
+- bus-time-table/<from>-to-<to>.html
+- bus-time-table/buses-from-<place>.html
+- bus-time-table/index.html
+- sitemap.xml
+- robots.txt
+
+Data source:
+- data/busjatri_data.json
+"""
+
+import json
+import re
+import os
+import html
+from collections import Counter, defaultdict
+from datetime import datetime
+
+
+DATA = "data/busjatri_data.json"
+OUT = "bus-time-table"
+
+BASE = os.environ.get(
+    "SITE_BASE",
+    "https://wb-bus.vercel.app"
+).rstrip("/")
+
+SITE_NAME = "BusJatri"
+LASTMOD = datetime.now().strftime("%Y-%m-%d")
+CSS = "../css/style.css"
+
+
+# ------------------------------------------------------------
+# LOAD DATA
+# ------------------------------------------------------------
+
+with open(DATA, "r", encoding="utf-8") as f:
+    data = json.load(f)
+
+BUSES = data.get("buses", [])
+
+
+# ------------------------------------------------------------
+# BENGALI PLACE NAMES
+# ------------------------------------------------------------
+
+BN = {
+    "Bankura": "বাঁকুড়া",
+    "Digha": "দীঘা",
+    "Kolkata": "কলকাতা",
+    "Medinipur": "মেদিনীপুর",
+    "Bardhaman": "বর্ধমান",
+    "Burdwan": "বর্ধমান",
+    "Kharagpur": "খড়্গপুর",
+    "Siliguri": "শিলিগুড়ি",
+    "Cooch Behar": "কোচবিহার",
+    "Asansol": "আসানসোল",
+    "Durgapur": "দুর্গাপুর",
+    "Purulia": "পুরুলিয়া",
+    "Jhargram": "ঝাড়গ্রাম",
+    "Contai": "কাঁথি",
+    "Tamluk": "তমলুক",
+    "Bishnupur": "বিষ্ণুপুর",
+    "Khatra": "খাতড়া",
+    "Alipurduar": "আলিপুরদুয়ার",
+    "Dinhata": "দিনহাটা",
+    "Mathabhanga": "মাথাভাঙ্গা",
+    "Ghatal": "ঘাটাল",
+    "Nabadwip": "নবদ্বীপ",
+    "Arambagh": "আরামবাগ",
+    "Manbazar": "মানবাজার",
+    "Tarkeshwar": "তারকেশ্বর",
+    "Tarakeswar": "তারকেশ্বর",
+    "Mecheda": "মেছেদা",
+    "Haldia": "হলদিয়া",
+    "Baruipur": "বারুইপুর",
+    "Esplanade": "এসপ্ল্যানেড",
+    "Howrah": "হাওড়া",
+    "Ranaghat": "রানাঘাট",
+    "Krishnanagar": "কৃষ্ণনগর",
+    "Malda": "মালদা",
+    "Raiganj": "রায়গঞ্জ",
+    "Balurghat": "বালুরঘাট",
+    "Suri": "সিউড়ি",
+    "Sainthia": "সাঁইথিয়া",
+    "Bolpur": "বোলপুর",
+    "Kalna": "কালনা",
+    "Guskara": "গুসকরা",
+    "Katwa": "কাটোয়া",
+    "Bandel": "বান্দেল",
+    "Chandannagar": "চন্দননগর",
+    "Kalyani": "কল্যাণী",
+    "Barasat": "বারাসাত",
+    "Barrackpore": "ব্যারাকপুর",
+    "Dunlop": "ডানলপ",
+    "Garia": "গড়িয়া",
+    "Jangipur": "জঙ্গীপুর",
+    "Berhampore": "বহরমপুর",
+    "Berhampur": "বহরমপুর",
+    "Salar": "সালার",
+    "Kirnahar": "কীর্ণাহার",
+    "Ilam Bazar": "ইলাম বাজার",
+}
+
+
+# ------------------------------------------------------------
+# HELPERS
+# ------------------------------------------------------------
+
+def slug(value):
+    return re.sub(r"[^a-z0-9]+", "-", str(value or "").lower()).strip("-")
+
+
+def esc(value):
+    return html.escape(str(value or ""), quote=True)
+
+
+def clean_text(value):
+    return re.sub(r"\s+", " ", str(value or "")).strip()
+
+
+def bn(name):
+    return BN.get(clean_text(name))
+
+
+def bn_route(origin, destination):
+    bo = bn(origin)
+    bt = bn(destination)
+    return f"{bo} থেকে {bt}" if bo and bt else None
+
+
+def parse_time(value):
+    if not value:
+        return None
+
+    text = clean_text(value)
+
+    match = re.match(
+        r"^(\d{1,2}):(\d{2})\s*(AM|PM)?",
+        text,
+        re.I,
+    )
+
+    if not match:
+        return None
+
+    hour = int(match.group(1))
+    minute = int(match.group(2))
+    suffix = (match.group(3) or "").upper()
+
+    if minute > 59:
+        return None
+
+    if suffix == "PM" and hour < 12:
+        hour += 12
+
+    if suffix == "AM" and hour == 12:
+        hour = 0
+
+    if hour > 23:
+        return None
+
+    return hour * 60 + minute
+
+
+def format_time(minutes):
+    if minutes is None:
+        return "—"
+
+    hour = (minutes // 60) % 24
+    minute = minutes % 60
+    suffix = "AM" if hour < 12 else "PM"
+    hour12 = hour % 12 or 12
+
+    return f"{hour12}:{minute:02d} {suffix}"
+
+
+def fmt_duration(minutes):
+    if minutes is None:
+        return "—"
+
+    hours, mins = divmod(int(minutes), 60)
+
+    if hours:
+        return f"{hours}h {mins:02d}m"
+
+    return f"{mins}m"
+
+
+def calculate_duration(bus):
+    dep = parse_time(bus.get("departure_time"))
+    arr = parse_time(bus.get("arrival_time"))
+
+    if dep is None or arr is None:
+        return None
+
+    duration = arr - dep
+
+    if duration < 0:
+        duration += 1440
+
+    if duration <= 0 or duration >= 900:
+        return None
+
+    return duration
+
+
+def bus_stops(bus):
+    stops = bus.get("stoppages") or []
+    result = []
+
+    for stop in stops:
+        if isinstance(stop, dict):
+            name = clean_text(stop.get("name"))
+        else:
+            name = clean_text(stop)
+
+        if name and name not in result:
+            result.append(name)
+
+    return result
+
+
+def total_stops(bus):
+    explicit = bus.get("total_stoppages")
+
+    if explicit:
+        try:
+            return int(explicit)
+        except (TypeError, ValueError):
+            pass
+
+    return len(bus_stops(bus))
+
+
+def bus_type_label(value):
+    text = clean_text(value).lower()
+
+    if any(
+        key in text
+        for key in ("gov", "sbstc", "nbstc", "wbtc")
+    ):
+        return "Government"
+
+    if "ac" in text and "non" not in text:
+        return "AC"
+
+    if text:
+        return clean_text(value)
+
+    return "Bus"
+
+
+def operator_name(bus):
+    value = clean_text(bus.get("operator"))
+
+    if value in ("", "—", "Operator not listed") or not value:
+        return ""
+
+    return value
+
+
+# ------------------------------------------------------------
+# ROUTE INDEX
+# ------------------------------------------------------------
+
+def route_pairs():
+    routes = defaultdict(list)
+
+    for bus in BUSES:
+        origin = clean_text(bus.get("origin"))
+        destination = clean_text(bus.get("destination"))
+
+        if not origin or not destination:
+            continue
+
+        if origin == "—" or destination == "—":
+            continue
+
+        if origin == destination:
+            continue
+
+        routes[(origin, destination)].append(bus)
+
+    return routes
+
+
+FWD = route_pairs()
+
+groups = defaultdict(list)
+
+for (origin, destination), buses in FWD.items():
+    groups[tuple(sorted([origin, destination]))].extend(buses)
+
+groups = {
+    key: buses
+    for key, buses in groups.items()
+    if len(buses) >= 2
+}
+
+
+def buses_for(origin, destination):
+    return FWD.get((origin, destination), [])
+
+
+route_meta = {}
+
+for origin, destination in sorted(groups):
+    for o, t in (
+        (origin, destination),
+        (destination, origin),
+    ):
+        buses = buses_for(o, t)
+
+        if buses:
+            route_meta[(o, t)] = buses
+
+
+# ------------------------------------------------------------
+# HTML SHELL
+# ------------------------------------------------------------
+
+def header_html():
+    return """
+<header class="header">
+  <div class="container header-inner">
+
+    <a href="../index.html"
+       class="logo"
+       style="text-decoration:none;color:inherit">
+
+      <svg class="icon"
+           viewBox="0 0 24 24"
+           style="width:1.35rem;height:1.35rem;color:var(--amber)"
+           aria-hidden="true">
+
+        <path d="M4 16V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10"/>
+        <path d="M4 16h16"/>
+      </svg>
+
+      Bus<span>Jatri</span>
+    </a>
+
+    <nav style="
+      display:flex;
+      gap:14px;
+      align-items:center;
+      font-size:14px;
+    ">
+      <a href="../index.html">Home</a>
+      <a href="./">Routes</a>
+    </nav>
+
+  </div>
+</header>
+"""
+
+
+def footer_html():
+    return """
+<footer class="footer">
+  <div class="container">
+
+    <p>
+      <strong>BusJatri</strong> — West Bengal bus timetable
+      and route information.
+    </p>
+
+    <p style="font-size:13px;color:var(--ink-dim)">
+      Timings and routes can change. Please verify with the
+      operator or depot before travelling.
+      BusJatri is not affiliated with any transport corporation.
+    </p>
+
+  </div>
+</footer>
+"""
+
+
+def shell(title, description, canonical, body, schema=""):
+    return f"""<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>{esc(title)}</title>
+
+<meta name="description"
+      content="{esc(description)}">
+
+<link rel="canonical"
+      href="{esc(canonical)}">
+
+<meta property="og:title"
+      content="{esc(title)}">
+
+<meta property="og:description"
+      content="{esc(description)}">
+
+<meta property="og:type"
+      content="website">
+
+<meta property="og:url"
+      content="{esc(canonical)}">
+
+<meta name="theme-color"
+      content="#b8791f">
+
+<link rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b8791f' stroke-width='2'%3E%3Cpath d='M4 16V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10'/%3E%3Cpath d='M4 16h16'/%3E%3C/svg%3E">
+
+<link rel="stylesheet"
+      href="{CSS}">
+
+{schema}
+
+</head>
+
+<body>
+
+{header_html()}
+
+<main class="container"
+      style="
+        padding-top:24px;
+        padding-bottom:56px;
+        max-width:980px;
+      ">
+
+{body}
+
+</main>
+
+{footer_html()}
+
+</body>
+</html>
+"""
+
+
+# ------------------------------------------------------------
+# SCHEMA
+# ------------------------------------------------------------
+
+def jsonld(payload):
+    return (
+        '<script type="application/ld+json">'
+        + json.dumps(payload, ensure_ascii=False)
+        + "</script>"
+    )
+
+
+def faq_schema(faqs):
+    return jsonld({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": question,
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": answer,
+                },
+            }
+            for question, answer in faqs
+        ],
+    })
+
+
+def breadcrumb_schema(items):
+    return jsonld({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": index,
+                "name": name,
+                "item": (
+                    path
+                    if path.startswith("http")
+                    else f"{BASE}{path}"
+                ),
+            }
+            for index, (name, path) in enumerate(items, 1)
+        ],
+    })
+
+
+def website_schema():
+    return jsonld({
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": SITE_NAME,
+        "url": BASE,
+    })
+
+
+# ------------------------------------------------------------
+# ROUTE DATA
+# ------------------------------------------------------------
+
+def route_stats(buses):
+    times = [
+        parse_time(bus.get("departure_time"))
+        for bus in buses
+    ]
+    times = [time for time in times if time is not None]
+
+    first = min(times) if times else None
+    last = max(times) if times else None
+
+    durations = [
+        calculate_duration(bus)
+        for bus in buses
+    ]
+    durations = [
+        value for value in durations
+        if value is not None
+    ]
+
+    median_duration = None
+
+    if durations:
+        durations.sort()
+        median_duration = durations[len(durations) // 2]
+
+    operators = sorted({
+        operator_name(bus)
+        for bus in buses
+        if operator_name(bus)
+    })
+
+    return {
+        "first": first,
+        "last": last,
+        "duration": median_duration,
+        "operators": operators,
+    }
+
+
+def stoppage_summary(buses):
+    counter = Counter()
+
+    for bus in buses:
+        seen = set()
+
+        for stop in bus_stops(bus):
+            if stop in seen:
+                continue
+
+            seen.add(stop)
+            counter[stop] += 1
+
+    if not counter:
+        return []
+
+    threshold = max(2, len(buses) // 3)
+
+    return [
+        name
+        for name, count in counter.most_common(12)
+        if count >= threshold
+    ][:8]
+
+
+# ------------------------------------------------------------
+# ROUTE VISUAL
+# ------------------------------------------------------------
+
+def route_stops_html(buses):
+    sequences = []
+
+    for bus in buses:
+        stops = bus_stops(bus)
+
+        if stops:
+            sequences.append(stops)
+
+    if not sequences:
+        return ""
+
+    sequence_counter = Counter(
+        tuple(sequence)
+        for sequence in sequences
+    )
+
+    sequence, frequency = sequence_counter.most_common(1)[0]
+    sequence = list(sequence[:18])
+
+    items = []
+
+    for index, stop in enumerate(sequence):
+        last = index == len(sequence) - 1
+
+        connector = ""
+
+        if not last:
+            connector = """
+<span style="
+  width:2px;
+  height:32px;
+  background:var(--border);
+  display:block;
+"></span>
+"""
+
+        items.append(f"""
+<div style="
+  display:flex;
+  gap:14px;
+  align-items:flex-start;
+">
+
+  <div style="
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    min-width:18px;
+  ">
+
+    <span style="
+      width:12px;
+      height:12px;
+      border-radius:50%;
+      background:var(--amber);
+      border:3px solid var(--panel);
+      box-shadow:0 0 0 1px var(--border);
+      display:block;
+    "></span>
+
+    {connector}
+
+  </div>
+
+  <div style="
+    font-weight:600;
+    padding-bottom:8px;
+  ">
+    {esc(stop)}
+  </div>
+
+</div>
+""")
+
+    note = ""
+
+    if frequency < len(buses):
+        note = """
+<p style="
+  margin-top:10px;
+  color:var(--ink-dim);
+  font-size:13px;
+">
+  The stop sequence shown represents the most commonly
+  listed sequence in the available timetable data.
+</p>
+"""
+
+    return f"""
+<section style="margin-top:34px">
+
+  <h2 style="font-size:1.35rem;margin-bottom:8px">
+    Route &amp; Stoppages
+  </h2>
+
+  <p style="
+    color:var(--ink-dim);
+    margin-top:0;
+    margin-bottom:18px;
+  ">
+    Commonly listed stops between the two locations.
+  </p>
+
+  <div style="
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:20px;
+  ">
+    {''.join(items)}
+    {note}
+  </div>
+
+</section>
+"""
+
+
+# ------------------------------------------------------------
+# BUS CARD
+# ------------------------------------------------------------
+
+def bus_card(bus):
+    name = clean_text(
+        bus.get("bus_name")
+    ) or "Bus service"
+
+    departure = format_time(
+        parse_time(bus.get("departure_time"))
+    )
+
+    arrival = format_time(
+        parse_time(bus.get("arrival_time"))
+    )
+
+    bus_type = bus_type_label(
+        bus.get("bus_type")
+    )
+
+    operator = operator_name(bus)
+    stops = total_stops(bus)
+    duration = calculate_duration(bus)
+
+    duration_text = (
+        fmt_duration(duration)
+        if duration
+        else "Unavailable"
+    )
+
+    source_html = ""
+
+    detail_url = clean_text(
+        bus.get("detail_url")
+    )
+
+    if detail_url.startswith(("http://", "https://")):
+        pass  # source links hidden on site per project decision
+
+    return f"""
+<article style="
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:18px;
+  margin-bottom:12px;
+">
+
+  <div style="
+    display:flex;
+    justify-content:space-between;
+    gap:14px;
+    flex-wrap:wrap;
+    align-items:flex-start;
+  ">
+
+    <div>
+
+      <div style="
+        font-weight:750;
+        font-size:1.05rem;
+        margin-bottom:6px;
+      ">
+        {esc(name)}
+      </div>
+
+      <div style="
+        display:flex;
+        gap:8px;
+        flex-wrap:wrap;
+        align-items:center;
+        font-size:13px;
+        color:var(--ink-dim);
+      ">
+
+        <span>{esc(bus_type)}</span>
+        {f'<span>•</span><span>{esc(operator)}</span>' if operator else ''}
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div style="
+    display:grid;
+    grid-template-columns:
+      repeat(auto-fit,minmax(110px,1fr));
+    gap:10px;
+    margin-top:16px;
+  ">
+
+    <div>
+      <div style="
+        font-size:11px;
+        color:var(--ink-dim);
+        text-transform:uppercase;
+      ">
+        Departure
+      </div>
+
+      <strong style="font-size:1.05rem">
+        {esc(departure)}
+      </strong>
+    </div>
+
+    <div>
+      <div style="
+        font-size:11px;
+        color:var(--ink-dim);
+        text-transform:uppercase;
+      ">
+        Arrival
+      </div>
+
+      <strong style="font-size:1.05rem">
+        {esc(arrival)}
+      </strong>
+    </div>
+
+    <div>
+      <div style="
+        font-size:11px;
+        color:var(--ink-dim);
+        text-transform:uppercase;
+      ">
+        Duration
+      </div>
+
+      <strong style="font-size:1.05rem">
+        {esc(duration_text)}
+      </strong>
+    </div>
+
+    <div>
+      <div style="
+        font-size:11px;
+        color:var(--ink-dim);
+        text-transform:uppercase;
+      ">
+        Stops
+      </div>
+
+      <strong style="font-size:1.05rem">
+        {stops or "—"}
+      </strong>
+    </div>
+
+  </div>
+
+</article>
+"""
+
+
+# ------------------------------------------------------------
+# ROUTE PAGE
+# ------------------------------------------------------------
+
+def generate_route_page(origin, destination, buses):
+    filename = (
+        f"{slug(origin)}-to-{slug(destination)}.html"
+    )
+
+    route_bn = bn_route(
+        origin,
+        destination,
+    )
+
+    stats = route_stats(buses)
+
+    first = format_time(stats["first"])
+    last = format_time(stats["last"])
+    duration = stats["duration"]
+    operators = stats["operators"]
+
+    count = len(buses)
+
+    title = (
+        f"{origin} to {destination} Bus Time Table | বাসের সময়সূচী – {SITE_NAME}"
+    )
+
+    description = (
+        f"Find {origin} to {destination} bus timings, "
+        f"operators, stoppages and route information on "
+        f"{SITE_NAME}. See available departures and return "
+        f"route options."
+    )[:300]
+    if route_bn:
+        description = (
+            f"{description} {route_bn} বাসের সময়সূচী ও রুট তথ্য।"
+        )[:300]
+
+    canonical = (
+        f"{BASE}/bus-time-table/{filename}"
+    )
+
+    major_stops = stoppage_summary(buses)
+
+    operator_text = (
+        ", ".join(operators[:5])
+        if operators
+        else "multiple operators"
+    )
+
+    faqs = [
+        (
+            f"What is the first bus from {origin} to {destination}?",
+            (
+                f"The earliest listed departure from {origin} "
+                f"to {destination} is {first}. Timings can "
+                f"change, so verify before travelling."
+                if stats["first"] is not None
+                else
+                "The available timetable does not provide a "
+                "reliable first departure time for this route."
+            ),
+        ),
+        (
+            f"What is the last bus from {origin} to {destination}?",
+            (
+                f"The latest listed departure from {origin} "
+                f"to {destination} is {last}. Please verify "
+                f"the current schedule before travelling."
+                if stats["last"] is not None
+                else
+                "See the timetable above for available departures."
+            ),
+        ),
+        (
+            f"How many buses are listed from {origin} to {destination}?",
+            (
+                f"BusJatri currently lists {count} bus services "
+                f"from {origin} to {destination}. Listed "
+                f"operators include {operator_text}."
+            ),
+        ),
+    ]
+
+    if duration:
+        faqs.append(
+            (
+                f"How long does the bus take from "
+                f"{origin} to {destination}?",
+                (
+                    f"The typical listed journey duration is "
+                    f"approximately {fmt_duration(duration)}. "
+                    f"Actual travel time can vary because of "
+                    f"traffic, stops and operating conditions."
+                ),
+            )
+        )
+
+    if major_stops:
+        faqs.append(
+            (
+                f"Which major stops are on the {origin} to "
+                f"{destination} route?",
+                (
+                    "Commonly listed stops include "
+                    + ", ".join(major_stops[:6])
+                    + ". Stop sequences can differ between "
+                      "individual services."
+                ),
+            )
+        )
+
+    bengali_line = ""
+
+    if route_bn:
+        bengali_line = f"""
+<div style="
+  margin-top:8px;
+  color:var(--ink-dim);
+  font-size:15px;
+">
+  {esc(route_bn)} বাসের সময়সূচী ও রুট তথ্য
+</div>
+"""
+
+    duration_stat = ""
+
+    if duration:
+        duration_stat = f"""
+<div style="
+  flex:1 1 150px;
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:14px 16px;
+">
+
+  <div style="
+    font-size:12px;
+    color:var(--ink-dim);
+  ">
+    Approx. duration
+  </div>
+
+  <strong style="font-size:1.15rem">
+    {esc(fmt_duration(duration))}
+  </strong>
+
+</div>
+"""
+
+    hero = f"""
+<section style="
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:24px;
+  margin-bottom:24px;
+">
+
+  <div style="
+    font-size:13px;
+    color:var(--ink-dim);
+    margin-bottom:14px;
+  ">
+    <a href="../index.html">Home</a>
+    <span style="margin:0 5px">›</span>
+    <a href="./">Bus Timetable</a>
+    <span style="margin:0 5px">›</span>
+    {esc(origin)} → {esc(destination)}
+  </div>
+
+  <div style="
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    padding:6px 10px;
+    border-radius:999px;
+    background:var(--bg);
+    border:1px solid var(--border);
+    color:var(--ink-dim);
+    font-size:12px;
+    margin-bottom:12px;
+  ">
+    {count} listed bus services
+  </div>
+
+  <h1 style="
+    font-size:clamp(1.8rem,5vw,2.7rem);
+    line-height:1.15;
+    margin:0;
+  ">
+    {esc(origin)} → {esc(destination)}
+    <br>
+    <span style="
+      font-size:.72em;
+      color:var(--ink-dim);
+    ">
+      Bus Time Table · বাসের সময়সূচী
+    </span>
+  </h1>
+
+  {bengali_line}
+
+  <p style="
+    max-width:700px;
+    margin:16px 0 20px;
+    color:var(--ink-dim);
+    line-height:1.7;
+  ">
+    Check available bus departures, arrival times,
+    operators and commonly listed stoppages for travel
+    from {esc(origin)} to {esc(destination)}.
+  </p>
+
+  <a href="../index.html"
+     style="
+       display:inline-block;
+       padding:10px 15px;
+       border:1px solid var(--border);
+       border-radius:10px;
+       text-decoration:none;
+       font-weight:600;
+     ">
+    Search another route
+  </a>
+
+</section>
+"""
+
+    stats_html = f"""
+<section style="
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:32px;
+">
+
+  <div style="
+    flex:1 1 150px;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:14px 16px;
+  ">
+    <div style="font-size:12px;color:var(--ink-dim)">
+      Services
+    </div>
+    <strong style="font-size:1.15rem">{count}</strong>
+  </div>
+
+  <div style="
+    flex:1 1 150px;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:14px 16px;
+  ">
+    <div style="font-size:12px;color:var(--ink-dim)">
+      First listed
+    </div>
+    <strong style="font-size:1.15rem">
+      {esc(first)}
+    </strong>
+  </div>
+
+  <div style="
+    flex:1 1 150px;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:14px 16px;
+  ">
+    <div style="font-size:12px;color:var(--ink-dim)">
+      Last listed
+    </div>
+    <strong style="font-size:1.15rem">
+      {esc(last)}
+    </strong>
+  </div>
+
+  {duration_stat}
+
+</section>
+"""
+
+    sorted_buses = sorted(
+        buses,
+        key=lambda bus: (
+            parse_time(bus.get("departure_time"))
+            if parse_time(bus.get("departure_time")) is not None
+            else 9999
+        ),
+    )
+
+    timetable = f"""
+<section>
+
+  <h2 style="font-size:1.4rem;margin-bottom:6px">
+    {esc(origin)} to {esc(destination)} Bus Timings
+  </h2>
+
+  <p style="
+    margin:5px 0 14px;
+    color:var(--ink-dim);
+    font-size:14px;
+  ">
+    Available departures sorted by departure time.
+  </p>
+
+  {''.join(bus_card(bus) for bus in sorted_buses)}
+
+  <p style="
+    color:var(--ink-dim);
+    font-size:12.5px;
+    margin-top:10px;
+  ">
+    Timetable information is based on the available
+    BusJatri dataset. Schedules may change.
+  </p>
+
+</section>
+"""
+
+    major_section = ""
+
+    if major_stops:
+        chips = "".join(
+            f"""
+<span style="
+  display:inline-block;
+  padding:7px 10px;
+  margin:4px 4px 4px 0;
+  border:1px solid var(--border);
+  border-radius:999px;
+  font-size:13px;
+">
+  {esc(stop)}
+</span>
+"""
+            for stop in major_stops
+        )
+
+        major_section = f"""
+<section style="margin-top:34px">
+
+  <h2 style="font-size:1.35rem">
+    Major Stoppages
+  </h2>
+
+  <p style="color:var(--ink-dim);margin-top:0">
+    Frequently listed stops across the services on
+    this route.
+  </p>
+
+  <div>{chips}</div>
+
+</section>
+"""
+
+    operators_section = ""
+
+    if operators:
+        operators_section = f"""
+<section style="margin-top:34px">
+
+  <h2 style="font-size:1.35rem">
+    Bus Operators
+  </h2>
+
+  <p style="color:var(--ink-dim);margin-top:0">
+    Operators appearing in the available timetable data.
+  </p>
+
+  <ul>
+    {''.join(
+        f'<li style="margin-bottom:6px">{esc(operator)}</li>'
+        for operator in operators[:10]
+    )}
+  </ul>
+
+</section>
+"""
+
+    route_section = route_stops_html(buses)
+
+    journey_section = f"""
+<section style="margin-top:34px">
+
+  <h2 style="font-size:1.35rem">
+    Journey Information
+  </h2>
+
+  <div style="
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:18px;
+    line-height:1.75;
+  ">
+
+    <p style="margin-top:0">
+      <strong>Route:</strong>
+      {esc(origin)} → {esc(destination)}
+    </p>
+
+    <p>
+      <strong>Listed services:</strong>
+      {count}
+    </p>
+
+    <p>
+      <strong>First listed departure:</strong>
+      {esc(first)}
+    </p>
+
+    <p>
+      <strong>Last listed departure:</strong>
+      {esc(last)}
+    </p>
+
+    <p style="
+      margin-bottom:0;
+      color:var(--ink-dim);
+    ">
+      Actual journey time and service availability can
+      vary because of traffic, route changes, holidays
+      and operator schedules.
+    </p>
+
+  </div>
+
+</section>
+"""
+
+    faq_html = "".join(
+        f"""
+<details style="
+  border-bottom:1px solid var(--border);
+  padding:14px 0;
+">
+
+  <summary style="
+    cursor:pointer;
+    font-weight:650;
+  ">
+    {esc(question)}
+  </summary>
+
+  <p style="
+    margin:9px 0 0;
+    color:var(--ink-dim);
+    line-height:1.65;
+  ">
+    {esc(answer)}
+  </p>
+
+</details>
+"""
+        for question, answer in faqs
+    )
+
+    faq_section = f"""
+<section style="margin-top:36px">
+
+  <h2 style="font-size:1.35rem">
+    Frequently Asked Questions
+  </h2>
+
+  {faq_html}
+
+</section>
+"""
+
+    reverse_filename = (
+        f"{slug(destination)}-to-{slug(origin)}.html"
+    )
+
+    reverse_section = ""
+
+    if (destination, origin) in route_meta:
+        reverse_section = f"""
+<section style="margin-top:36px">
+
+  <h2 style="font-size:1.35rem">
+    Return Route
+  </h2>
+
+  <a href="{esc(reverse_filename)}"
+     style="
+       display:block;
+       background:var(--panel);
+       border:1px solid var(--border);
+       border-radius:14px;
+       padding:16px;
+       text-decoration:none;
+     ">
+
+    <strong>
+      {esc(destination)} → {esc(origin)}
+    </strong>
+
+    <div style="
+      color:var(--ink-dim);
+      font-size:13px;
+      margin-top:4px;
+    ">
+      View return-direction bus timetable →
+    </div>
+
+  </a>
+
+</section>
+"""
+
+    related = [
+        (o, t)
+        for (o, t) in route_meta
+        if o == origin and t != destination
+    ]
+
+    related = sorted(
+        related,
+        key=lambda pair: -len(route_meta[pair]),
+    )[:8]
+
+    related_section = ""
+
+    if related:
+        links = "".join(
+            f"""
+<a href="{slug(o)}-to-{slug(t)}.html"
+   style="
+     display:block;
+     padding:12px 14px;
+     border-bottom:1px solid var(--border);
+     text-decoration:none;
+   ">
+
+  {esc(o)} → {esc(t)}
+
+  <span style="
+    float:right;
+    color:var(--ink-dim);
+    font-size:13px;
+  ">
+    {len(route_meta[(o, t)])} buses
+  </span>
+
+</a>
+"""
+            for o, t in related
+        )
+
+        related_section = f"""
+<section style="margin-top:36px">
+
+  <h2 style="font-size:1.35rem">
+    More Bus Routes from {esc(origin)}
+  </h2>
+
+  <div style="
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:16px;
+    overflow:hidden;
+  ">
+    {links}
+  </div>
+
+</section>
+"""
+
+    body = (
+        hero
+        + stats_html
+        + timetable
+        + route_section
+        + major_section
+        + operators_section
+        + journey_section
+        + faq_section
+        + reverse_section
+        + related_section
+    )
+
+    schema = (
+        faq_schema(faqs)
+        + "\n"
+        + breadcrumb_schema([
+            ("Home", "/"),
+            ("Bus Timetable", "/bus-time-table/"),
+            (
+                f"{origin} to {destination}",
+                f"/bus-time-table/{filename}",
+            ),
+        ])
+    )
+
+    return filename, shell(
+        title,
+        description,
+        canonical,
+        body,
+        schema,
+    )
+
+
+# ------------------------------------------------------------
+# PLACE PAGE
+# ------------------------------------------------------------
+
+def generate_place_page(place, buses):
+    count = len(buses)
+    bengali = bn(place)
+
+    destinations = Counter(
+        clean_text(bus.get("destination"))
+        for bus in buses
+        if clean_text(bus.get("destination"))
+        and clean_text(bus.get("destination")) != "—"
+    )
+
+    top_destinations = destinations.most_common(15)
+
+    filename = f"buses-from-{slug(place)}.html"
+
+    title = (
+        f"Buses from {place} – Time Table & Routes | বাস সময়সূচী | {SITE_NAME}"
+    )
+
+    description = (
+        f"Find bus services from {place}, including "
+        f"departure times, destinations, operators and "
+        f"route information on {SITE_NAME}."
+    )
+
+    canonical = (
+        f"{BASE}/bus-time-table/{filename}"
+    )
+
+    bengali_line = ""
+
+    if bengali:
+        bengali_line = f"""
+<div style="color:var(--ink-dim);margin-top:6px">
+  {esc(bengali)} থেকে বাস
+</div>
+"""
+
+    route_links = []
+
+    for destination, number in top_destinations:
+        route = (place, destination)
+
+        if route not in route_meta:
+            continue
+
+        href = (
+            f"{slug(place)}-to-{slug(destination)}.html"
+        )
+
+        route_links.append(
+            f"""
+<a href="{href}"
+   style="
+     display:flex;
+     justify-content:space-between;
+     gap:12px;
+     padding:13px 14px;
+     border-bottom:1px solid var(--border);
+     text-decoration:none;
+   ">
+
+  <span>
+    {esc(place)} → {esc(destination)}
+  </span>
+
+  <span style="
+    color:var(--ink-dim);
+    font-size:13px;
+    white-space:nowrap;
+  ">
+    {number} buses
+  </span>
+
+</a>
+"""
+        )
+
+    if not route_links:
+        route_links = [
+            """
+<p style="padding:14px;color:var(--ink-dim)">
+  Route pages are not currently available for the
+  destinations listed in this dataset.
+</p>
+"""
+        ]
+
+    body = f"""
+<section style="
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:24px;
+  margin-bottom:24px;
+">
+
+  <div style="
+    font-size:13px;
+    color:var(--ink-dim);
+    margin-bottom:14px;
+  ">
+    <a href="../index.html">Home</a>
+    <span style="margin:0 5px">›</span>
+    <a href="./">Bus Timetable</a>
+    <span style="margin:0 5px">›</span>
+    Buses from {esc(place)}
+  </div>
+
+  <h1 style="
+    font-size:clamp(1.8rem,5vw,2.5rem);
+    line-height:1.2;
+    margin:0;
+  ">
+    Buses from {esc(place)}
+  </h1>
+
+  {bengali_line}
+
+  <p style="
+    color:var(--ink-dim);
+    line-height:1.7;
+    max-width:700px;
+    margin-bottom:0;
+  ">
+    Explore listed bus services departing from
+    {esc(place)}, including destinations, operators
+    and available timetable information.
+  </p>
+
+</section>
+
+<section style="
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:32px;
+">
+
+  <div style="
+    flex:1 1 170px;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:15px;
+  ">
+
+    <div style="font-size:12px;color:var(--ink-dim)">
+      Listed services
+    </div>
+
+    <strong style="font-size:1.25rem">
+      {count}
+    </strong>
+
+  </div>
+
+  <div style="
+    flex:1 1 170px;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:15px;
+  ">
+
+    <div style="font-size:12px;color:var(--ink-dim)">
+      Destinations
+    </div>
+
+    <strong style="font-size:1.25rem">
+      {len(destinations)}
+    </strong>
+
+  </div>
+
+</section>
+
+<section>
+
+  <h2 style="font-size:1.35rem">
+    Popular Bus Routes from {esc(place)}
+  </h2>
+
+  <div style="
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:16px;
+    overflow:hidden;
+  ">
+    {''.join(route_links)}
+  </div>
+
+</section>
+
+<section style="margin-top:34px">
+
+  <h2 style="font-size:1.35rem">
+    All Destinations from {esc(place)}
+  </h2>
+
+  <p style="
+    line-height:1.9;
+    color:var(--ink-dim);
+  ">
+    {" · ".join(
+        f"{esc(destination)} ({number})"
+        for destination, number in destinations.most_common()
+    )}
+  </p>
+
+</section>
+"""
+
+    schema = breadcrumb_schema([
+        ("Home", "/"),
+        ("Bus Timetable", "/bus-time-table/"),
+        (
+            f"Buses from {place}",
+            f"/bus-time-table/{filename}",
+        ),
+    ])
+
+    return filename, shell(
+        title,
+        description,
+        canonical,
+        body,
+        schema,
+    )
+
+
+# ------------------------------------------------------------
+# OUTPUT
+# ------------------------------------------------------------
+
+os.makedirs(OUT, exist_ok=True)
+
+sitemap_urls = []
+written = []
+
+
+# Route pages
+for (origin, destination), buses in sorted(route_meta.items()):
+
+    filename, content = generate_route_page(
+        origin,
+        destination,
+        buses,
+    )
+
+    path = os.path.join(
+        OUT,
+        filename,
+    )
+
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(content)
+
+    sitemap_urls.append(
+        f"{BASE}/bus-time-table/{filename}"
+    )
+
+    written.append(filename)
+
+
+# Place pages
+place_buses = defaultdict(list)
+
+for bus in BUSES:
+    origin = clean_text(bus.get("origin"))
+
+    if origin and origin != "—":
+        place_buses[origin].append(bus)
+
+
+top_places = sorted(
+    place_buses,
+    key=lambda place: -len(place_buses[place]),
+)[:30]
+
+
+for place in top_places:
+
+    filename, content = generate_place_page(
+        place,
+        place_buses[place],
+    )
+
+    path = os.path.join(
+        OUT,
+        filename,
+    )
+
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(content)
+
+    sitemap_urls.append(
+        f"{BASE}/bus-time-table/{filename}"
+    )
+
+    written.append(filename)
+
+
+# ------------------------------------------------------------
+# ROUTE INDEX
+# ------------------------------------------------------------
+
+by_origin = defaultdict(list)
+
+for origin, destination in route_meta:
+    by_origin[origin].append(
+        (origin, destination)
+    )
+
+
+origin_sections = []
+
+for origin, routes in sorted(
+    by_origin.items(),
+    key=lambda item: -len(item[1]),
+):
+
+    links = []
+
+    for o, t in sorted(routes):
+        filename = (
+            f"{slug(o)}-to-{slug(t)}.html"
+        )
+
+        links.append(
+            f"""
+<a href="{filename}"
+   style="
+     display:block;
+     padding:11px 13px;
+     border-bottom:1px solid var(--border);
+     text-decoration:none;
+   ">
+
+  <span>
+    {esc(o)} → {esc(t)}
+  </span>
+
+  <span style="
+    float:right;
+    color:var(--ink-dim);
+    font-size:13px;
+  ">
+    {len(route_meta[(o, t)])} buses
+  </span>
+
+</a>
+"""
+        )
+
+    origin_sections.append(
+        f"""
+<section style="margin-top:28px">
+
+  <h2 style="
+    font-size:1.2rem;
+    margin-bottom:10px;
+  ">
+    {esc(origin)}
+  </h2>
+
+  <div style="
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:15px;
+    overflow:hidden;
+  ">
+    {''.join(links)}
+  </div>
+
+</section>
+"""
+    )
+
+
+place_links = " · ".join(
+    f'<a href="buses-from-{slug(place)}.html">'
+    f'Buses from {esc(place)}</a>'
+    for place in top_places[:20]
+)
+
+
+index_body = f"""
+<section style="
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:24px;
+">
+
+  <div style="
+    font-size:13px;
+    color:var(--ink-dim);
+    margin-bottom:14px;
+  ">
+    <a href="../index.html">Home</a>
+    <span style="margin:0 5px">›</span>
+    Bus Timetable
+  </div>
+
+  <h1 style="
+    font-size:clamp(1.8rem,5vw,2.5rem);
+    line-height:1.2;
+    margin:0;
+  ">
+    West Bengal Bus Time Table · সব বাস সময়সূচী
+  </h1>
+
+  <p style="
+    max-width:720px;
+    color:var(--ink-dim);
+    line-height:1.7;
+    margin-bottom:0;
+  ">
+    Browse BusJatri route timetables for bus services
+    across West Bengal. Find departures, operators,
+    destinations and commonly listed stoppages.
+  </p>
+
+</section>
+
+<section style="margin-top:28px">
+
+  <h2 style="font-size:1.3rem">
+    Popular Starting Places
+  </h2>
+
+  <p style="
+    line-height:1.9;
+    color:var(--ink-dim);
+  ">
+    {place_links}
+  </p>
+
+</section>
+
+{''.join(origin_sections)}
+"""
+
+
+index_schema = (
+    website_schema()
+    + "\n"
+    + breadcrumb_schema([
+        ("Home", "/"),
+        ("Bus Timetable", "/bus-time-table/"),
+    ])
+)
+
+
+with open(
+    os.path.join(OUT, "index.html"),
+    "w",
+    encoding="utf-8",
+) as f:
+    f.write(
+        shell(
+            "West Bengal Bus Time Table – All Routes | সব বাস সময়সূচী | BusJatri",
+            (
+                "Browse West Bengal bus timetables with "
+                "route information, operators, departures "
+                "and stoppages on BusJatri."
+            ),
+            f"{BASE}/bus-time-table/",
+            index_body,
+            index_schema,
+        )
+    )
+
+
+# ------------------------------------------------------------
+# SITEMAP
+# ------------------------------------------------------------
+
+sitemap = [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    (
+        "<url>"
+        f"<loc>{BASE}/</loc>"
+        f"<lastmod>{LASTMOD}</lastmod>"
+        "<priority>1.0</priority>"
+        "</url>"
+    ),
+    (
+        "<url>"
+        f"<loc>{BASE}/bus-time-table/</loc>"
+        f"<lastmod>{LASTMOD}</lastmod>"
+        "<priority>0.9</priority>"
+        "</url>"
+    ),
+]
+
+
+for url in sitemap_urls:
+    sitemap.append(
+        "<url>"
+        f"<loc>{url}</loc>"
+        f"<lastmod>{LASTMOD}</lastmod>"
+        "<priority>0.7</priority>"
+        "</url>"
+    )
+
+
+sitemap.append("</urlset>")
+
+
+with open(
+    "sitemap.xml",
+    "w",
+    encoding="utf-8",
+) as f:
+    f.write("\n".join(sitemap))
+
+
+# ------------------------------------------------------------
+# ROBOTS
+# ------------------------------------------------------------
+
+with open(
+    "robots.txt",
+    "w",
+    encoding="utf-8",
+) as f:
+    f.write(
+        "User-agent: *\n"
+        "Allow: /\n\n"
+        f"Sitemap: {BASE}/sitemap.xml\n"
+    )
+
+
+# ------------------------------------------------------------
+# SUMMARY
+# ------------------------------------------------------------
+
+print(
+    json.dumps(
+        {
+            "route_pages": len(route_meta),
+            "place_pages": len(top_places),
+            "total_generated_pages": len(written) + 1,
+            "sitemap_urls": len(sitemap_urls) + 2,
+            "site_base": BASE,
+        },
+        ensure_ascii=False,
+        indent=2,
+    )
+)
