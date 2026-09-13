@@ -25,7 +25,7 @@ jobs:
           import json
           d = json.load(open('data/busjatri_data.json'))
           assert len(d['buses']) >= 3900, f"too few buses: {len(d['buses'])}"
-          assert len(set(b['id'] for b in d['buses'])) == len(d['buses']), "duplicate ids"
+          assert len(g(set(b['id'] for b in d['buses'])) == len(d['buses']), "duplicate ids"
           assert isinstance(d['routes'], dict) and isinstance(d['stops'], dict), "wrong index format"
           ns = sum(1 for v in d['stops'].values() if v.get('nearest_station'))
           print(f"OK: {len(d['buses'])} buses, {len(d['routes'])} routes, {len(d['stops'])} stops, {ns} with nearest_station")
@@ -35,7 +35,9 @@ jobs:
         run: python3 scripts/patches/apply_via.py
 
       - name: Apply UI polish patches
-        run: python3 scripts/patches/apply_ui_polish.py
+        run: |
+          python3 scripts/patches/apply_ui_polish.py
+          python3 scripts/patches/fix_places.py
 
       - name: Regenerate SEO pages
         run: |
@@ -53,6 +55,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "Data + via pages + UI polish: regenerate"
+            git commit -m "Data + via pages + UI polish + fix places: regenerate"
             git push
           fi
