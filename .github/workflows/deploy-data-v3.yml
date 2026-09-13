@@ -21,15 +21,7 @@ jobs:
       - name: Validate data
         run: |
           test -f data/busjatri_data.json
-          python3 - <<'EOF'
-          import json
-          d = json.load(open('data/busjatri_data.json'))
-          assert len(d['buses']) >= 3900, f"too few buses: {len(d['buses'])}"
-          assert len(g(set(b['id'] for b in d['buses'])) == len(d['buses']), "duplicate ids"
-          assert isinstance(d['routes'], dict) and isinstance(d['stops'], dict), "wrong index format"
-          ns = sum(1 for v in d['stops'].values() if v.get('nearest_station'))
-          print(f"OK: {len(d['buses'])} buses, {len(d['routes'])} routes, {len(d['stops'])} stops, {ns} with nearest_station")
-          EOF
+          python3 -c "import json; d=json.load(open('data/busjatri_data.json')); assert len(d['buses'])>=3900; assert len(set(b['id'] for b in d['buses']))==len(d['buses']); assert isinstance(d['routes'],dict) and isinstance(d['stops'],dict); print('OK:', len(d['buses']), 'buses', len(d['routes']), 'routes')"
 
       - name: Apply via system patches
         run: python3 scripts/patches/apply_via.py
