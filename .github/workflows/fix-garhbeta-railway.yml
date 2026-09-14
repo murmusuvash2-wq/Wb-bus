@@ -1,1 +1,111 @@
-bmFtZTogRml4IHJhaWx3YXkgbmVhcmVzdCAoR2FyaGJldGEgKyBuYW1lIG1hdGNoKQpvbjoKICB3b3JrZmxvd19kaXNwYXRjaDoKam9iczoKICBmaXg6CiAgICBydW5zLW9uOiB1YnVudHUtbGF0ZXN0CiAgICBwZXJtaXNzaW9uczoKICAgICAgY29udGVudHM6IHdyaXRlCiAgICBzdGVwczoKICAgICAgLSB1c2VzOiBhY3Rpb25zL2NoZWNrb3V0QHY0CiAgICAgIC0gbmFtZTogUGF0Y2ggc2NyaXB0IG5hbWUtbWF0Y2ggKyBHYXJoYmV0YSBjb29yZHMKICAgICAgICBydW46IHwKICAgICAgICAgIHB5dGhvbjMgLSA8PCdQWScKICAgICAgICAgIGZyb20gcGF0aGxpYiBpbXBvcnQgUGF0aAogICAgICAgICAgaW1wb3J0IHJlCiAgICAgICAgICBwID0gUGF0aCgnc2NyaXB0cy9hZGRfcmFpbHdheV9zdGF0aW9ucy5weScpCiAgICAgICAgICBzcmMgPSBwLnJlYWRfdGV4dChlbmNvZGluZz0ndXRmLTgnKQogICAgICAgICAgIyBub3JtIGFsaWFzZXMKICAgICAgICAgIG9sZCA9ICcnJ2RlZiBub3JtKHMpOgogICAgICAgICAgICAgIHJldHVybiByZS5zdWIociJbXmEtel0iLCAiIiwgKHMgb3IgIiIpLmxvd2VyKCkpCiAgICAgICAgICAnJycKICAgICAgICAgIG5ldyA9ICcnJ2RlZiBub3JtKHMpOgogICAgICAgICAgICAgIHMgPSByZS5zdWIociJbXmEtel0iLCAiIiwgKHMgb3IgIiIpLmxvd2VyKCkpCiAgICAgICAgICAgICAgYWxpYXNlcyA9IHsKICAgICAgICAgICAgICAgICAgImdhcmJldGEiOiAiZ2FyaGJldGEiLAogICAgICAgICAgICAgICAgICAiZ2FyaGJldGEiOiAiZ2FyaGJldGEiLAogICAgICAgICAgICAgICAgICAibWlkbmFwb3JlIjogIm1lZGluaXB1ciIsCiAgICAgICAgICAgICAgICAgICJtaWRuYXB1ciI6ICJtZWRpbmlwdXIiLAogICAgICAgICAgICAgICAgICAibWVkaW5pcHVyIjogIm1lZGluaXB1ciIsCiAgICAgICAgICAgICAgICAgICJidXJkd2FuIjogImJhcmRoYW1hbiIsCiAgICAgICAgICAgICAgICAgICJiYXJkZGhhbWFuIjogImJhcmRoYW1hbiIsCiAgICAgICAgICAgICAgICAgICJ0YXJha2Vzd2FyIjogInRhcmtlc2h3YXIiLAogICAgICAgICAgICAgICAgICAidGFya2Vzd2FyIjogInRhcmtlc2h3YXIiLAogICAgICAgICAgICAgIH0KICAgICAgICAgICAgICByZXR1cm4gYWxpYXNlcy5nZXQocywgcykKICAgICAgICAgICcnJwogICAgICAgICAgaWYgb2xkIGluIHNyYzoKICAgICAgICAgICAgICBzcmMgPSBzcmMucmVwbGFjZShvbGQsIG5ldykKICAgICAgICAgIG9sZF9waWNrID0gJycnZGVmIHBpY2tfcmFpbHdheShjb29yZCwgc3RhdGlvbnMsIHN0b3BfbmFtZSk6CiAgICAgICAgICAgICAgIiIiUHJlZmVyIGV4YWN0IG5hbWUgbWF0Y2ggd2l0aGluIDE1IGttLCBlbHNlIG5lYXJlc3Qgc3RhdGlvbi4iIiKICAgICAgICAgICAgICBiZXN0LCBiZCA9IE5vbmUsIDFlOQogICAgICAgICAgICAgIGV4YWN0LCBlZCA9IE5vbmUsIDFlOQogICAgICAgICAgICAgIGZvciBzdCBpbiBzdGF0aW9uczoKICAgICAgICAgICAgICAgICAgZCA9IGhhdmVyc2luZShjb29yZCwgKHN0WyJsYXQiXSwgc3RbImxvbiJdKSkKICAgICAgICAgICAgICAgICAgaWYgZCA8IGJkOgogICAgICAgICAgICAgICAgICAgICAgYmQsIGJlc3QgPSBkLCBzdAogICAgICAgICAgICAgICAgICBpZiBkIDwgTkFNRV9NQVRDSF9TVEFUSU9OX0tNIGFuZCBub3JtKHN0WyJuYW1lIl0pID09IG5vcm0oc3RvcF9uYW1lKSBhbmQgZCA8IGVkOgogICAgICAgICAgICAgICAgICAgICAgZWQsIGV4YWN0ID0gZCwgc3QKICAgICAgICAgICAgICBwaWNrID0gZXhhY3Qgb3IgYmVzdAogICAgICAgICAgICAgIGttID0gZWQgaWYgZXhhY3QgZWxzZSBiZAogICAgICAgICAgICAgIHJldHVybiBwaWNrLCBrbSwgYm9vbChleGFjdCkKICAgICAgICAgICcnJwogICAgICAgICAgbmV3X3BpY2sgPSAnJydkZWYgcGlja19yYWlsd2F5KGNvb3JkLCBzdGF0aW9ucywgc3RvcF9uYW1lKToKICAgICAgICAgICAgICAiIiJQcmVmZXIgc3RhdGlvbiB3aXRoIG1hdGNoaW5nIG5hbWUgKGV2ZW4gaWYgY29vcmRzIGFyZSBvZmYpLCBlbHNlIG5lYXJlc3QuIiIiCiAgICAgICAgICAgICAgYmVzdCwgYmQgPSBOb25lLCAxZTkKICAgICAgICAgICAgICBleGFjdCwgZWQgPSBOb25lLCAxZTkKICAgICAgICAgICAgICBuc3RvcCA9IG5vcm0oc3RvcF9uYW1lKQogICAgICAgICAgICAgIGZvciBzdCBpbiBzdGF0aW9uczoKICAgICAgICAgICAgICAgICAgZCA9IGhhdmVyc2luZShjb29yZCwgKHN0WyJsYXQiXSwgc3RbImxvbiJdKSkKICAgICAgICAgICAgICAgICAgaWYgZCA8IGJkOgogICAgICAgICAgICAgICAgICAgICAgYmQsIGJlc3QgPSBkLCBzdAogICAgICAgICAgICAgICAgICBuc3QgPSBub3JtKHN0WyJuYW1lIl0pCiAgICAgICAgICAgICAgICAgIGlmIG5zdCA9PSBuc3RvcCBhbmQgZCA8IGVkOgogICAgICAgICAgICAgICAgICAgICAgZWQsIGV4YWN0ID0gZCwgc3QKICAgICAgICAgICAgICAgICAgZWxpZiAoCiAgICAgICAgICAgICAgICAgICAgICBleGFjdCBpcyBOb25lCiAgICAgICAgICAgICAgICAgICAgICBhbmQgbGVuKG5zdG9wKSA+PSA1CiAgICAgICAgICAgICAgICAgICAgICBhbmQgKG5zdG9wIGluIG5zdCBvciBuc3QgaW4gbnN0b3ApCiAgICAgICAgICAgICAgICAgICAgICBhbmQgZCA8IDI1CiAgICAgICAgICAgICAgICAgICAgICBhbmQgZCA8IGVkCiAgICAgICAgICAgICAgICAgICk6CiAgICAgICAgICAgICAgICAgICAgIGVkLCBleGFjdCA9IGQsIHN0CiAgICAgICAgICAgICAgIGlmIGV4YWN0IGlzIG5vdCBOb25lIGFuZCBlZCA8PSA1MDoKICAgICAgICAgICAgICAgICAgcmV0dXJuIGV4YWN0LCBlZCwgVHJ1ZQogICAgICAgICAgICAgIHJldHVybiBiZXN0LCBiZCwgRmFsc2UKICAgICAgICAgICcnJwogICAgICAgICAgaWYgb2xkX3BpY2sgaW4gc3JjOgogICAgICAgICAgICAgIHNyYyA9IHNyYy5yZXBsYWNlKG9sZF9waWNrLCBuZXdfcGljaykKICAgICAgICAgIHAud3JpdGVfdGV4dChzcmMsIGVuY29kaW5nPSd1dGYtOCcpCiAgICAgICAgICBwcmludCgnc2NyaXB0IHBhdGNoZWQnLCAnZ2FyYmV0YScgaW4gc3JjLCAnZWQgPD0gNTAnIGluIHNyYykKCiAgICAgICAgICBpbXBvcnQganNvbgogICAgICAgICAgdHJ5OgogICAgICAgICAgICAgIGMgPSBqc29uLmxvYWRzKFBhdGgoJ2RhdGEvc3RvcF9jb29yZHMuanNvbicpLnJlYWRfdGV4dCgpKQogICAgICAgICAgICAgIGlmIG5vdCBpc2luc3RhbmNlKGMsIGRpY3QpOgogICAgICAgICAgICAgICAgICBjID0ge30KICAgICAgICAgIGV4Y2VwdCBFeGNlcHRpb246CiAgICAgICAgICAgICAgYyA9IHt9CiAgICAgICAgICBjWydHYXJoYmV0YSddID0gWzIyLjg0NDU2MiwgODcuMzIwOTcyXQogICAgICAgICAgUGF0aCgnZGF0YS9zdG9wX2Nvb3Jkcy5qc29uJykud3JpdGVfdGV4dChqc29uLmR1bXBzKGMsIGVuc3VyZV9hc2NpaT1GYWxzZSkpCiAgICAgICAgICBwcmludCgnY29vcmRzIEdhcmhiZXRhJywgY1snR2FyaGJldGEnXSkKCiAgICAgICAgICBQWQogICAgICAtIG5hbWU6IFJlLWF0dGFjaCByYWlsd2F5cwogICAgICAgIHJ1bjogfAogICAgICAgICAgU0tJUF9HRU9DT0RFPTEgcHl0aG9uMyBzY3JpcHRzL2FkZF9yYWlsd2F5X3N0YXRpb25zLnB5CiAgICAgICAgICBweXRob24zIC0gPDwnUFknCiAgICAgICAgICBpbXBvcnQganNvbgogICAgICAgICAgZCA9IGpzb24ubG9hZChvcGVuKCdkYXRhL2J1c2phdHJpX2RhdGEuanNvbicpKQogICAgICAgICAgbnMgPSAoZC5nZXQoJ3N0b3BzJykgb3Ige30pLmdldCgnR2FyaGJldGEnLCB7fSkuZ2V0KCduZWFyZXN0X3N0YXRpb24nKQogICAgICAgICAgcHJpbnQoJ0dhcmhiZXRhIG5lYXJlc3Rfc3RhdGlvbiA9PicsIG5zKQogICAgICAgICAgYXNzZXJ0IG5zIGFuZCBzdHIobnMuZ2V0KCdjb2RlJywnJykpLnVwcGVyKCkgPT0gJ0dCQScsIG5zCgogICAgICAgICAgUFkKICAgICAgLSBuYW1lOiBDb21taXQKICAgICAgICBydW46IHwKICAgICAgICAgIGdpdCBjb25maWcgdXNlci5uYW1lICJnaXRodWItYWN0aW9uc1tib3RdIgogICAgICAgICAgZ2l0IGNvbmZpZyB1c2VyLmVtYWlsICJnaXRodWItYWN0aW9uc1tib3RdQHVzZXJzLm5vcmVwbHkuZ2l0aHViLmNvbSIKICAgICAgICAgIGdpdCBhZGQgZGF0YS9zdG9wX2Nvb3Jkcy5qc29uIGRhdGEvYnVzamF0cmlfZGF0YS5qc29uIHNjcmlwdHMvYWRkX3JhaWx3YXlfc3RhdGlvbnMucHkKICAgICAgICAgIGdpdCBkaWZmIC0tc3RhZ2VkIC0tcXVpZXQgfHwgZ2l0IGNvbW1pdCAtbSAiZml4OiBHYXJoYmV0YSAtPiBHQVJIQkVUQSAoR0JBKSBub3QgU2FsYm9uaTsgbmFtZS1maXJzdCByYWlsd2F5IG1hdGNoIgogICAgICAgICAgZ2l0IHB1c2gK
+name: Fix railway nearest (Garhbeta + name match)
+on:
+  workflow_dispatch:
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch script name-match + Garhbeta coords
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          p = Path('scripts/add_railway_stations.py')
+          src = p.read_text(encoding='utf-8')
+          # norm aliases
+          old = '''def norm(s):
+              return re.sub(r"[^a-z]", "", (s or "").lower())
+          '''
+          new = '''def norm(s):
+              s = re.sub(r"[^a-z]", "", (s or "").lower())
+              aliases = {
+                  "garbeta": "garhbeta",
+                  "garhbeta": "garhbeta",
+                  "midnapore": "medinipur",
+                  "midnapur": "medinipur",
+                  "medinipur": "medinipur",
+                  "burdwan": "bardhaman",
+                  "barddhaman": "bardhaman",
+                  "tarakeswar": "tarkeshwar",
+                  "tarkeswar": "tarkeshwar",
+              }
+              return aliases.get(s, s)
+          '''
+          if old in src:
+              src = src.replace(old, new)
+          old_pick = '''def pick_railway(coord, stations, stop_name):
+              """Prefer exact name match within 15 km, else nearest station."""
+              best, bd = None, 1e9
+              exact, ed = None, 1e9
+              for st in stations:
+                  d = haversine(coord, (st["lat"], st["lon"]))
+                  if d < bd:
+                      bd, best = d, st
+                  if d < NAME_MATCH_STATION_KM and norm(st["name"]) == norm(stop_name) and d < ed:
+                      ed, exact = d, st
+              pick = exact or best
+              km = ed if exact else bd
+              return pick, km, bool(exact)
+          '''
+          new_pick = '''def pick_railway(coord, stations, stop_name):
+              """Prefer station with matching name (even if coords are off), else nearest."""
+              best, bd = None, 1e9
+              exact, ed = None, 1e9
+              nstop = norm(stop_name)
+              for st in stations:
+                  d = haversine(coord, (st["lat"], st["lon"]))
+                  if d < bd:
+                      bd, best = d, st
+                  nst = norm(st["name"])
+                  if nst == nstop and d < ed:
+                      ed, exact = d, st
+                  elif (
+                      exact is None
+                      and len(nstop) >= 5
+                      and (nstop in nst or nst in nstop)
+                      and d < 25
+                      and d < ed
+                  ):
+                      ed, exact = d, st
+              if exact is not None and ed <= 50:
+                  return exact, ed, True
+              return best, bd, False
+          '''
+          if old_pick in src:
+              src = src.replace(old_pick, new_pick)
+          p.write_text(src, encoding='utf-8')
+          print('script patched', 'garbeta' in src, 'ed <= 50' in src)
+
+          import json
+          try:
+              c = json.loads(Path('data/stop_coords.json').read_text())
+              if not isinstance(c, dict):
+                  c = {}
+          except Exception:
+              c = {}
+          c['Garhbeta'] = [22.844562, 87.320972]
+          Path('data/stop_coords.json').write_text(json.dumps(c, ensure_ascii=False))
+          print('coords Garhbeta', c['Garhbeta'])
+
+          PY
+      - name: Re-attach railways
+        run: |
+          SKIP_GEOCODE=1 python3 scripts/add_railway_stations.py
+          python3 - <<'PY'
+          import json
+          d = json.load(open('data/busjatri_data.json'))
+          ns = (d.get('stops') or {}).get('Garhbeta', {}).get('nearest_station')
+          print('Garhbeta nearest_station =>', ns)
+          assert ns and str(ns.get('code','')).upper() == 'GBA', ns
+
+          PY
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/stop_coords.json data/busjatri_data.json scripts/add_railway_stations.py
+          git diff --staged --quiet || git commit -m "fix: Garhbeta -> GARHBETA (GBA) not Salboni; name-first railway match"
+          git push
