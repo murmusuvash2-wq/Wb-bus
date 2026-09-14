@@ -12,8 +12,8 @@ function toggleThemeStatic() {
 function updateThemeIconStatic(theme) {
   var btn = document.getElementById('themeBtn');
   if (!btn) return;
-  btn.innerHTML = theme === 'dark+
-    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>'
+  btn.innerHTML = theme === 'dark'
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 13h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>'
     : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
 }
 (function () {
@@ -98,5 +98,97 @@ function submitReport() {
 function adminUpdate(btn, msg) {
   if (!btn) return;
   var old = btn.textContent;
-  btn.textContent = "') M=!;Ð€¬€‰ÁÁÉ½Ù•ƒŠrLˆì(€‰Ñ¸¹‘¥Í…‰±•€ôÑÉÕ”ì(€¥˜€¡É½Ü¤ìÉ½Ü¹ÍÑå±”¹½Á…¥Ñä€ô€ˆ¸ÔÔˆìô)ô((¼¨€´´´´´´´´´´‘M•¹Í”é½¹”…Ñ¥Ù…Ñ¥½¸€¡Ý¡•¸…‘ÌÍÉ¥ÁÐÁÉ•Í•¹Ð¤€´´´´´´´´´´€¨¼(¡™Õ¹Ñ¥½¸€ ¤ì(€¥˜€¡Ý¥¹‘½Ü¹…‘Í‰å½½±”¤ì(€€€‘½Õµ•¹Ð¹ÅÕ•ÉåM•±•Ñ½É±° ˆ¹…µé½¹”ˆ¤¹™½É… ¡™Õ¹Ñ¥½¸€¡è¤ìè¹±…ÍÍ1¥ÍÐ¹…‘ ‰…Ñ¥Ù”ˆ¤ìô¤ì(€ô)ô¤ ¤ì((¼¨€´´´´´´´´´´ÕÑ¼µ‘•Ñ•Ð±½…Ñ¥½¸½¸¡½µ”Á…”€´´´´´´´´´´€¨¼)‘½Õµ•¹Ð¹…‘‘Ù•¹Ñ1¥ÍÑ•¹•È ‰=5½¹Ñ•¹Ñ1½…‘•ˆ°™Õ¹Ñ¥½¸€ ¤ì(€¥˜€¡‘½Õµ•¹Ð¹ÅÕ•ÉåM•±•Ñ½È ˆ¹Í•…É µ™¥•±ˆ¤¤‘•Ñ•Ñ1½…Ñ¥½¸ ¤ì)ô¤ì((¼¨€ôôôô	ÕÌ•Ñ…¥°A…”I•‘•Í¥¸€¡½Ù•ÉÉ¥‘•Ì…ÁÀ¹©ÌÉ•¹‘•É	ÕÌ¤€ôôôô€¨¼)™Õ¹Ñ¥½¸É•¹‘•É	ÕÌ¡•°°¥¤ì(€¥€ô¥¹ÍÁ±¥Ð œüœ¥lÁtì(€½¹ÍÐˆ€ô	UMMm¥‘tì(€¥˜€ …ˆ¤ì(€€€•°¹¥¹¹•É!Q50€ô€œñ‘¥Ø±…ÍÌô‰½¹Ñ…¥¹•ÈˆÍÑå±”ô‰Á…‘‘¥¹œèÐÁÁàˆøñ‘¥Ø±…ÍÌô‰•µÁÑäµÍÑ…Ñ”ˆøœ€¬¥½¸ …±•ÉÐœ¤€¬€œñÀù	ÕÌ¹½Ð™½Õ¹¸ð½Àøð½‘¥Øøñ‘¥Ø±…ÍÌô‰‰…¬µ‰Ñ¸ˆ½¹±¥¬ô‰±½…Ñ¥½¸¹¡…Í õpœŒ½pœˆøœ€¬¥½¸ ¡•ÙÉ½¹1•™Ðœ¤€¬€œ	…¬ð½‘¥Øøð½‘¥Øøœì(€€€É•ÑÕÉ¸ì(€ô(€½¹ÍÐÍÑ½ÁÌ€ôˆ¹ÍÑ½ÁÁ…•}Á…•Ìñðˆ¹ÍÑ½ÁÁ…•Ìñðmtì(€½¹ÍÐ%9%Q%0€ô€àì(€½¹ÍÐÍ¡½Ý±°€ô±½…Ñ¥½¸¹¡…Í ¹¥¹±Õ‘•Ì ™Õ±°ôÄœ¤ì(€½¹ÍÐÙ¥Í¥‰±”€ôÍ¡½Ý±°€üÍÑ½ÁÌ€èÍÑ½ÁÌ¹Í±¥” À°%9%Q%0¤ì((€½¹ÍÐÍÑ½Á9…µ•Ì€ôÍÑ½ÁÌ¹µ…À¡Ì€ôøÌ¹¹…µ”¤¹™¥±Ñ•È¡	½½±•…¸¤ì(€±•Ðµ…ÁUÉ°€ô€œœì(€¥˜€¡ÍÑ½Á9…µ•Ì¹±•¹Ñ €øô€È¤ì(€€€½¹ÍÐ¼€ô•¹½‘•UI%½µÁ½¹•¹Ð¡ÍÑ½Á9…µ•ÍlÁt€¬€œ°]•ÍÐ	•¹…°œ¤ì(€€€½¹ÍÐÈ€ô•¹½‘•UI%½µÁ½¹•¹Ð¡ÍÑ½Á9…µ•ÍmÍÑ½Á9…µ•Ì¹±•¹Ñ €´€Åt€¬€œ°]•ÍÐ	•¹…°œ¤ì(€€€½¹ÍÐÝÀ€ôÍÑ½Á9…µ•Ì¹Í±¥” Ä°€´Ä¤¹Í±¥” À°€à¤¹µ…À¡¸€ôø•¹½‘•UI%½µÁ½¹•¹Ð¡¸€¬€œ°]•ÍÐ	•¹…°œ¤¤¹©½¥¸ ðœ¤ì(€€€µ…ÁUÉ°€ô€¡ÑÑÁÌè¼½ÝÝÜ¹½½±”¹½´½µ…ÁÌ½‘¥È¼ý…Á¤ôÄ™½É¥¥¸ôœ€¬¼€¬€œ™‘•ÍÑ¥¹…Ñ¥½¸ôœ€¬È€¬€¡ÝÀ€ü€œ™Ý…åÁ½¥¹ÑÌôœ€¬ÝÀ€è€œœ¤€¬€œ™ÑÉ…Ù•±µ½‘”õ‘É¥Ù¥¹œœì(€ô•±Í”¥˜€¡ˆ¹½É¥¥¸€˜˜ˆ¹‘•ÍÑ¥¹…Ñ¥½¸¤ì(€€€µ…ÁUÉ°€ô€¡ÑÑÁÌè¼½ÝÝÜ¹½½±”¹½´½µ…ÁÌ½‘¥È¼ý…Á¤ôÄ™½É¥¥¸ôœ€¬•¹½‘•UI%½µÁ½¹•¹Ð¡ˆ¹½É¥¥¸€¬€œ°]•ÍÐ	•¹…°œ¤€¬€œ™‘•ÍÑ¥¹…Ñ¥½¸ôœ€¬•¹½‘•UI%½µÁ½¹•¹Ð¡ˆ¹‘•ÍÑ¥¹…Ñ¥½¸€¬€œ°]•ÍÐ	•¹…°œ¤€¬€œ™ÑÉ…Ù•±µ½‘”õ‘É¥Ù¥¹œœì(€ô((€½¹ÍÐÍÑ½Á!Q50€ôÙ¥Í¥‰±”¹µ…À¡™Õ¹Ñ¥½¸¡Ì°¤¤ì(€€€Ù…È¥Í¹€ô¤€ôôô€Àñð¤€ôôôÙ¥Í¥‰±”¹±•¹Ñ €´€Äì(€€€Ù…ÈÍÑ¸€ô€¡MQ=AMmÌ¹¹…µ•tñðíô¤¹¹•…É•ÍÑ}ÍÑ…Ñ¥½¸ì(€€€Ù…ÈÍÑ¹	…‘”€ôÍÑ¸€ü€œñÍÁ…¸±…ÍÌô‰É…¥°ˆùI…¥±Ý…äè€œ€¬•ÍŒ¡ÍÑ¸¹¹…µ”¤€¬€¡ÍÑ¸¹½‘”€ü€œ€ œ€¬•ÍŒ¡ÍÑ¸¹½‘”¤€¬€œ¤œ€è€œœ¤€¬€œƒ
-Üøœ€¬ÍÑ¸¹­´€¬€œ­´ð½ÍÁ…¸øœ€è€œœì(€€€Ù…ÈÕÁP€ôÌ¹ÕÁ}Ñ¥µ”€ü€œñÍÁ…¸øœ€¬•ÍŒ¡Ì¹ÕÁ}Ñ¥µ”¤€¬€œð½ÍÁ…¸øœ€è€œñÍÁ…¸±…ÍÌô‰¹¼µÐˆûŠPð½ÍÁ…¸øœì(€€€Ù…È‘¹P€ôÌ¹‘½Ý¹}Ñ¥µ”€ü€œñÍÁ…¸øœ€¬•ÍŒ¡Ì¹‘½Ý¹}Ñ¥µ”¤€¬€œð½ÍÁ…¸øœ€è€œñÍÁ…¸±…ÍÌô‰¹¼µÐˆûŠPð½ÍÁ…¸øœì(€€€É•ÑÕÉ¸€œñ‘¥Ø±…ÍÌô‰ÍÑ½ÀµÉ½Ü€œ€¬€¡¥Í¹€ü€•¹œ€è€œœ¤€¬€œˆøñÍÁ…¸±…ÍÌô‰ÍÑ½Àµ‘½Ðˆøð½ÍÁ…¸øñÍÁ…¸±…ÍÌô‰ÍÑ½Àµ¹…µ”ˆøœ€¬•ÍŒ¡Á¸¡Ì¹¹…µ”¤¤€¬ÍÑ¹	…‘”€¬€œð½ÍÁ…¸øñÍÁ…¸±…ÍÌô‰ÍÑ½ÀµÑ¥µ•Ìˆøœ€¬ÕÁP€¬‘¹P€¬€œð½ÍÁ…¸øð½‘¥Øøœì(€ô¤¹©½¥¸ œœ¤ì((€Ù…ÈÍ¡½Ý5½É•	Ñ¸€ô€œœì(€¥˜€ …Í¡½Ý±°€˜˜ÍÑ½ÁÌ¹±•¹Ñ €ø%9%Q%0¤ì(€€€Í¡½Ý5½É•	Ñ¸€ô€œñ‰ÕÑÑ½¸±…ÍÌô‰Í¡½Üµ…±°ˆ½¹±¥¬ô‰±½…Ñ¥½¸¹¡…Í õpœŒ½‰ÕÌ¼œ€¬•¹½‘•UI%½µÁ½¹•¹Ð¡¥¤€¬€œý™Õ±°ôÅpœˆùM¡½Ü…±°€œ€¬ÍÑ½ÁÌ¹±•¹Ñ €¬€œÍÑ½ÁÌƒŠLð½‰ÕÑÑ½¸øœì(€ô•±Í”¥˜€¡Í¡½Ý±°€˜˜ÍÑ½ÁÌ¹±•¹Ñ €ø%9%Q%0¤ì(€€€Í¡½Ý5½É•	Ñ¸€ô€œñ‰ÅÑÑ½¸±…ÍÌô‰Í¡½Üµ…±°ˆ½¹±¥¬ô‰±½…Ñ¥½¸¹¡…Í õpœŒ½‰ÕÌ¼œ€¬•¹½‘•UI%½µÁ½¹•¹Ð¡¥¤€¬€pœˆùM¡½Ü±•ÍÌƒŠ@ð½‰ÕÑÑ½¸øœì(€ô((€•°¹¥¹¹•É!Q50€ô(€€€€œñ‘¥Ø±…ÍÌô‰½¹Ñ…¥¹•ÈˆÍÑå±”ô‰Á…‘‘¥¹œµÑ½ÀèÈÉÁàíÁ…‘‘¥¹œµ‰½ÑÑ½´èÐÁÁàˆøœ€¬(€€€€€€œñ‘¥Ø±…ÍÌô‰‰…¬µ‰Ñ¸ˆ½¹±¥¬ô‰¡¥ÍÑ½Éä¹±•¹Ñ øÄý¡¥ÍÑ½Éä¹‰…¬ ¤é±½…Ñ¥½¸¹¡…Í õpœŒ½pœˆøœ€¬¥½¸ ¡•ÙÉ½¹1•™Ðœ¤€¬€œ€ñÍÁ…¸±…ÍÌô‰±…‰•°µ•¸ˆù	…¬ð½ÍÁ…¸øð½‘¥Øøœ€¬(€€€€€€œñ‘¥Ø±…ÍÌô‰‰ÕÌµ¡•…ˆøœ€¬(€€€€€€€€œñ Èøœ€¬•ÍŒ¡ˆ¹‰ÕÍ}¹…µ”¤€¬€¡ˆ¹É•}¹¼€ü€œ€ñÍÁ…¸±…ÍÌô‰É•œˆøœ€¬•ÍŒ¡ˆ¹É•}¹¼¤€¬€œð½ÍÁ…¸øœ€è€œœ¤€¬€œ€œ€¬‰ÕÍQåÁ•	…‘”¡ˆ¹‰ÕÍ}ÑåÁ”¤€¬€œð½ Èøœ€¬(€€€€€€€€œñ‘¥Ø±…ÍÌô‰É½ÕÑ”µ±¥¹”ˆøœ€¬¥½¸ Ý…Ù•Ìœ¤€¬€œ€œ€¬•ÍŒ¡Á¸¡ˆ¹½É¥¥¸¤¤€¬€œƒŠ€œ€¬•ÍŒ¡Á¸¡ˆ¹‘•ÍÑ¥¹…Ñ¥½¸¤¤€¬€œð½‘¥Øøœ€¬(€€€€€€€€œñ‘¥Ø±…ÍÌô‰¥¹™¼µÉ¥ˆøœ€¬(€€€€€€€€€€¡ˆ¹‘•Á…ÉÑÕÉ•}Ñ¥µ”€ü€œñ‘¥Ø±…ÍÌô‰¥¹™¼µ¥Ñ•´ˆøñ‘¥Ø±…ÍÌô‰±‰°ˆù•Á…ÉÑÕÉ”ð½‘¥Øøñ‘¥Ø±…ÍÌô‰Ù…°ˆøœ€¬•ÍŒ¡ˆ¹‘•Á…ÉÑÕÉ•}Ñ¥µ”¤€¬€œð½‘¥Øøð½‘¥Øøœ€è€œœ¤€¬(€€€€€€€€€€¡ˆ¹…ÉÉ¥Ù…±}Ñ¥µ”€ü€œð„´´‘½½‘±•€´´øñ‘¥Ø±…ÍÌô‰¥¹™¼µ¥Ñ•´ˆøñ‘¥Ø±…ÍÌô‰±‰°ˆùÉÉ¥Ù…°ð½‘¥Øøñ‘¥Ø±…ÍÌô‰Ù…°ˆøœ€¬•ÍŒ¡ˆ¹…ÉÉ¥Ù…±}Ñ¥µ”¤€¬€œð½‘¥Øøð½‘¥Øøœ€è€œœ¤€¬(€€€€€€€€€€œñ‘¥Ø±…ÍÌô‰¥¹™¼µ¥Ñ•´ˆøñ‘¥Ø±…ÍÌô‰±‰°ˆùMÑ½ÁÌð½‘¥Øøñ‘¥Ø±…ÍÌô‰Ù…°ˆøœ€¬€¡ÍÑ½ÁÌ¹±•¹Ñ ñðˆ¹Ñ½Ñ…±}ÍÑ½ÁÁ…•}Á…•Ìñð€À¤€¬€œð½‘¥Øøð½‘¥Øøœ€¬(€€€€€€€€€€¡ˆ¹™…É”€ü€œñ‘¥Ø±…ÍÌô‰¥¹™¼µ¥Ñ•´ˆøñ‘¥Ø±…ÍÌô‰±‰°ˆù…É”ð½‘¥Øøñ‘¥Ø±…ÍÌô‰Ù…°ˆøœ€¬•ÍŒ¡ˆ¹™…É”¤€¬€œð½‘¥Øøð½‘¥Øøœ€è€œœ¤€¬(€€€€€€€€€€¡ˆ¹½Á•É…Ñ½È€ü€œñ‘¥Ø±…ÍÌô‰¥¹™¼µ¥Ñ•´ˆøñ‘¥Ø±…ÍÌô‰±‰°‰=Á•É…Ñ½Èð½‘¥Øøñ‘¥Ø±…ÍÌô‰Ù…°ˆøœ€¬•ÍŒ¡ˆ¹½Á•É…Ñ½È¤€¬€œð½‘¥Øøð½‘¥Øøœ€è€œœ¤€¬(€€€€€€€€€€¡ˆ¹‘•Á½Ñ}¹…µ”€ü€œð„´´‘½½‘±•€´´øñ‘¥Ø±…ÍÌô‰¥¹™¼µ¥Ñ•´ˆøñ‘¥Ø±…ÍÌô‰±‰°ˆù•Á½Ðð½‘¥Øøñ‘¥Ø±…ÍÌô‰Ù…°ˆøœ€¬•ÍŒ¡ˆ¹‘•Á½Ñ}¹…µ”¤€¬€œð½‘¥Øøð½‘¥Øøœ€è€œœ¤€¬(€€€€€€€€€€¡ˆ¹½¹Ñ…Ñ}¹Õµ‰•È€˜˜ˆ¹½¹Ñ…Ñ}¹Õµ‰•È€„ôô€9½ÐÙ…¥±…‰±”€„œ€ü€œñ‘¥Ø±…ÍÌô‰¥¹™¼µ¥Ñ•´ˆøñ‘¥Ø±…ÍÌô‰±‰°ˆù½¹Ñ…Ðð½‘¥Øøñ‘¥Ø±…ÍÌô‰Ù…°ˆøñ„¡É•˜ô‰Ñ•°èœ€¬•ÍŒ¡ˆ¹½¹Ñ…Ñ}¹Õµ‰•È¤€¬€œˆøœ€¬•ÍŒ¡ˆ¹½¹Ñ…Ñ}¹Õµ‰•È¤€¬€œð½„øð½‘¥Øøð½‘¥Øøœ€è€œœ¤€¬(€€€€€€€€œð½‘¥Øøœ€¬(€€€€€€€œð½‘¥Øøœ€¬(€€€€€€€œñ‘¥Ø±…ÍÌô‰Ý„µÉ½Üˆøœ€¬(€€€€€€€€¡µ…ÁUÉ°€ü€œñ„±…ÍÌô‰µ…Àµ‰Ñ¸ˆ¡É•˜ôˆœ€¬µ…ÁUÉ°€¬€œˆÑ…É•Ðô‰}‰±…¹¬ˆÉ•°ô‰¹½½Á•¹•Èˆøœ€¬¥½¸ µ…Àœ¤€¬€œ€ñÍÁ…¸±…ÍÌô‰±…‰•°µ•¸ˆùI½ÕÑ”½¸½½±”5…ÁÌð½ÍÁ…¸øð½„øœ€è€œœ¤€¬(€€€€€€€€€œñ„±…ÍÌô‰Ý„µ‰Ñ¸ˆ¡É•˜ô‰©…Ù…ÍÉ¥ÁÐéÙ½¥ À¤ˆ½¹±¥¬ô‰Í¡…É•]¡…ÑÍÁÀ¡Ñ¡¥Ì¹‘…Ñ…Í•Ð¤ˆ‘…Ñ„µ‰ÕÌôˆœ€¬•ÍŒ¡ˆ¹‰ÕÍ}¹…µ”¤€¬€œˆ‘…Ñ„µ½Éœôˆœ€¬•ÍŒ¡Á¸¡ˆ¹½É¥¥¸¤¤€¬€œˆ‘…Ñ„µ‘•ÍÐôˆœ€¬•ÍŒ¡Á¸¡ˆ¹‘•ÍÑ¥¹…Ñ¥½¸¤¤€¬€œˆ‘…Ñ„µ‘•Àôˆœ€¬•ÍŒ¡ˆ¹‘•Á…ÉÑÕÉ•}Ñ¥µ•ñðœœ¤€¬€œˆ‘…Ñ„µÍÑ½ÁÌôˆœ€¬€¡ÍÑ½ÁÌ¹±•¹Ñ¡ñðÀ¤€¬€œˆøœ€¬¥½¸ Ý…Ù•Ìœ¤€¬€œ€ñÍÁ…¸±…ÍÌô‰±…‰•°µ•¸ˆùM¡…É”½¸]¡…ÑÍÁÀð½ÍÁ…¸øð½„øœ€¬(€€€€€€€œð½‘¥Øøœ€¬(€€€€€€€¡ˆ¹‘•ÍÑ¥¹…Ñ¥½¸€˜˜ˆ¹‘•ÍÑ¥¹…Ñ¥½¸€„ôô€ŸŠPœ€ü€œñ‘¥Ø±…ÍÌô‰Ý•…Ñ¡•Èµ…Éˆ¥ô‰Ý•…Ñ¡•É…Éˆ‘…Ñ„µ‘•ÍÐôˆœ€¬•ÍŒ¡ˆ¹‘•ÍÑ¥¹…Ñ¥½¸¤€¬€œˆøñ‘¥Ø±…ÍÌô‰±‰°ˆù]•…Ñ¡•È¥¸€œ€¬•ÍŒ¡ˆ¹‘•ÍÑ¥¹…Ñ¥½¸¤€¬€œ€¡¹½Ü¤ð½‘¥Øøñ‘¥Ø±…ÍÌô‰Ù…°ˆ¥ô‰Ý•…Ñ¡•ÉY…°ˆù1½…‘¥¹ŸŠ˜ð½‘¥Øøð½‘¥Øøœ€è€œœ¤€¬(€€€€€€€¡ÍÑ½ÁÌ¹±•¹Ñ €ü€œñ Ì±…ÍÌô‰Í•Ñ¥½¸µÑ¥Ñ±”ˆÍÑå±”ô‰µ…É¥¸µÑ½ÀèÈÉÁàˆøœ€¬¥½¸ Ý…Ù•Ìœ¤€¬€œ€ñÍÁ…¸±…ÍÌô‰±…‰•°µ•¸ˆùI½ÕÑ”Q¥µ•Ñ…‰±”ð½ÍÁ…¸øð½ Ìøñ‘¥Ø±…ÍÌô‰ÍÑ½Àµ±¥ÍÐˆøœ€¬ÍÑ½Á!Q50€¬Í¡½Ý5½É•	Ñ¸€¬€œð½‘¥Øøœ€è€œñÀÍÑå±”ô‰½±½ÈéÙ…È ´µ¥¹¬µ‘¥´¤íµ…É¥¸µÑ½ÀèÄÉÁàˆùMÑ½ÁÁ…”‘•Ñ…¥±Ì¹½Ð…Ù…¥±…‰±”¸ð½Àøœ¤€¬(€€€€€€€œñÀÍÑå±”ô‰™½¹ÐµÍ¥é”èÄÉÁàí½±½ÈéÙ…È ´µ¥¹¬µ‘¥´¤íµ…É¥¸èÄÁÁà€À€Àˆù…Ñ„ÕÁ‘…Ñ•è€œ€¬•ÍŒ ¡Q¹µ•Ñ„ñðíô¤¹±…ÍÑ}ÕÁ‘…Ñ•ñð€œœ¤€¬€œð½Àøœ€¬(€€€€œð½‘¥Øøœì(€±½…‘]Õ…Ñ¡•È ¤ì)ô(
+  btn.textContent = "âœ“ Saved";
+  btn.disabled = true;
+  setTimeout(function () { btn.textContent = old; btn.disabled = false; }, 1600);
+  if (msg) {
+    var bar = document.getElementById("adminMsg");
+    if (bar) { bar.textContent = msg; bar.style.display = "block"; setTimeout(function () { bar.style.display = "none"; }, 2600); }
+  }
+}
+function approveReport(btn) {
+  if (!btn) return;
+  var row = btn.closest(".admin-report-row");
+  btn.textContent = "Approved âœ“";
+  btn.disabled = true;
+  if (row) { row.style.opacity = ".55"; }
+}
+
+/* ---------- AdSense zone activation (when ads script present) ---------- */
+(function () {
+  if (window.adsbygoogle) {
+    document.querySelectorAll(".ad-zone").forEach(function (z) { z.classList.add("active"); });
+  }
+})();
+
+/* ---------- Auto-detect location on home page ---------- */
+document.addEventListener("DOMContentLoaded", function () {
+  if (document.querySelector(".search-field")) detectLocation();
+});
+
+/* ==== Bus Detail Page Redesign (overrides app.js renderBus) ==== */
+function renderBus(el, id) {
+  id = id.split('?')[0];
+  const b = BUSES[id];
+  if (!b) {
+    el.innerHTML = '<div class="container" style="padding:40px"><div class="empty-state">' + icon('alert') + '<p>Bus not found.</p></div><div class="back-btn" onclick="location.hash=\'#/\'">' + icon('chevronLeft') + ' Back</div></div>';
+    return;
+  }
+  const stops = b.stoppage_pages || b.stoppages || [];
+  const INITIAL = 8;
+  const showAll = location.hash.includes('full=1');
+  const visible = showAll ? stops : stops.slice(0, INITIAL);
+
+  const stopNames = stops.map(s => s.name).filter(Boolean);
+  let mapUrl = '';
+  if (stopNames.length >= 2) {
+    const o = encodeURIComponent(stopNames[0] + ', West Bengal');
+    const d2 = encodeURIComponent(stopNames[stopNames.length - 1] + ', West Bengal');
+    const wp = stopNames.slice(1, -1).slice(0, 8).map(n => encodeURIComponent(n + ', West Bengal')).join('|');
+    mapUrl = 'https://www.google.com/maps/dir/?api=1&origin=' + o + '&destination=' + d2 + (wp ? '&waypoints=' + wp : '') + '&travelmode=driving';
+  } else if (b.origin && b.destination) {
+    mapUrl = 'https://www.google.com/maps/dir/?api=1&origin=' + encodeURIComponent(b.origin + ', West Bengal') + '&destination=' + encodeURIComponent(b.destination + ', West Bengal') + '&travelmode=driving';
+  }
+
+  const stopHTML = visible.map(function(s, i) {
+    var isEnd = i === 0 || i === visible.length - 1;
+    var stn = (STOPS[s.name] || {}).nearest_station;
+    var stnBadge = stn ? '<span class="rail">Railway: ' + esc(stn.name) + (stn.code ? ' (' + esc(stn.code) + ')' : '') + ' Â· ~' + stn.km + ' km</span>' : '';
+    var upT = s.up_time ? '<span>' + esc(s.up_time) + '</span>' : '<span class="no-t">â€”</span>';
+    var dnT = s.down_time ? '<span>' + esc(s.down_time) + '</span>' : '<span class="no-t">â€”</span>';
+    return '<div class="stop-row ' + (isEnd ? 'end' : '') + '"><span class="stop-dot"></span><span class="stop-name">' + esc(pn(s.name)) + stnBadge + '</span><span class="stop-times">' + upT + dnT + '</span></div>';
+  }).join('');
+
+  var showMoreBtn = '';
+  if (!showAll && stops.length > INITIAL) {
+    showMoreBtn = '<button class="show-all" onclick="location.hash=\'#/bus/' + encodeURIComponent(id) + '?full=1\'">Show all ' + stops.length + ' stops â‡“</button>';
+  } else if (showAll && stops.length > INITIAL) {
+    showMoreBtn = '<button class="show-all" onclick="location.hash=\'#/bus/' + encodeURIComponent(id) + '\'">Show less â‡‘</button>';
+  }
+
+  el.innerHTML =
+    '<div class="container" style="padding-top:22px;padding-bottom:40px">' +
+      '<div class="back-btn" onclick="history.length>1?history.back():location.hash=\'#/\'">' + icon('chevronLeft') + ' <span class="label-en">Back</span></div>' +
+      '<div class="bus-head">' +
+        '<h2>' + esc(b.bus_name) + (b.reg_no ? ' <span class="reg">' + esc(b.reg_no) + '</span>' : '') + ' ' + busTypeBadge(b.bus_type) + '</h2>' +
+        '<div class="route-line">' + icon('bus') + ' ' + esc(pn(b.origin)) + ' â‡„ ' + esc(pn(b.destination)) + '</div>' +
+        '<div class="info-grid">' +
+          (b.departure_time ? '<div class="info-item"><div class="lbl">Departure</div><div class="val">' + esc(b.departure_time) + '</div></div>' : '') +
+          (b.arrival_time ? '<div class="info-item"><div class="lbl">Arrival</div><div class="val">' + esc(b.arrival_time) + '</div></div>' : '') +
+          '<div class="info-item"><div class="lbl">Stops</div><div class="val">' + (stops.length || b.total_stoppage_pages || 0) + '</div></div>' +
+          (b.fare ? '<div class="info-item"><div class="lbl">Fare</div><div class="val">' + esc(b.fare) + '</div></div>' : '') +
+          (b.operator ? '<div class="info-item"><div class="lbl">Operator</div><div class="val">' + esc(b.operator) + '</div></div>' : '') +
+          (b.depot_name ? '<div class="info-item"><div class="lbl">Depot</div><div class="val">' + esc(b.depot_name) + '</div></div>' : '') +
+          (b.contact_number && b.contact_number !== 'Not Available !' ? '<div class="info-item"><div class="lbl">Contact</div><div class="val"><a href="tel:' + esc(b.contact_number) + '">' + esc(b.contact_number) + '</a></div></div>' : '') +
+        '</div>' +
+      '</div>' +
+      '<div class="wa-row">' +
+        (mapUrl ? '<a class="map-btn" href="' + mapUrl + '" target="_blank" rel="noopener">' + icon('map') + ' <span class="label-en">Route on Google Maps</span></a>' : '') +
+        '<a class="wa-btn" href="javascript:void(0)" onclick="shareWhatsApp(this.dataset)" data-bus="' + esc(b.bus_name) + '" data-org="' + esc(pn(b.origin)) + '" data-dest="' + esc(pn(b.destination)) + '" data-dep="' + esc(b.departure_time||'') + '" data-stops="' + (stops.length||0) + '">' + icon('waves') + ' <span class="label-en">Share on WhatsApp</span></a>' +
+      '</div>' +
+      (b.destination && b.destination !== 'â€”' ? '<div class="weather-card" id="weatherCard" data-dest="' + esc(b.destination) + '"><div class="lbl">Weather in ' + esc(b.destination) + ' (now)</div><div class="val" id="weatherVal">Loadingâ€¦</div></div>' : '') +
+      (stops.length ? '<h3 class="section-title" style="margin-top:22px">' + icon('ticket') + ' <span class="label-en">Route Timetable</span></h3><div class="stop-list">' + stopHTML + showMoreBtn + '</div>' : '<p style="color:var(--ink-dim);margin-top:12px">Stoppage details not available.</p>') +
+      '<p style="font-size:12px;color:var(--ink-dim);margin:10px 0 0">Data updated: ' + esc(DATA.meta?.last_updated || '') + '</p>' +
+    '</div>';
+  loadWeather();
+}
