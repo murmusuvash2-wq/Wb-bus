@@ -15,11 +15,12 @@
   <meta name="twitter:title" content="BusJatri — West Bengal Bus Timetable" />
   <meta name="twitter:description" content="West Bengal's largest bus timetable. Search buses, routes & stoppages." />
   <meta name="twitter:image" content="https://wb-bus.vercel.app/og-image.png" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b8791f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 16V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10'/%3E%3Cpath d='M4 16h16'/%3E%3Cpath d='M4 16v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2'/%3E%3Cpath d='M17 16v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2'/%3E%3Cpath d='M6 10h12'/%3E%3C/svg%3E" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b8791f' stroke-width='2'><path d='M4 16V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10M4 16h16M6 10h12'/></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;0,900;1,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Bengali:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/extras.css" />
 </head>
 <body>
   <header class="header">
@@ -38,20 +39,40 @@
     </div>
   </header>
 
+  <div class="bus-anim">
+    <div class="route-line"></div>
+    <div class="stop-dot d1"></div>
+    <div class="stop-dot d2"></div>
+    <div class="stop-dot d3"></div>
+    <div class="bus-slide">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10"/><path d="M4 16h16"/><path d="M4 16v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2"/><path d="M17 16v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2"/><path d="M6 10h12"/></svg>
+    </div>
+  </div>
+
   <div id="app"></div>
+
+  <!-- AdSense slots — hidden until AdSense code inserted -->
+  <div class="ad-zone" id="ad-home-1"></div>
+  <div class="ad-zone" id="ad-home-2"></div>
 
   <footer class="footer">
     <div class="container">
-      <p><strong>BusJatri</strong> — <span class="label-en">West Bengal's largest bus timetable</span><span class="label-bn">পশ্চিমবঙ্গের সবচেয়ে বড় বাস টাইম টেবিল</span></p>
-      <p>
-        <a href="#/about"><span class="label-en">About & Data Sources</span><span class="label-bn">সম্পর্কে ও ডেটা সোর্স</span></a>
-        · <a href="bus-time-table/"><span class="label-en">All Bus Time Tables</span><span class="label-bn">সব বাস টাইম টেবিল</span></a>
-        · Not affiliated with any transport corporation
-      </p>
+      <div class="footer-links">
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="about.html#credits">Credits</a>
+        <a href="admin.html">Admin</a>
+        <a href="bus-time-table/">All Bus Timetables</a>
+      </div>
+      <p><strong>BusJatri</strong> — West Bengal Bus Timetable<br>
+      Not affiliated with any transport corporation<br>
+      Contact: <a href="mailto:busjatri@zohomail.in">busjatri@zohomail.in</a></p>
     </div>
   </footer>
 
   <script src="js/app.js"></script>
+  <script src="js/extras.js"></script>
   <script src="js/lang-persist.js"></script>
 </body>
 </html>
