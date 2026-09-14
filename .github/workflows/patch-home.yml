@@ -1,0 +1,22 @@
+name: Patch home page
+on: [push]
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.message, 'patch-home')
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 5
+      - name: Apply patches
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          python3 /tmp/patch.py
+          git add js/app.js
+          git commit -m "feat: Live Departures + Stoppage search + Popular Routes"
+          git push
