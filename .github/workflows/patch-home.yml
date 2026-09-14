@@ -7,16 +7,16 @@ permissions:
 jobs:
   patch:
     runs-on: ubuntu-latest
-    if: contains(github.event.head_commit.message, 'patch-home')
+    if: contains(github.event.head_commit.message, 'run-patch-home')
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 5
-      - name: Apply patches
+      - name: Apply home page patches
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          python3 /tmp/patch.py
+          python3 scripts/patch_home_page.py
           git add js/app.js
-          git commit -m "feat: Live Departures + Stoppage search + Popular Routes"
+          git commit -m "feat: Live Departures board + Stoppage search + Popular Routes (via patch script)"
           git push
