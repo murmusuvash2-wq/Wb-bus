@@ -25,7 +25,7 @@ a{color:var(--amber-ink);text-decoration:none}
 .container{max-width:980px;margin:0 auto;padding:0 18px}
 
 /* ---- header ---- */
-.header{background:color-ix(in srgb,var(--surface) 88%,transparent);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;backdrop-filter:blur(14px) saturate(1.1)}
+.header{background:color-mix(in srgb,var(--surface) 88%,transparent);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;backdrop-filter:blur(14px) saturate(1.1)}
 .header-inner{display:flex;align-items:center;justify-content:space-between;padding:13px 0}
 .logo{display:flex;align-items:center;gap:9px;font-family:var(--font-display);font-size:1.3rem;font-weight:700;letter-spacing:-.2px}
 .logo span{color:var(--amber-ink)}
@@ -36,11 +36,11 @@ a{color:var(--amber-ink);text-decoration:none}
 
 /* ---- hero ---- */
 .seo-hero{padding:10px 0 14px}
-.seo-hero h1{font-family:var(--font-display);font-size:camp(1.45rem,5vw,1.95rem);font-weight:700;letter-spacing:-.5px}
+.seo-hero h1{font-family:var(--font-display);font-size:clamp(1.45rem,5vw,1.95rem);font-weight:700;letter-spacing:-.5px}
 .seo-hero .arr{color:var(--amber)}
 .bn-sub{font-size:13.5px;color:var(--ink-dim);margin-top:2px}
 .stat-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.schip{display:inline-flex;align-items:center;gap:5px;background:var(--surface);border:1px solid var(--border-strong);border-radius:99px;padding:6px 13px;font-family:var(--font-mono);font-size:12px;font-weight:600}
+.schip{display:inline-flex;align-items:center;gap:5px;background:var(--surface);border:1px solid var(--border-strong);border-radius:999px;padding:6px 13px;font-family:var(--font-mono);font-size:12px;font-weight:600}
 .schip.hot{background:var(--amber-soft);border-color:color-mix(in srgb,var(--amber) 40%,transparent);color:var(--amber-ink)}
 
 /* ---- sections ---- */
