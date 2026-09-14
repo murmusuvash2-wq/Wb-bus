@@ -150,3 +150,8 @@
 /* hide "West Bengal » Route Data" eyebrow text */
 .eyebrow { display: none !important; }
 
+
+/* ==== Center title + taglines ==== */
+.hero-inner { text-align: center !important; }
+.hero h1 { text-align: center; }
+.tagline.en, .tagline.bn { text-align: center; display: block; }
