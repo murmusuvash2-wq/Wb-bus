@@ -155,38 +155,3 @@
 .hero-inner { text-align: center !important; }
 .hero h1 { text-align: center; }
 .tagline.en, .tagline.bn { text-align: center; display: block; }
-
-/* ==== Bus Detail Page styles ==== */
-.back-btn{display:inline-flex;align-items:center;gap:5px;color:var(--ink-dim);font-size:13.5px;font-weight:600;margin:16px 0 10px;cursor:pointer;text-decoration:none}
-.back-btn svg{width:15px;height:15px}
-.bus-head{background:var(--surface);border:1px solid var(--line-strong);border-radius:20px;padding:20px;box-shadow:var(--shadow);position:relative;overflow:hidden}
-.bus-head::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:repeating-linear-gradient(90deg,var(--amber) 0 14px,var(--maroon) 14px 28px)}
-.bus-head h2{font-family:var(--font-display);font-size:1.3rem;font-weight:700;letter-spacing:-.3px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.bus-head .reg{font-size:14px;color:var(--ink-dim);font-weight:500;font-family:var(--font-mono)}
-.bus-head .route-line{color:var(--ink-dim);font-size:14px;margin:4px 0 0;display:flex;align-items:center;gap:7px;font-weight:500}
-.bus-head .route-line svg{width:14px;height:14px;color:var(--amber)}
-.info-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:9px;margin-top:16px}
-.info-item{background:var(--surface-2);border-radius:9px;padding:9px 11px}
-.info-item .lbl{font-family:var(--font-mono);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-dim)}
-.info-item .val{font-weight:600;font-size:14px;margin-top:2px;font-variant-numeric:tabular-nums}
-.info-item .val a{color:var(--ink)}
-.wa-row{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
-.map-btn{flex:1;min-width:150px;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1.5px solid var(--amber);color:var(--amber-ink);border-radius:11px;padding:11px 16px;font-weight:700;font-size:13.5px;text-decoration:none;transition:.15s}
-.map-btn:hover{background:var(--amber-soft)}
-.map-btn svg{width:15px;height:15px}
-.wa-btn{flex:1;min-width:150px;display:inline-flex;align-items:center;justify-content:center;gap:8px;background:#25D366;color:#fff;border:none;border-radius:11px;padding:11px 16px;font-weight:700;font-size:13.5px;text-decoration:none}
-.wa-btn sv{width:16px;height:16px}
-.weather-card{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:13px 16px;margin-top:12px}
-.weather-card .lbl{font-family:var(--font-mono);font-size:10px;font-weight:700;text-transform:uppercase;color:var(--ink-dim)}
-.weather-card .val{font-family:var(--font-mono);font-size:1.1rem;font-weight:600;margin-top:2px}
-.stop-list{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:16px 16px 8px;margin-top:8px}
-.stop-row{display:grid;grid-template-columns:22px 1fr auto;gap:10px;align-items:center;padding:8px 0;position:relative}
-.stop-row:not(:last-child)::after{content:"";position:absolute;left:10.5px;top:29px;bottom:-9px;width:1.5px;background:var(--line-strong)}
-.stop-dot{width:9px;height:9px;border-radius:50%;background:var(--surface);border:2px solid var(--amber);justify-self:center;z-index:1}
-.stop-row.end .stop-dot{background:var(--maroon);border-color:var(--maroon)}
-.stop-name{font-size:13.5px;font-weight:500}
-.stop-name .rail{display:block;font-size:10px;color:var(--govt);font-weight:500}
-.stop-times{display:flex;gap:14px;font-family:var(--font-mono);font-size:12px;font-weight:600}
-.stop-times .no-t{color:var(--ink-dim);font-weight:400}
-.show-all{display:block;width:100%;margin:10px 0 6px;padding:11px;background:var(--surface-2);border:1px dashed var(--line-strong);border-radius:10px;font-weight:700;font-size:13px;cursor:pointer;color:var(--ink);font-family:var(--font-body)}
-.show-all:hover{border-color:var(--amber);color:var(--amber-ink)}
