@@ -1,0 +1,48 @@
+name: Apply v5 SEO template
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/v5/**'
+      - 'scripts/patches/apply_v5.py'
+      - '.github/workflows/apply-v5.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Splice v5 template into gen_seo_pages.py
+        run: python3 scripts/patches/apply_v5.py
+
+      - name: Syntax check
+        run: python3 -c "import py_compile; py_compile.compile('scripts/gen_seo_pages.py', doraise=True)"
+
+      - name: Generate all SEO pages
+        run: python3 scripts/gen_seo_pages.py
+
+      - name: Quick validate
+        run: |
+          test $(ls bus-time-table/*.html | wc -l) -gt 300
+          grep -q "bus-card" bus-time-table/esplanade-to-digha.html
+          grep -q "lv-clock-wrap" bus-time-table/esplanade-to-digha.html
+          grep -q "search-box" bus-time-table/esplanade-to-digha.html
+          python3 -c "import xml.dom.minidom; xml.dom.minidom.parse('sitemap.xml')"
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add scripts/gen_seo_pages.py bus-time-table sitemap.xml robots.txt css/seo.css
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Apply v5 SEO template (search + live board + accordion + animations)"
+            git push
+          fi
