@@ -1,127 +1,157 @@
-/* BusJatri Extras — WhatsApp share, geolocation, report time, admin, static-page helpers */
+/* BusJatri Extras — bus animation, bigger search, WhatsApp, ads, pages, admin */
 
-/* ---------- Theme (static pages) ---------- */
-function toggleThemeStatic() {
-  var cur = document.documentElement.getAttribute('data-theme') ||
-    (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-  var next = cur === 'dark' ? 'light' : 'dark';
-  document.documentElement.setAttribute('data-theme', next);
-  try { localStorage.setItem('bj-theme', next); } catch (e) {}
-  updateThemeIconStatic(next);
-}
-function updateThemeIconStatic(theme) {
-  var btn = document.getElementById('themeBtn');
-  if (!btn) return;
-  btn.innerHTML = theme === 'dark'
-    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>'
-    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
-}
-(function () {
-  var saved = null;
-  try { saved = localStorage.getItem('bj-theme'); } catch (e) {}
-  if (saved) document.documentElement.setAttribute('data-theme', saved);
-  var eff = saved || (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-  updateThemeIconStatic(eff);
-})();
+/* Bus Route Animation — simple transit style */
+.bus-anim{position:relative;height:52px;overflow:hidden;background:var(--amber-soft);border-radius:0 0 14px 14px}
+@media(max-width:480px){.bus-anim{height:46px;border-radius:0 0 12px 12px}}
+.bus-anim .route-line{position:absolute;top:50%;left:20px;right:20px;border-top:2px dashed rgba(184,121,31,.22)}
+.bus-anim .stop-dot{position:absolute;top:50%;width:8px;height:8px;border-radius:50%;background:var(--surface);border:2px solid var(--amber);transform:translate(-50%,-50%);z-index:1}
+.bus-anim .d1{left:15%}.bus-anim .d2{left:50%}.bus-anim .d3{left:85%;background:var(--maroon);border-color:var(--maroon)}
+.bus-anim .bus-slide{position:absolute;top:50%;left:-30px;width:24px;height:24px;color:var(--amber);transform:translateY(-50%);animation:busSlide 12s ease-in-out infinite;z-index:2}
+@keyframes busSlide{0%{left:-30px}100%{left:calc(100% + 30px)}}
+@media(prefers-reduced-motion:reduce){.bus-anim .bus-slide{animation:none;left:50%}}
 
-/* ---------- WhatsApp Share — bus time + site link ---------- */
-function shareWhatsApp(busName, origin, destination, departure, stops) {
-  var msg = "BusJatri — West Bengal Bus Timetable\n\n";
-  msg += "Bus: " + (busName || "—") + "\n";
-  msg += "Route: " + (origin || "—") + " → " + (destination || "—") + "\n";
-  if (departure) msg += "Departure: " + departure + "\n";
-  if (stops) msg += "Stops: " + stops + "\n";
-  msg += "\nView full timetable:\nhttps://wb-bus.vercel.app";
-  msg += "\n\nMore buses on BusJatri (বাস যাত্রী)";
-  window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
-}
+/* Bigger Search */
+.search-box{padding:22px;max-width:580px}
+.search-field input{font-size:18px;font-weight:700;padding:8px 0}
+.search-field input::placeholder{font-size:15px}
+.search-field label{font-size:11px}
+.search-btn{padding:15px 28px;font-size:16px}
+.swap-btn{width:40px;height:40px}
+.swap-btn svg{width:17px;height:17px}
 
-/* ---------- Geolocation Auto-Detect — prefill "From" field ---------- */
-function detectLocation() {
-  if (!navigator.geolocation) return;
-  navigator.geolocation.getCurrentPosition(function (pos) {
-    fetch("https://nominatim.openstreetmap.org/reverse?lat=" + pos.coords.latitude + "&lon=" + pos.coords.longitude + "&format=json&accept-language=en")
-      .then(function (r) { return r.json(); })
-      .then(function (data) {
-        var a = data.address || {};
-        var city = a.city || a.town || a.village || a.county || a.state_district;
-        if (city) {
-          var inputs = document.querySelectorAll(".search-field input");
-          if (inputs[0] && !inputs[0].value) {
-            inputs[0].value = city;
-            var hint = document.querySelector(".geo-hint");
-            if (hint) {
-              var c = hint.querySelector(".geo-city");
-              if (c) c.textContent = city;
-              hint.classList.add("show");
-            }
-          }
-        }
-      })
-      .catch(function () { /* silent — detection is best-effort only */ });
-  }, function () { /* denied or failed — ignore */ }, { timeout: 8000 });
-}
+/* WhatsApp Share Button */
+.btn-whatsapp{background:#25D366;color:#fff;border:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 16px;border-radius:var(--radius-sm);font-family:var(--font-body);font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;transition:background .2s}
+.btn-whatsapp:hover{background:#1eb856;color:#fff}
+.btn-whatsapp svg{width:16px;height:16px}
 
-/* ---------- Contact Form — opens user's email client ---------- */
-function sendContact() {
-  var name = (document.getElementById("cName") || {}).value || "";
-  var email = (document.getElementById("cEmail") || {}).value || "";
-  var subject = (document.getElementById("cSubject") || {}).value || "Feedback";
-  var message = (document.getElementById("cMessage") || {}).value || "";
-  var body = "Name: " + name + "\nEmail: " + email + "\n\n" + message;
-  var url = "mailto:busjatri@zohomail.in?subject=" + encodeURIComponent("[BusJatri] " + subject) + "&body=" + encodeURIComponent(body);
-  var ok = document.getElementById("contactSuccess");
-  if (ok) ok.style.display = "flex";
-  window.location.href = url;
-}
+/* AdSense Zones — hidden when empty */
+.ad-zone{margin:20px 18px;min-height:0;overflow:hidden;display:none}
+.ad-zone:empty{display:none!important}
+.ad-zone.active{display:block;min-height:90px}
 
-/* ---------- Report Time — on bus detail pages ---------- */
-function toggleReport(btn) {
-  var form = document.getElementById("reportForm");
-  if (!form) return;
-  var showing = form.classList.toggle("show");
-  if (btn) btn.style.display = showing ? "none" : "inline-flex";
-}
-function submitReport() {
-  var form = document.getElementById("reportForm");
-  var done = document.getElementById("reportDone");
-  var t = (document.getElementById("reportTime") || {}).value || "";
-  if (!t) { alert("Please enter the correct time."); return; }
-  if (form) form.classList.remove("show");
-  if (done) done.classList.add("show");
-  /* Time corrections go to the team via email */
-  var msg = "BusJatri time correction:\n" + document.title + "\nCorrect time: " + t;
-  window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
-}
+/* Empty Search State */
+.empty-search{margin:12px 18px;padding:20px;background:var(--surface);border:1px dashed var(--line-strong);border-radius:var(--radius);text-align:center;display:none}
+.empty-search.show{display:block;animation:fadeIn .3s ease}
+.empty-search p{font-size:14px;color:var(--ink-dim)}
+.empty-search p strong{color:var(--amber)}
 
-/* ---------- Admin Dashboard (demo actions) ---------- */
-function adminUpdate(btn, msg) {
-  if (!btn) return;
-  var old = btn.textContent;
-  btn.textContent = "✓ Saved";
-  btn.disabled = true;
-  setTimeout(function () { btn.textContent = old; btn.disabled = false; }, 1600);
-  if (msg) {
-    var bar = document.getElementById("adminMsg");
-    if (bar) { bar.textContent = msg; bar.style.display = "block"; setTimeout(function () { bar.style.display = "none"; }, 2600); }
-  }
-}
-function approveReport(btn) {
-  if (!btn) return;
-  var row = btn.closest(".admin-report-row");
-  btn.textContent = "Approved ✓";
-  btn.disabled = true;
-  if (row) { row.style.opacity = ".55"; }
-}
+/* Geolocation Hint */
+.geo-hint{font-size:11px;color:var(--govt);display:none;align-items:center;gap:4px;margin-top:4px}
+.geo-hint.show{display:flex}
+.geo-hint svg{width:11px;height:11px}
 
-/* ---------- AdSense zone activation (when ads script present) ---------- */
-(function () {
-  if (window.adsbygoogle) {
-    document.querySelectorAll(".ad-zone").forEach(function (z) { z.classList.add("active"); });
-  }
-})();
+/* Footer Links */
+.footer-links{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.footer-links a{font-size:12.5px;font-weight:600;color:var(--ink-dim);text-decoration:none;padding:5px 12px;border-radius:999px;background:var(--surface-2);transition:all .2s}
+.footer-links a:hover{color:var(--amber);background:var(--amber-soft)}
 
-/* ---------- Auto-detect location on home page ---------- */
-document.addEventListener("DOMContentLoaded", function () {
-  if (document.querySelector(".search-field")) detectLocation();
-});
+/* Static Page Styles */
+.page-section{padding:24px 18px;max-width:720px;margin:0 auto}
+.page-section h1{font-family:var(--font-display);font-size:clamp(1.4rem,4vw,2rem);font-weight:700;margin-bottom:8px}
+.page-sub{font-size:14px;color:var(--ink-dim);margin-bottom:20px}
+.page-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin-bottom:12px}
+.page-card h3{font-size:15px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.page-card h3 svg{width:18px;height:18px;color:var(--amber)}
+.page-card p{font-size:13.5px;color:var(--ink-dim);line-height:1.7;margin-bottom:8px}
+.page-card ul{list-style:none;padding:0;margin-top:8px}
+.page-card li{font-size:13px;color:var(--ink-dim);padding:5px 0 5py 20px;position:relative}
+.page-card li::before{content:'';position:absolute;left:0;top:10px;width:7px;height:7px;border-radius:2px;background:var(--amber)}
+.page-card li strong{color:var(--ink)}
+
+/* Contact Form */
+.contact-form{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin-bottom:12px}
+.contact-form .field{margin-bottom:14px}
+.contact-form label{display:block;font-family:var(--font-mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-dim);margin-bottom:5px}
+.contact-form input,.contact-form textarea,.contact-form select{width:100%;border:1px solid var(--line);border-radius:var(--radius-sm);padding:10px 12px;font-size:14px;font-family:var(--font-body);color:var(--ink);background:var(--surface);outline:none;transition:border-color .2s}
+.contact-form input:focus,.contact-form textarea:focus,.contact-form select:focus{border-color:var(--amber)}
+.contact-form textarea{min-height:100px;resize:vertical}
+.contact-form .form-row{display:flex;gap:10px}
+.contact-form .form-row .field{flex:1}
+.contact-form .submit-btn{width:100%;background:var(--amber);color:#fff9ee;border:none;border-radius:var(--radius-sm);padding:13px;font-size:14px;font-weight:700;font-family:var(--font-body);cursor:pointer;transition:filter .2s}
+.contact-form .submit-btn:hover{filter:brightness(1.08)}
+.contact-info{display:flex;flex-direction:column;gap:8px}
+.contact-info a{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-dim);text-decoration:none}
+.contact-info a:hover{color:var(--amber)}
+.contact-info svg{width:16px;height:16px;color:var(--amber)}
+
+/* Privacy Policy */
+.privacy-h{font-size:13px;font-weight:700;margin:14px 0 6px;color:var(--ink)}
+.privacy-p{font-size:12.5px;color:var(--ink-dim);line-height:1.7;margin-bottom:8px}
+.privacy-p a{color:var(--amber);text-decoration:none}
+
+/* Credits */
+.credit-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);padding:14px;margin-bottom:8px;display:flex;align-items:flex-start;gap:12px}
+.credit-card .ci{width:36px;height:36px;border-radius:9px;background:var(--amber-soft);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.credit-card .ci svg{width:18px;height:18px;color:var(--amber)}
+.credit-card .cn{font-size:13px;font-weight:700;margin-bottom:2px}
+.credit-card .cd{font-size:12px;color:var(--ink-dim);line-height:1.5}
+.credit-card .cl{font-size:11px;color:var(--amber);text-decoration:none;font-weight:600;display:inline-block;margin-top:3px}
+
+/* Report Time */
+.report-btn{display:inline-flex;align-items:center;gap:4px;background:none;border:1px dashed rgba(184,121,31,.22);border-radius:6px;padding:3px 8px;font-size:10px;font-weight:600;color:var(--amber);cursor:pointer;font-family:var(--font-body);transition:all .2s;flex-shrink:0}
+.report-btn:hover{background:var(--amber-soft);border-style:solid}
+.report-btn svg{width:10px;height:10px}
+.report-form{background:var(--amber-soft);border:1px solid rgba(184,121,31,.22);border-radius:var(--radius);padding:14px;margin:8px 0;display:none}
+.report-form.show{display:block;animation:fadeIn .3s ease}
+.report-form .report-title{font-size:12px;font-weight:700;color:var(--amber);margin-bottom:6px}
+.report-form .report-row{display:flex;gap:8px}
+.report-form input[type=time]{flex:1;border:1px solid rgba(184,121,31,.22);border-radius:var(--radius-sm);padding:8px 10px;font-family:var(--font-mono);font-size:13px;background:var(--surface);color:var(--ink);outline:none}
+.report-form input[type=time]:focus{border-color:var(--amber)}
+.report-form button{background:var(--amber);color:#fff9ee;border:none;border-radius:var(--radius-sm);padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--font-body)}
+.report-done{display:none;font-size:11px;color:var(--green);font-weight:600;margin-top:6px;align-items:center;gap:4px}
+.report-done.show{display:flex}
+.report-done svg{width:12px;height:12px}
+
+/* Admin Dashboard */
+.admin-badge{font-family:var(--font-mono);font-size:10px;color:var(--green);font-weight:700;background:var(--green-soft);padding:3px 10px;border-radius:999px}
+.admin-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;margin-bottom:16px}
+.admin-stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);padding:10px 12px}
+.admin-stat .lb{font-family:var(--font-mono);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-dim)}
+.admin-stat .vl{font-size:15px;font-weight:700;font-family:var(--font-mono);margin-top:2px}
+.admin-report-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--line);font-size:12px}
+.admin-report-row:last-child{border-bottom:none}
+.admin-approve{background:var(--green-soft);color:var(--green);border:1px solid var(--green);border-radius:5px;padding:2px 8px;font-size:10px;cursor:pointer;font-weight:700}
+.admin-btn{flex:1;min-width:120px;background:var(--surface-2);color:var(--ink);border:1px solid var(--line);border-radius:var(--radius-sm);padding:10px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--font-body)}
+.admin-btn.primary{background:var(--amber);color:#fff9ee;border:none}
+
+@media(max-width:480px){.contact-form .form-row{flex-direction:column}.admin-grid{grid-template-columns:repeat(2,1fr)}}
+
+/* ==== Compact home & organization ==== */
+.hero { padding: 20px 0 12px; }
+.hero h1 { font-size: clamp(1.8rem, 6vw, 2.6rem); margin-bottom: 4px; }
+.tagline { margin-bottom: 14px; font-size: 14px; }
+.section { padding: 18px 0 28px; }
+.section-title { margin-bottom: 12px; font-size: 1.15rem; }
+
+/* Popular destinations - horizontal swipe row, no long vertical scroll */
+.place-cards {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 2px 2px 10px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+.place-card {
+  flex: 0 0 128px;
+  scroll-snap-align: start;
+  padding: 13px 12px;
+}
+.place-card .icon-badge { width: 34px; height: 34px; margin-bottom: 8px; }
+.place-cards::-webkit-scrollbar { height: 6px; }
+.place-cards::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 99px; }
+.place-cards::-webkit-scrollbar-track { background: transparent; }
+
+/* tighter lists */
+.result-item { padding: 12px 14px; margin-bottom: 8px; }
+.stats-inline { padding: 10px 0 0; }
+
+/* hide "West Bengal » Route Data" eyebrow text */
+.eyebrow { display: none !important; }
+
+
+/* ==== Center title + taglines ==== */
+.hero-inner { text-align: center !important; }
+.hero h1 { text-align: center; }
+.tagline.en, .tagline.bn { text-align: center; display: block; }
