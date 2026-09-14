@@ -149,7 +149,7 @@ function esc(s) {
   return String(s || '').replace(/[<>&"]/g, c => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[c]));
 }
 function slug(s) {
-  return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$|/g, '');
 }
 
 function parseTime(t) {
@@ -186,6 +186,11 @@ function doSearch() {
   const from = (document.getElementById('fromInput')?.value || '').trim();
   const to = (document.getElementById('toInput')?.value || '').trim();
   const via = (document.getElementById('viaInput')?.value || '').trim();
+  if (!from && !to) {
+    const emptyBox = document.querySelector('.empty-search');
+    if (emptyBox) { emptyBox.classList.add('show'); emptyBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+    return;
+  }
   const q = new URLSearchParams();
   if (from) q.set('from', from);
   if (to) q.set('to', to);
@@ -249,6 +254,17 @@ function renderHome(el) {
     </div>`;
   }).join('');
 
+  const nextDeps = stopDepartures(slug('Kolkata'), Object.keys(BUSES), 6).map(n => n.b).filter(Boolean);
+  const nextCards = nextDeps.map((b, i) => `
+      <div class="result-item" style="--i:${i}" onclick="location.hash='#/bus/${encodeURIComponent(b.id)}'">
+        <div class="ri-main">
+          <div class="name">${esc(b.bus_name)} ${busTypeBadge(b.bus_type)}</div>
+          <div class="route">${esc(pn(b.origin))} ⇥ ${esc(pn(b.destination))}</div>
+          <div class="meta"><span>${icon('stops')} ${b.total_stoppages || (b.stoppages || []).length || 0} stops</span></div>
+        </div>
+        ${b.departure_time ? `<span class="time-pill">${icon('clock')} ${esc(b.departure_time)}</span>` : ''}
+      </div>`).join('');
+
   el.innerHTML = `
   <div class="hero">
     <div class="hero-route-line">${icon('bus')}</div>
@@ -262,6 +278,7 @@ function renderHome(el) {
           <div class="search-field">
             <label>${icon('pin')} <span class="label-en">From</span><span class="label-bn">কোথা থেকে</span></label>
             <input id="fromInput" list="stopList" placeholder="e.g. Bankura" onkeydown="if(event.key==='Enter')doSearch()">
+            <div class="geo-hint">${icon('pin')} <span class="label-en">Detected:</span> <span class="geo-city"></span></div>
           </div>
           <button class="swap-btn" onclick="swapFromTo()" title="Swap From & To" aria-label="Swap origin and destination">${icon('compass')}</button>
           <div class="search-field">
@@ -278,6 +295,7 @@ function renderHome(el) {
         </div>
         <datalist id="stopList">${Object.values(STOPS).slice(0, 800).map(s => `<option value="${esc(s.name)}">`).join('')}</datalist>
       </div>
+      <div class="empty-search"><p>${icon('search')} <span class="label-en">Please fill <strong>From</strong> and <strong>To</strong> to search buses.</span><span class="label-bn">বাস খুঁজতে <strong>কোথা থেকে</strong> ও <strong>কোথায়</strong> লিখুন।</span></p></div>
       <p class="stats-inline">${icon('bus')} ${(DATA.meta.total_buses || 0).toLocaleString('en-IN')}+ <span class="label-en">buses</span><span class="label-bn">টি বাস</span> &middot; ${(DATA.meta.total_routes || 0).toLocaleString('en-IN')}+ <span class="label-en">routes</span><span class="label-bn">টি রুট</span> &middot; ${(DATA.meta.total_stops || 0).toLocaleString('en-IN')}+ <span class="label-en">stops</span><span class="label-bn">টি স্টপ</span></p>
   </div>
   <div class="section">
@@ -285,7 +303,14 @@ function renderHome(el) {
       <div class="section-title">${icon('pin')} <span class="label-en">Popular Destinations</span><span class="label-bn">জনপ্রিয় স্থান</span></div>
       <div class="place-cards">${placeCards}</div>
     </div>
-  </div>`;
+  </div>
+  ${nextCards ? `
+  <div class="section">
+    <div class="container">
+      <div class="section-title">${icon('clock')} <span class="label-en">Next Buses from Kolkata</span><span class="label-bn">কলকাতা থেকে পরের বাস</span></div>
+      ${nextCards}
+    </div>
+  </div>` : ''}`;
 }
 
 function renderSearch(el) {
@@ -513,7 +538,7 @@ function renderBus(el, id) {
       </div>
       <p style="font-size:12px;color:var(--ink-dim);margin:10px 0 0">Data updated: ${esc(DATA.meta?.last_updated || '')}</p>
       ${mapUrl ? `<a class="map-btn" href="${mapUrl}" target="_blank" rel="noopener">${icon('map')} <span class="label-en">View route on Google Maps</span><span class="label-bn">গুগল ম্যাপে রুট দেখুন</span></a>` : ''}
-      <a class="map-btn" href="https://wa.me/?text=${encodeURIComponent('BusJatri — ' + b.bus_name + ' (' + b.origin + ' to ' + b.destination + ')' + (b.departure_time ? ', ' + b.departure_time : '') + '. Time galat hai? is message ko reply karo.')}" target="_blank" rel="noopener">${icon('info')} <span class="label-en">Share / report on WhatsApp</span><span class="label-bn">শেয়ার / রিপোর্ট করুন</span></a>
+      <a class="map-btn btn-whatsapp" href="javascript:void(0)" data-bus="${esc(b.bus_name)}" data-org="${esc(pn(b.origin))}" data-dest="${esc(pn(b.destination))}" data-dep="${esc(b.departure_time || '')}" data-stops="${stops.length || b.total_stoppages || 0}" onclick="shareWhatsApp(this.dataset.bus,this.dataset.org,this.dataset.dest,this.dataset.dep,this.dataset.stops)">${icon('info')} <span class="label-en">Share on WhatsApp</span><span class="label-bn">শেয়ার করুন</span></a>
       ${b.destination && b.destination !== '—' ? `<div class="info-item" id="weatherCard" data-dest="${esc(b.destination)}" style="margin-top:12px"><div class="lbl">Weather in ${esc(b.destination)} (now)</div><div class="val" id="weatherVal">Loading…</div></div>` : ''}
       ${stops.length ? `
         <h3 class="timetable-title">${icon('ticket')} <span class="label-en">Route Timetable</span><span class="label-bn">রুট টাইমটেবিল</span></h3>
