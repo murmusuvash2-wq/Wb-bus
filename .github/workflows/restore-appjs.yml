@@ -1,0 +1,23 @@
+name: Restore app.js
+on: [push]
+
+permissions:
+  contents: write
+
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    # only run if app.js is placeholder (first 20 chars check)
+    if: contains(github.event.head_commit.message, 'restore app.js') || github.event.head_commit.modified[0] == '.github/workflows/restore-appjs.yml'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 10
+      - name: Restore original app.js from pre-placeholder commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git show 5c5c22ca11d11e022e45b23029e62aef50f7fa70:js/app.js > js/app.js
+          git add js/app.js
+          git commit -m "fix: restore original app.js from 5c5c22ca"
+          git push
