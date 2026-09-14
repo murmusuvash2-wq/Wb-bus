@@ -49,7 +49,7 @@ def generate_route_page(origin, destination, buses):
          f"The journey takes approximately {dur_text}." if duration else "Journey time varies by bus and traffic."),
     ]
 
-    bn_sub = f'<span class="label-bn" style="display:none">{esc(route_nn)} \u09ac\u09be\u09b8\u09c7\u09b0 \u09b8\u09ae\u09af\u09bc\u09b8\u09c2\u099a\u09c0</span>' if route_bn else ""
+    bn_sub = f'<span class="label-bn" style="display:none">{esc(route_bn)} \u09ac\u09be\u09b8\u09c7\u09b0 \u09b8\u09ae\u09af\u09bc\u09b8\u09c2\u099a\u09c0</span>' if route_bn else ""
     operators_str = ", ".join(operators[:3]) if operators else "Multiple operators"
     arrow = "\u2192"
 
@@ -113,7 +113,7 @@ def generate_route_page(origin, destination, buses):
 <script>
 var SEO_TABS={board_json};
 var boardTab="{first_tab}";
-function t2m(t){{var m=String(t).match(/^(\\d+):$+)\s*(AM|PM)?/i);if(!m)return null;var h=+m[1],mm=+m[2],ap=(m[3]|"").toUpperCase();if(mm>59)return null;if(ap){{if(h<1||h>12)return null}}else{{if(h>23)return null}}if(ap==="PM"&&h<12)h+=12;if(ap==="AM"&&h===12)h=0;return h*60+mm}}
+function t2m(t){{var m=String(t).match(/^(\\d+):#+)\s*(AM|PM)?/i);if(!m)return null;var h=+m[1],mm=+m[2],ap=(m[3]|"").toUpperCase();if(mm>59)return null;if(ap){{if(h<1||h>12)return null}}else{{if(h>23)return null}}if(ap==="PM"&&h<12)h+=12;if(ap==="AM"&&h===12)h=0;return h*60+mm}}
 function minutesNow(){{var d=new Date();return d.getHours()*60+d.getMinutes()}}
 function cd(m){{if(m<60)return m+"m";var h=Math.floor(m/60),r=m%60;return h+"h "+r?r+"m":"")}}
 function fmtT(m){{var h=Math.floor(m/60),mm=m%60;var ap=h>=12?"PM":"AM";if(h>12)h-=12;if(h===0)h=12;return h+":"+String(mm).padStart(2,"0")+" "+ap}}
