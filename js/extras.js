@@ -1,157 +1,102 @@
-/* BusJatri Extras â€” bus animation, bigger search, WhatsApp, ads, pages, admin */
+/* BusJatri Extras â€” WhatsApp share, geolocation, report time, admin, static-page helpers */
 
-/* Bus Route Animation â€” simple transit style */
-.bus-anim{position:relative;height:52px;overflow:hidden;background:var(--amber-soft);border-radius:0 0 14px 14px}
-@media(max-width:480px){.bus-anim{height:46px;border-radius:0 0 12px 12px}}
-.bus-anim .route-line{position:absolute;top:50%;left:20px;right:20px;border-top:2px dashed rgba(184,121,31,.22)}
-.bus-anim .stop-dot{position:absolute;top:50%;width:8px;height:8px;border-radius:50%;background:var(--surface);border:2px solid var(--amber);transform:translate(-50%,-50%);z-index:1}
-.bus-anim .d1{left:15%}.bus-anim .d2{left:50%}.bus-anim .d3{left:85%;background:var(--maroon);border-color:var(--maroon)}
-.bus-anim .bus-slide{position:absolute;top:50%;left:-30px;width:24px;height:24px;color:var(--amber);transform:translateY(-50%);animation:busSlide 12s ease-in-out infinite;z-index:2}
-@keyframes busSlide{0%{left:-30px}100%{left:calc(100% + 30px)}}
-@media(prefers-reduced-motion:reduce){.bus-anim .bus-slide{animation:none;left:50%}}
-
-/* Bigger Search */
-.search-box{padding:22px;max-width:580px}
-.search-field input{font-size:18px;font-weight:700;padding:8px 0}
-.search-field input::placeholder{font-size:15px}
-.search-field label{font-size:11px}
-.search-btn{padding:15px 28px;font-size:16px}
-.swap-btn{width:40px;height:40px}
-.swap-btn svg{width:17px;height:17px}
-
-/* WhatsApp Share Button */
-.btn-whatsapp{background:#25D366;color:#fff;border:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 16px;border-radius:var(--radius-sm);font-family:var(--font-body);font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;transition:background .2s}
-.btn-whatsapp:hover{background:#1eb856;color:#fff}
-.btn-whatsapp svg{width:16px;height:16px}
-
-/* AdSense Zones â€” hidden when empty */
-.ad-zone{margin:20px 18px;min-height:0;overflow:hidden;display:none}
-.ad-zone:empty{display:none!important}
-.ad-zone.active{display:block;min-height:90px}
-
-/* Empty Search State */
-.empty-search{margin:12px 18px;padding:20px;background:var(--surface);border:1px dashed var(--line-strong);border-radius:var(--radius);text-align:center;display:none}
-.empty-search.show{display:block;animation:fadeIn .3s ease}
-.empty-search p{font-size:14px;color:var(--ink-dim)}
-.empty-search p strong{color:var(--amber)}
-
-/* Geolocation Hint */
-.geo-hint{font-size:11px;color:var(--govt);display:none;align-items:center;gap:4px;margin-top:4px}
-.geo-hint.show{display:flex}
-.geo-hint svg{width:11px;height:11px}
-
-/* Footer Links */
-.footer-links{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:14px}
-.footer-links a{font-size:12.5px;font-weight:600;color:var(--ink-dim);text-decoration:none;padding:5px 12px;border-radius:999px;background:var(--surface-2);transition:all .2s}
-.footer-links a:hover{color:var(--amber);background:var(--amber-soft)}
-
-/* Static Page Styles */
-.page-section{padding:24px 18px;max-width:720px;margin:0 auto}
-.page-section h1{font-family:var(--font-display);font-size:clamp(1.4rem,4vw,2rem);font-weight:700;margin-bottom:8px}
-.page-sub{font-size:14px;color:var(--ink-dim);margin-bottom:20px}
-.page-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin-bottom:12px}
-.page-card h3{font-size:15px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:8px}
-.page-card h3 svg{width:18px;height:18px;color:var(--amber)}
-.page-card p{font-size:13.5px;color:var(--ink-dim);line-height:1.7;margin-bottom:8px}
-.page-card ul{list-style:none;padding:0;margin-top:8px}
-.page-card li{font-size:13px;color:var(--ink-dim);padding:5px 0 5py 20px;position:relative}
-.page-card li::before{content:'';position:absolute;left:0;top:10px;width:7px;height:7px;border-radius:2px;background:var(--amber)}
-.page-card li strong{color:var(--ink)}
-
-/* Contact Form */
-.contact-form{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin-bottom:12px}
-.contact-form .field{margin-bottom:14px}
-.contact-form label{display:block;font-family:var(--font-mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-dim);margin-bottom:5px}
-.contact-form input,.contact-form textarea,.contact-form select{width:100%;border:1px solid var(--line);border-radius:var(--radius-sm);padding:10px 12px;font-size:14px;font-family:var(--font-body);color:var(--ink);background:var(--surface);outline:none;transition:border-color .2s}
-.contact-form input:focus,.contact-form textarea:focus,.contact-form select:focus{border-color:var(--amber)}
-.contact-form textarea{min-height:100px;resize:vertical}
-.contact-form .form-row{display:flex;gap:10px}
-.contact-form .form-row .field{flex:1}
-.contact-form .submit-btn{width:100%;background:var(--amber);color:#fff9ee;border:none;border-radius:var(--radius-sm);padding:13px;font-size:14px;font-weight:700;font-family:var(--font-body);cursor:pointer;transition:filter .2s}
-.contact-form .submit-btn:hover{filter:brightness(1.08)}
-.contact-info{display:flex;flex-direction:column;gap:8px}
-.contact-info a{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-dim);text-decoration:none}
-.contact-info a:hover{color:var(--amber)}
-.contact-info svg{width:16px;height:16px;color:var(--amber)}
-
-/* Privacy Policy */
-.privacy-h{font-size:13px;font-weight:700;margin:14px 0 6px;color:var(--ink)}
-.privacy-p{font-size:12.5px;color:var(--ink-dim);line-height:1.7;margin-bottom:8px}
-.privacy-p a{color:var(--amber);text-decoration:none}
-
-/* Credits */
-.credit-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);padding:14px;margin-bottom:8px;display:flex;align-items:flex-start;gap:12px}
-.credit-card .ci{width:36px;height:36px;border-radius:9px;background:var(--amber-soft);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.credit-card .ci svg{width:18px;height:18px;color:var(--amber)}
-.credit-card .cn{font-size:13px;font-weight:700;margin-bottom:2px}
-.credit-card .cd{font-size:12px;color:var(--ink-dim);line-height:1.5}
-.credit-card .cl{font-size:11px;color:var(--amber);text-decoration:none;font-weight:600;display:inline-block;margin-top:3px}
-
-/* Report Time */
-.report-btn{display:inline-flex;align-items:center;gap:4px;background:none;border:1px dashed rgba(184,121,31,.22);border-radius:6px;padding:3px 8px;font-size:10px;font-weight:600;color:var(--amber);cursor:pointer;font-family:var(--font-body);transition:all .2s;flex-shrink:0}
-.report-btn:hover{background:var(--amber-soft);border-style:solid}
-.report-btn svg{width:10px;height:10px}
-.report-form{background:var(--amber-soft);border:1px solid rgba(184,121,31,.22);border-radius:var(--radius);padding:14px;margin:8px 0;display:none}
-.report-form.show{display:block;animation:fadeIn .3s ease}
-.report-form .report-title{font-size:12px;font-weight:700;color:var(--amber);margin-bottom:6px}
-.report-form .report-row{display:flex;gap:8px}
-.report-form input[type=time]{flex:1;border:1px solid rgba(184,121,31,.22);border-radius:var(--radius-sm);padding:8px 10px;font-family:var(--font-mono);font-size:13px;background:var(--surface);color:var(--ink);outline:none}
-.report-form input[type=time]:focus{border-color:var(--amber)}
-.report-form button{background:var(--amber);color:#fff9ee;border:none;border-radius:var(--radius-sm);padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--font-body)}
-.report-done{display:none;font-size:11px;color:var(--green);font-weight:600;margin-top:6px;align-items:center;gap:4px}
-.report-done.show{display:flex}
-.report-done svg{width:12px;height:12px}
-
-/* Admin Dashboard */
-.admin-badge{font-family:var(--font-mono);font-size:10px;color:var(--green);font-weight:700;background:var(--green-soft);padding:3px 10px;border-radius:999px}
-.admin-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;margin-bottom:16px}
-.admin-stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);padding:10px 12px}
-.admin-stat .lb{font-family:var(--font-mono);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-dim)}
-.admin-stat .vl{font-size:15px;font-weight:700;font-family:var(--font-mono);margin-top:2px}
-.admin-report-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--line);font-size:12px}
-.admin-report-row:last-child{border-bottom:none}
-.admin-approve{background:var(--green-soft);color:var(--green);border:1px solid var(--green);border-radius:5px;padding:2px 8px;font-size:10px;cursor:pointer;font-weight:700}
-.admin-btn{flex:1;min-width:120px;background:var(--surface-2);color:var(--ink);border:1px solid var(--line);border-radius:var(--radius-sm);padding:10px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--font-body)}
-.admin-btn.primary{background:var(--amber);color:#fff9ee;border:none}
-
-@media(max-width:480px){.contact-form .form-row{flex-direction:column}.admin-grid{grid-template-columns:repeat(2,1fr)}}
-
-/* ==== Compact home & organization ==== */
-.hero { padding: 20px 0 12px; }
-.hero h1 { font-size: clamp(1.8rem, 6vw, 2.6rem); margin-bottom: 4px; }
-.tagline { margin-bottom: 14px; font-size: 14px; }
-.section { padding: 18px 0 28px; }
-.section-title { margin-bottom: 12px; font-size: 1.15rem; }
-
-/* Popular destinations - horizontal swipe row, no long vertical scroll */
-.place-cards {
-  display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  padding: 2px 2px 10px;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
+/* ---------- Theme (static pages) ---------- */
+function toggleThemeStatic() {
+  var cur = document.documentElement.getAttribute('data-theme') ||
+    (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  var next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  try { localStorage.setItem('bj-theme', next); } catch (e) {}
+  updateThemeIconStatic(next);
 }
-.place-card {
-  flex: 0 0 128px;
-  scroll-snap-align: start;
-  padding: 13px 12px;
+function updateThemeIconStatic(theme) {
+  var btn = document.getElementById('themeBtn');
+  if (!btn) return;
+  btn.innerHTML = theme === 'dark+
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
 }
-.place-card .icon-badge { width: 34px; height: 34px; margin-bottom: 8px; }
-.place-cards::-webkit-scrollbar { height: 6px; }
-.place-cards::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 99px; }
-.place-cards::-webkit-scrollbar-track { background: transparent; }
+(function () {
+  var saved = null;
+  try { saved = localStorage.getItem('bj-theme'); } catch (e) {}
+  if (saved) document.documentElement.setAttribute('data-theme', saved);
+  var eff = saved || (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  updateThemeIconStatic(eff);
+})();
 
-/* tighter lists */
-.result-item { padding: 12px 14px; margin-bottom: 8px; }
-.stats-inline { padding: 10px 0 0; }
+/* ---------- WhatsApp Share â€” bus time + site link ---------- */
+function shareWhatsApp(busName, origin, destination, departure, stops) {
+  var msg = "BusJatri â€” West Bengal Bus Timetable\n\n";
+  msg += "Bus: " + (busName || "â€”") + "\n";
+  msg += "Route: " + (origin || "â€”") + " â†’ " + (destination || "â€”") + "\n";
+  if (departure) msg += "Departure: " + departure + "\n";
+  if (stops) msg += "Stops: " + stops + "\n";
+  msg += "\nView full timetable:\nhttps://wb-bus.vercel.app";
+  msg += "\n\nMore buses on BusJatri (à¦¬à¦¾à¦¸ à¦¯à¦¾à¦¤à§à¦°à§€)";
+  window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
+}
 
-/* hide "West Bengal Â» Route Data" eyebrow text */
-.eyebrow { display: none !important; }
+/* ---------- Geolocation Auto-Detect â€” prefill "From" field ---------- */
+function detectLocation() {
+  if (!navigator.geolocation) return;
+  navigator.geolocation.getCurrentPosition(function (pos) {
+    fetch("https://nominatim.openstreetmap.org/reverse?lat=" + pos.coords.latitude + "&lon=" + pos.coords.longitude + "&format=json&accept-language=en")
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        var a = data.address || {};
+        var city = a.city || a.town || a.village || a.county || a.state_district;
+        if (city) {
+          var inputs = document.querySelectorAll(".search-field input");
+          if (inputs[0] && !inputs[0].value) {
+            inputs[0].value = city;
+            var hint = document.querySelector(".geo-hint");
+            if (hint) {
+              var c = hint.querySelector(".geo-city");
+              if (c) c.textContent = city;
+              hint.classList.add("show");
+            }
+          }
+        }
+      })
+      .catch(function () { /* silent â€” detection is best-effort only */ });
+  }, function () { /* denied or failed â€” ignore */ }, { timeout: 8000 });
+}
 
+/* ---------- Contact Form â€” opens user's email client ---------- */
+function sendContact() {
+  var name = (document.getElementById("cName") || {}).value || "";
+  var email = (document.getElementById("cEmail") || {}).value || "";
+  var subject = (document.getElementById("cSubject") || {}).value || "Feedback";
+  var message = (document.getElementById("cMessage") || {}).value || "";
+  var body = "Name: " + name + "\nEmail: " + email + "\n\n" + message;
+  var url = "mailto:busjatri@zohomail.in?subject=" + encodeURIComponent("[BusJatri] " + subject) + "&body=" + encodeURIComponent(body);
+  var ok = document.getElementById("contactSuccess");
+  if (ok) ok.style.display = "flex";
+  window.location.href = url;
+}
 
-/* ==== Center title + taglines ==== */
-.hero-inner { text-align: center !important; }
-.hero h1 { text-align: center; }
-.tagline.en, .tagline.bn { text-align: center; display: block; }
+/* ---------- Report Time â€” on bus detail pages ---------- */
+function toggleReport(btn) {
+  var form = document.getElementById("reportForm");
+  if (!form) return;
+  var showing = form.classList.toggle("show");
+  if (btn) btn.style.display = showing ? "none" : "inline-flex";
+}
+function submitReport() {
+  var form = document.getElementById("reportForm");
+  var done = document.getElementById("reportDone");
+  var t = (document.getElementById("reportTime") || {}).value || "";
+  if (!t) { alert("Please enter the correct time."); return; }
+  if (form) form.classList.remove("show");
+  if (done) done.classList.add("show");
+  /* Time corrections go to the team via email */
+  var msg = "BusJatri time correction:\n" + document.title + "\nCorrect time: " + t;
+  window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
+}
+
+/* ---------- Admin Dashboard (demo actions) ---------- */
+function adminUpdate(btn, msg) {
+  if (!btn) return;
+  var old = btn.textContent;
+  btn.textContent = "') M=!;Ğ€¬€‰ÁÁÉ½Ù•ƒŠrLˆì(€‰Ñ¸¹‘¥Í…‰±•€ôÑÉÕ”ì(€¥˜€¡É½Ü¤ìÉ½Ü¹ÍÑå±”¹½Á…¥Ñä€ô€ˆ¸ÔÔˆìô)ô((¼¨€´´´´´´´´´´‘M•¹Í”é½¹”…Ñ¥Ù…Ñ¥½¸€¡İ¡•¸…‘ÌÍÉ¥ÁĞÁÉ•Í•¹Ğ¤€´´´´´´´´´´€¨¼(¡™Õ¹Ñ¥½¸€ ¤ì(€¥˜€¡İ¥¹‘½Ü¹…‘Í‰å½½±”¤ì(€€€‘½Õµ•¹Ğ¹ÅÕ•ÉåM•±•Ñ½É±° ˆ¹…µé½¹”ˆ¤¹™½É… ¡™Õ¹Ñ¥½¸€¡è¤ìè¹±…ÍÍ1¥ÍĞ¹…‘ ‰…Ñ¥Ù”ˆ¤ìô¤ì(€ô)ô¤ ¤ì((¼¨€´´´´´´´´´´ÕÑ¼µ‘•Ñ•Ğ±½…Ñ¥½¸½¸¡½µ”Á…”€´´´´´´´´´´€¨¼)‘½Õµ•¹Ğ¹…‘‘Ù•¹Ñ1¥ÍÑ•¹•È ‰=5½¹Ñ•¹Ñ1½…‘•ˆ°™Õ¹Ñ¥½¸€ ¤ì(€¥˜€¡‘½Õµ•¹Ğ¹ÅÕ•ÉåM•±•Ñ½È ˆ¹Í•…É µ™¥•±ˆ¤¤‘•Ñ•Ñ1½…Ñ¥½¸ ¤ì)ô¤ì((¼¨€ôôôô	ÕÌ•Ñ…¥°A…”I•‘•Í¥¸€¡½Ù•ÉÉ¥‘•Ì…ÁÀ¹©ÌÉ•¹‘•É	ÕÌ¤€ôôôô€¨¼)™Õ¹Ñ¥½¸É•¹‘•É	ÕÌ¡•°°¥¤ì(€¥€ô¥¹ÍÁ±¥Ğ œüœ¥lÁtì(€½¹ÍĞˆ€ô	UMMm¥‘tì(€¥˜€ …ˆ¤ì(€€€•°¹¥¹¹•É!Q50€ô€œñ‘¥Ø±…ÍÌô‰½¹Ñ…¥¹•ÈˆÍÑå±”ô‰Á…‘‘¥¹œèĞÁÁàˆøñ‘¥Ø±…ÍÌô‰•µÁÑäµÍÑ…Ñ”ˆøœ€¬¥½¸ …±•ÉĞœ¤€¬€œñÀù	ÕÌ¹½Ğ™½Õ¹¸ğ½Àøğ½‘¥Øøñ‘¥Ø±…ÍÌô‰‰…¬µ‰Ñ¸ˆ½¹±¥¬ô‰±½…Ñ¥½¸¹¡…Í õpœŒ½pœˆøœ€¬¥½¸ ¡•ÙÉ½¹1•™Ğœ¤€¬€œ	…¬ğ½‘¥Øøğ½‘¥Øøœì(€€€É•ÑÕÉ¸ì(€ô(€½¹ÍĞÍÑ½ÁÌ€ôˆ¹ÍÑ½ÁÁ…•}Á…•Ìñğˆ¹ÍÑ½ÁÁ…•Ìñğmtì(€½¹ÍĞ%9%Q%0€ô€àì(€½¹ÍĞÍ¡½İ±°€ô±½…Ñ¥½¸¹¡…Í ¹¥¹±Õ‘•Ì ™Õ±°ôÄœ¤ì(€½¹ÍĞÙ¥Í¥‰±”€ôÍ¡½İ±°€üÍÑ½ÁÌ€èÍÑ½ÁÌ¹Í±¥” À°%9%Q%0¤ì((€½¹ÍĞÍÑ½Á9…µ•Ì€ôÍÑ½ÁÌ¹µ…À¡Ì€ôøÌ¹¹…µ”¤¹™¥±Ñ•È¡	½½±•…¸¤ì(€±•Ğµ…ÁUÉ°€ô€œœì(€¥˜€¡ÍÑ½Á9…µ•Ì¹±•¹Ñ €øô€È¤ì(€€€½¹ÍĞ¼€ô•¹½‘•UI%½µÁ½¹•¹Ğ¡ÍÑ½Á9…µ•ÍlÁt€¬€œ°]•ÍĞ	•¹…°œ¤ì(€€€½¹ÍĞÈ€ô•¹½‘•UI%½µÁ½¹•¹Ğ¡ÍÑ½Á9…µ•ÍmÍÑ½Á9…µ•Ì¹±•¹Ñ €´€Åt€¬€œ°]•ÍĞ	•¹…°œ¤ì(€€€½¹ÍĞİÀ€ôÍÑ½Á9…µ•Ì¹Í±¥” Ä°€´Ä¤¹Í±¥” À°€à¤¹µ…À¡¸€ôø•¹½‘•UI%½µÁ½¹•¹Ğ¡¸€¬€œ°]•ÍĞ	•¹…°œ¤¤¹©½¥¸ ğœ¤ì(€€€µ…ÁUÉ°€ô€¡ÑÑÁÌè¼½İİÜ¹½½±”¹½´½µ…ÁÌ½‘¥È¼ı…Á¤ôÄ™½É¥¥¸ôœ€¬¼€¬€œ™‘•ÍÑ¥¹…Ñ¥½¸ôœ€¬È€¬€¡İÀ€ü€œ™İ…åÁ½¥¹ÑÌôœ€¬İÀ€è€œœ¤€¬€œ™ÑÉ…Ù•±µ½‘”õ‘É¥Ù¥¹œœì(€ô•±Í”¥˜€¡ˆ¹½É¥¥¸€˜˜ˆ¹‘•ÍÑ¥¹…Ñ¥½¸¤ì(€€€µ…ÁUÉ°€ô€¡ÑÑÁÌè¼½İİÜ¹½½±”¹½´½µ…ÁÌ½‘¥È¼ı…Á¤ôÄ™½É¥¥¸ôœ€¬•¹½‘•UI%½µÁ½¹•¹Ğ¡ˆ¹½É¥¥¸€¬€œ°]•ÍĞ	•¹…°œ¤€¬€œ™‘•ÍÑ¥¹…Ñ¥½¸ôœ€¬•¹½‘•UI%½µÁ½¹•¹Ğ¡ˆ¹‘•ÍÑ¥¹…Ñ¥½¸€¬€œ°]•ÍĞ	•¹…°œ¤€¬€œ™ÑÉ…Ù•±µ½‘”õ‘É¥Ù¥¹œœì(€ô((€½¹ÍĞÍÑ½Á!Q50€ôÙ¥Í¥‰±”¹µ…À¡™Õ¹Ñ¥½¸¡Ì°¤¤ì(€€€Ù…È¥Í¹€ô¤€ôôô€Àñğ¤€ôôôÙ¥Í¥‰±”¹±•¹Ñ €´€Äì(€€€Ù…ÈÍÑ¸€ô€¡MQ=AMmÌ¹¹…µ•tñğíô¤¹¹•…É•ÍÑ}ÍÑ…Ñ¥½¸ì(€€€Ù…ÈÍÑ¹	…‘”€ôÍÑ¸€ü€œñÍÁ…¸±…ÍÌô‰É…¥°ˆùI…¥±İ…äè€œ€¬•ÍŒ¡ÍÑ¸¹¹…µ”¤€¬€¡ÍÑ¸¹½‘”€ü€œ€ œ€¬•ÍŒ¡ÍÑ¸¹½‘”¤€¬€œ¤œ€è€œœ¤€¬€œƒ
+Üøœ€¬ÍÑ¸¹­´€¬€œ­´ğ½ÍÁ…¸øœ€è€œœì(€€€Ù…ÈÕÁP€ôÌ¹ÕÁ}Ñ¥µ”€ü€œñÍÁ…¸øœ€¬•ÍŒ¡Ì¹ÕÁ}Ñ¥µ”¤€¬€œğ½ÍÁ…¸øœ€è€œñÍÁ…¸±…ÍÌô‰¹¼µĞˆûŠPğ½ÍÁ…¸øœì(€€€Ù…È‘¹P€ôÌ¹‘½İ¹}Ñ¥µ”€ü€œñÍÁ…¸øœ€¬•ÍŒ¡Ì¹‘½İ¹}Ñ¥µ”¤€¬€œğ½ÍÁ…¸øœ€è€œñÍÁ…¸±…ÍÌô‰¹¼µĞˆûŠPğ½ÍÁ…¸øœì(€€€É•ÑÕÉ¸€œñ‘¥Ø±…ÍÌô‰ÍÑ½ÀµÉ½Ü€œ€¬€¡¥Í¹€ü€•¹œ€è€œœ¤€¬€œˆøñÍÁ…¸±…ÍÌô‰ÍÑ½Àµ‘½Ğˆøğ½ÍÁ…¸øñÍÁ…¸±…ÍÌô‰ÍÑ½Àµ¹…µ”ˆøœ€¬•ÍŒ¡Á¸¡Ì¹¹…µ”¤¤€¬ÍÑ¹	…‘”€¬€œğ½ÍÁ…¸øñÍÁ…¸±…ÍÌô‰ÍÑ½ÀµÑ¥µ•Ìˆøœ€¬ÕÁP€¬‘¹P€¬€œğ½ÍÁ…¸øğ½‘¥Øøœì(€ô¤¹©½¥¸ œœ¤ì((€Ù…ÈÍ¡½İ5½É•	Ñ¸€ô€œœì(€¥˜€ …Í¡½İ±°€˜˜ÍÑ½ÁÌ¹±•¹Ñ €ø%9%Q%0¤ì(€€€Í¡½İ5½É•	Ñ¸€ô€œñ‰ÕÑÑ½¸±…ÍÌô‰Í¡½Üµ…±°ˆ½¹±¥¬ô‰±½…Ñ¥½¸¹¡…Í õpœŒ½‰ÕÌ¼œ€¬•¹½‘•UI%½µÁ½¹•¹Ğ¡¥¤€¬€œı™Õ±°ôÅpœˆùM¡½Ü…±°€œ€¬ÍÑ½ÁÌ¹±•¹Ñ €¬€œÍÑ½ÁÌƒŠLğ½‰ÕÑÑ½¸øœì(€ô•±Í”¥˜€¡Í¡½İ±°€˜˜ÍÑ½ÁÌ¹±•¹Ñ €ø%9%Q%0¤ì(€€€Í¡½İ5½É•	Ñ¸€ô€œñ‰ÅÑÑ½¸±…ÍÌô‰Í¡½Üµ…±°ˆ½¹±¥¬ô‰±½…Ñ¥½¸¹¡…Í õpœŒ½‰ÕÌ¼œ€¬•¹½‘•UI%½µÁ½¹•¹Ğ¡¥¤€¬€pœˆùM¡½Ü±•ÍÌƒŠ@ğ½‰ÕÑÑ½¸øœì(€ô((€•°¹¥¹¹•É!Q50€ô(€€€€œñ‘¥Ø±…ÍÌô‰½¹Ñ…¥¹•ÈˆÍÑå±”ô‰Á…‘‘¥¹œµÑ½ÀèÈÉÁàíÁ…‘‘¥¹œµ‰½ÑÑ½´èĞÁÁàˆøœ€¬(€€€€€€œñ‘¥Ø±…ÍÌô‰‰…¬µ‰Ñ¸ˆ½¹±¥¬ô‰¡¥ÍÑ½Éä¹±•¹Ñ øÄı¡¥ÍÑ½Éä¹‰…¬ ¤é±½…Ñ¥½¸¹¡…Í õpœŒ½pœˆøœ€¬¥½¸ ¡•ÙÉ½¹1•™Ğœ¤€¬€œ€ñÍÁ…¸±…ÍÌô‰±…‰•°µ•¸ˆù	…¬ğ½ÍÁ…¸øğ½‘¥Øøœ€¬(€€€€€€œñ‘¥Ø±…ÍÌô‰‰ÕÌµ¡•…ˆøœ€¬(€€€€€€€€œñ Èøœ€¬•ÍŒ¡ˆ¹‰ÕÍ}¹…µ”¤€¬€¡ˆ¹É•}¹¼€ü€œ€ñÍÁ…¸±…ÍÌô‰É•œˆøœ€¬•ÍŒ¡ˆ¹É•}¹¼¤€¬€œğ½ÍÁ…¸øœ€è€œœ¤€¬€œ€œ€¬‰ÕÍQåÁ•	…‘”¡ˆ¹‰ÕÍ}ÑåÁ”¤€¬€œğ½ Èøœ€¬(€€€€€€€€œñ‘¥Ø±…ÍÌô‰É½ÕÑ”µ±¥¹”ˆøœ€¬¥½¸ İ…Ù•Ìœ¤€¬€œ€œ€¬•ÍŒ¡Á¸¡ˆ¹½É¥¥¸¤¤€¬€œƒŠ€œ€¬•ÍŒ¡Á¸¡ˆ¹‘•ÍÑ¥¹…Ñ¥½¸¤¤€¬€œğ½‘¥Øøœ€¬(€€€€€€€€œñ‘¥Ø±…ÍÌô‰¥¹™¼µÉ¥ˆøœ€¬(€€€€€€€€€€¡ˆ¹‘•Á…ÉÑÕÉ•}Ñ¥µ”€ü€œñ‘¥Ø±…ÍÌô‰¥¹™¼µ¥Ñ•´ˆøñ‘¥Ø±…ÍÌô‰±‰°ˆù•Á…ÉÑÕÉ”ğ½‘¥Øøñ‘¥Ø±…ÍÌô‰Ù…°ˆøœ€¬•ÍŒ¡ˆ¹‘•Á…ÉÑÕÉ•}Ñ¥µ”¤€¬€œğ½‘¥Øøğ½‘¥Øøœ€è€œœ¤€¬(€€€€€€€€€€¡ˆ¹…ÉÉ¥Ù…±}Ñ¥µ”€ü€œğ„´´‘½½‘±•€´´øñ‘¥Ø±…ÍÌô‰¥¹™¼µ¥Ñ•´ˆøñ‘¥Ø±…ÍÌô‰±‰°ˆùÉÉ¥Ù…°ğ½‘¥Øøñ‘¥Ø±…ÍÌô‰Ù…°ˆøœ€¬•ÍŒ¡ˆ¹…ÉÉ¥Ù…±}Ñ¥µ”¤€¬€œğ½‘¥Øøğ½‘¥Øøœ€è€œœ¤€¬(€€€€€€€€€€œñ‘¥Ø±…ÍÌô‰¥¹™¼µ¥Ñ•´ˆøñ‘¥Ø±…ÍÌô‰±‰°ˆùMÑ½ÁÌğ½‘¥Øøñ‘¥Ø±…ÍÌô‰Ù…°ˆøœ€¬€¡ÍÑ½ÁÌ¹±•¹Ñ ñğˆ¹Ñ½Ñ…±}ÍÑ½ÁÁ…•}Á…•Ìñğ€À¤€¬€œğ½‘¥Øøğ½‘¥Øøœ€¬(€€€€€€€€€€¡ˆ¹™…É”€ü€œñ‘¥Ø±…ÍÌô‰¥¹™¼µ¥Ñ•´ˆøñ‘¥Ø±…ÍÌô‰±‰°ˆù…É”ğ½‘¥Øøñ‘¥Ø±…ÍÌô‰Ù…°ˆøœ€¬•ÍŒ¡ˆ¹™…É”¤€¬€œğ½‘¥Øøğ½‘¥Øøœ€è€œœ¤€¬(€€€€€€€€€€¡ˆ¹½Á•É…Ñ½È€ü€œñ‘¥Ø±…ÍÌô‰¥¹™¼µ¥Ñ•´ˆøñ‘¥Ø±…ÍÌô‰±‰°‰=Á•É…Ñ½Èğ½‘¥Øøñ‘¥Ø±…ÍÌô‰Ù…°ˆøœ€¬•ÍŒ¡ˆ¹½Á•É…Ñ½È¤€¬€œğ½‘¥Øøğ½‘¥Øøœ€è€œœ¤€¬(€€€€€€€€€€¡ˆ¹‘•Á½Ñ}¹…µ”€ü€œğ„´´‘½½‘±•€´´øñ‘¥Ø±…ÍÌô‰¥¹™¼µ¥Ñ•´ˆøñ‘¥Ø±…ÍÌô‰±‰°ˆù•Á½Ğğ½‘¥Øøñ‘¥Ø±…ÍÌô‰Ù…°ˆøœ€¬•ÍŒ¡ˆ¹‘•Á½Ñ}¹…µ”¤€¬€œğ½‘¥Øøğ½‘¥Øøœ€è€œœ¤€¬(€€€€€€€€€€¡ˆ¹½¹Ñ…Ñ}¹Õµ‰•È€˜˜ˆ¹½¹Ñ…Ñ}¹Õµ‰•È€„ôô€9½ĞÙ…¥±…‰±”€„œ€ü€œñ‘¥Ø±…ÍÌô‰¥¹™¼µ¥Ñ•´ˆøñ‘¥Ø±…ÍÌô‰±‰°ˆù½¹Ñ…Ğğ½‘¥Øøñ‘¥Ø±…ÍÌô‰Ù…°ˆøñ„¡É•˜ô‰Ñ•°èœ€¬•ÍŒ¡ˆ¹½¹Ñ…Ñ}¹Õµ‰•È¤€¬€œˆøœ€¬•ÍŒ¡ˆ¹½¹Ñ…Ñ}¹Õµ‰•È¤€¬€œğ½„øğ½‘¥Øøğ½‘¥Øøœ€è€œœ¤€¬(€€€€€€€€œğ½‘¥Øøœ€¬(€€€€€€€œğ½‘¥Øøœ€¬(€€€€€€€œñ‘¥Ø±…ÍÌô‰İ„µÉ½Üˆøœ€¬(€€€€€€€€¡µ…ÁUÉ°€ü€œñ„±…ÍÌô‰µ…Àµ‰Ñ¸ˆ¡É•˜ôˆœ€¬µ…ÁUÉ°€¬€œˆÑ…É•Ğô‰}‰±…¹¬ˆÉ•°ô‰¹½½Á•¹•Èˆøœ€¬¥½¸ µ…Àœ¤€¬€œ€ñÍÁ…¸±…ÍÌô‰±…‰•°µ•¸ˆùI½ÕÑ”½¸½½±”5…ÁÌğ½ÍÁ…¸øğ½„øœ€è€œœ¤€¬(€€€€€€€€€œñ„±…ÍÌô‰İ„µ‰Ñ¸ˆ¡É•˜ô‰©…Ù…ÍÉ¥ÁĞéÙ½¥ À¤ˆ½¹±¥¬ô‰Í¡…É•]¡…ÑÍÁÀ¡Ñ¡¥Ì¹‘…Ñ…Í•Ğ¤ˆ‘…Ñ„µ‰ÕÌôˆœ€¬•ÍŒ¡ˆ¹‰ÕÍ}¹…µ”¤€¬€œˆ‘…Ñ„µ½Éœôˆœ€¬•ÍŒ¡Á¸¡ˆ¹½É¥¥¸¤¤€¬€œˆ‘…Ñ„µ‘•ÍĞôˆœ€¬•ÍŒ¡Á¸¡ˆ¹‘•ÍÑ¥¹…Ñ¥½¸¤¤€¬€œˆ‘…Ñ„µ‘•Àôˆœ€¬•ÍŒ¡ˆ¹‘•Á…ÉÑÕÉ•}Ñ¥µ•ñğœœ¤€¬€œˆ‘…Ñ„µÍÑ½ÁÌôˆœ€¬€¡ÍÑ½ÁÌ¹±•¹Ñ¡ñğÀ¤€¬€œˆøœ€¬¥½¸ İ…Ù•Ìœ¤€¬€œ€ñÍÁ…¸±…ÍÌô‰±…‰•°µ•¸ˆùM¡…É”½¸]¡…ÑÍÁÀğ½ÍÁ…¸øğ½„øœ€¬(€€€€€€€œğ½‘¥Øøœ€¬(€€€€€€€¡ˆ¹‘•ÍÑ¥¹…Ñ¥½¸€˜˜ˆ¹‘•ÍÑ¥¹…Ñ¥½¸€„ôô€ŸŠPœ€ü€œñ‘¥Ø±…ÍÌô‰İ•…Ñ¡•Èµ…Éˆ¥ô‰İ•…Ñ¡•É…Éˆ‘…Ñ„µ‘•ÍĞôˆœ€¬•ÍŒ¡ˆ¹‘•ÍÑ¥¹…Ñ¥½¸¤€¬€œˆøñ‘¥Ø±…ÍÌô‰±‰°ˆù]•…Ñ¡•È¥¸€œ€¬•ÍŒ¡ˆ¹‘•ÍÑ¥¹…Ñ¥½¸¤€¬€œ€¡¹½Ü¤ğ½‘¥Øøñ‘¥Ø±…ÍÌô‰Ù…°ˆ¥ô‰İ•…Ñ¡•ÉY…°ˆù1½…‘¥¹ŸŠ˜ğ½‘¥Øøğ½‘¥Øøœ€è€œœ¤€¬(€€€€€€€¡ÍÑ½ÁÌ¹±•¹Ñ €ü€œñ Ì±…ÍÌô‰Í•Ñ¥½¸µÑ¥Ñ±”ˆÍÑå±”ô‰µ…É¥¸µÑ½ÀèÈÉÁàˆøœ€¬¥½¸ İ…Ù•Ìœ¤€¬€œ€ñÍÁ…¸±…ÍÌô‰±…‰•°µ•¸ˆùI½ÕÑ”Q¥µ•Ñ…‰±”ğ½ÍÁ…¸øğ½ Ìøñ‘¥Ø±…ÍÌô‰ÍÑ½Àµ±¥ÍĞˆøœ€¬ÍÑ½Á!Q50€¬Í¡½İ5½É•	Ñ¸€¬€œğ½‘¥Øøœ€è€œñÀÍÑå±”ô‰½±½ÈéÙ…È ´µ¥¹¬µ‘¥´¤íµ…É¥¸µÑ½ÀèÄÉÁàˆùMÑ½ÁÁ…”‘•Ñ…¥±Ì¹½Ğ…Ù…¥±…‰±”¸ğ½Àøœ¤€¬(€€€€€€€œñÀÍÑå±”ô‰™½¹ĞµÍ¥é”èÄÉÁàí½±½ÈéÙ…È ´µ¥¹¬µ‘¥´¤íµ…É¥¸èÄÁÁà€À€Àˆù…Ñ„ÕÁ‘…Ñ•è€œ€¬•ÍŒ ¡Q¹µ•Ñ„ñğíô¤¹±…ÍÑ}ÕÁ‘…Ñ•ñğ€œœ¤€¬€œğ½Àøœ€¬(€€€€œğ½‘¥Øøœì(€±½…‘]Õ…Ñ¡•È ¤ì)ô(
