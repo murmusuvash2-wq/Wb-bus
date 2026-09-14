@@ -1,0 +1,54 @@
+def bus_card(bus, idx=0):
+    name = clean_text(bus.get("bus_name")) or "Bus service"
+    dep = format_time(parse_time(bus.get("departure_time")))
+    arr = format_time(parse_time(bus.get("arrival_time")))
+    operator = operator_name(bus)
+    stops_list = bus_stops(bus)
+    n_stops = len(stops_list)
+    duration = calculate_duration(bus)
+    dur_text = fmt_duration(duration) if duration else "—"
+    fare = clean_text(bus.get("fare")) or "—"
+    bt_raw = (bus.get("bus_type") or "").lower()
+    badge = ""
+    if "gov" in bt_raw or "sbstc" in bt_raw or "nbstc" in bt_raw or "wbtc" in bt_raw:
+        badge = '<span class="badge badge-govt">Govt</span>'
+    elif "private" in bt_raw:
+        badge = '<span class="badge badge-private">Private</span>'
+    if " ac" in bt_raw and "non" not in bt_raw:
+        badge += '<span class="badge badge-ac">AC</span>'
+    elif "non ac" in bt_raw:
+        badge += '<span class="badge badge-nonac">Non-AC</span>'
+
+    origin = clean_text(bus.get("origin")) or ""
+    destination = clean_text(bus.get("destination")) or ""
+    dep_html = f'<span class="dep.time">{esc(dep)}</span>' if dep != "—" else '<span class="no-time">—:—</span>'
+
+    meta = '<div class="bus-meta-grid">'
+    if operator:
+        meta += f'<div class="meta-item"><div class="lb">Operator</div><div class="vl">{esc(operator)}</div></div>'
+    meta += f'<div class="meta-item"><div class="lb">Stops</div><div class="vl">{n_stops}</div></div>'
+    if duration:
+        meta += f'<div class="meta-item"><div class="lb">Duration</div><div class="vl">{esc(dur_text)}</div></div>'
+    if fare != "—":
+        meta += f'<div class="meta-item"><div class="lb">Fare</div><div class="vl">{esc(fare)}</div></div>'
+    meta += '</div>'
+
+    tl = '<div class="mini-timeline">'
+    for st in stops_list:
+        tl += f'<div class="mini-stop"><span class="dot"></span><span class="st-name">{esc(st)}</span></div>'
+    tl += '</div>'
+
+    return f"""<div class="bus-card" style="--i:{idx}" onclick="toggleBus(this,event)">
+  <div class="bus-head">
+    <div class="bus-info">
+      <div class="name">{esc(name)} {badge}</div>
+      <div class="route">{esc(origin)} \u2192 {esc(destination)}</div>
+    </div>
+    {dep_html}
+    <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+  </div>
+  <div class="bus-body"><div class="bus-body-inner">
+    {meta}
+    {tl}
+  </div></div>
+</div>"""
