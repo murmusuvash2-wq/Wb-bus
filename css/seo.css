@@ -1,111 +1,59 @@
-/* BusJatri â€” static SEO page (bus-time-table) components.
-   Loaded in addition to style.css; route hero, timetable, timeline, FAQ.
-   Uses rstop- prefix so nothing clashes with the SPA stop-row classes. */
-.crumbs { font-size: 13px; color: var(--ink-dim); margin: 22px 0 18px; display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
-.crumbs .icon { width: 12px; height: 12px; }
-.crumbs a { color: var(--ink-dim); font-weight: 500; }
-.crumbs a:hover { color: var(--amber-ink); }
+/* BusJatri SEO Pages â€” "Departure Board" compact design
+   Matches main site: amber/maroon, ticket-stub, horizontal route map*/
 
-/* ---------- Route hero: ticket-stub card ---------- */
-.route-hero { background: var(--surface); border: 1px solid var(--line-strong); border-radius: var(--radius-lg); padding: 30px 28px 26px; box-shadow: var(--shadow); position: relative; overflow: hidden; margin-top: 18px; }
-.route-hero::before, .route-hero::after { content: ""; position: absolute; top: 50%; width: 22px; height: 22px; background: var(--bg); border-radius: 50%; transform: translateY(-50%); border: 1px solid var(--line-strong); display: none; }
-@media (min-width: 640px) { .route-hero::before { left: -12px; } .route-hero::after { right: -12px; } .route-hero::before, .route-hero::after { display: block; } }
-.route-eyebrow { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--amber-ink); background: var(--amber-soft); border: 1px solid color-mix(in srgb, var(--amber) 40%, transparent); padding: 4px 11px; border-radius: 999px; margin-bottom: 18px; }
-body.lang-bn .route-eyebrow { font-family: var(--font-body); letter-spacing: .03em; }
-.route-main { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
-.route-end .place { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.5rem, 4.5vw, 2.1rem); line-height: 1.15; letter-spacing: -.5px; display: block; }
-body.lang-bn .route-end .place { font-family: var(--font-body); }
-.route-end .sub { font-size: 13px; color: var(--ink-dim); margin-top: 2px; display: block; }
-.route-end.dest .place { color: var(--amber-ink); }
-.route-arrow { color: var(--amber); flex-shrink: 0; width: 34px; height: 34px; }
-.route-dash { border-top: 2px dashed var(--line-strong); margin: 22px -28px 0; position: relative; }
-.route-dash .stamp { position: absolute; right: 26px; top: -13px; background: var(--surface); border: 1px solid var(--line-strong); border-radius: 8px; padding: 3px 12px; font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-dim); }
-body.lang-bn .route-dash .stamp { font-family: var(--font-body); letter-spacing: 0; }
-
-/* ---------- Timetable table ---------- */
-.bus-table-wrap { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); overflow-x: auto; }
-table.bus-table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 560px; }
-.bus-table thead th { font-family: var(--font-mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-dim); text-align: left; padding: 13px 14px; border-bottom: 2px solid var(--line-strong); font-weight: 600; white-space: nowrap; }
-body.lang-bn .bus-table thead th { font-family: var(--font-body); font-size: 12.5px; text-transform: none; letter-spacing: 0; }
-.bus-table tbody td { padding: 13px 14px; border-bottom: 1px solid var(--line); vertical-align: middle; }
-.bus-table tbody tr:last-child td { border-bottom: none; }
-.bus-table tbody tr:hover { background: var(--amber-soft); }
-.bus-name { font-family: var(--font-display); font-weight: 600; font-size: 15px; }
-body.lang-bn .bus-name { font-family: var(--font-body); }
-.bus-regn { font-family: var(--font-mono); font-size: 11px; color: var(--ink-dim); margin-top: 1px; }
-.time-cell { font-family: var(--font-mono); font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
-body.lang-bn .time-cell { font-family: var(--font-body); }
-.stops-cell { font-family: var(--font-mono); font-size: 12.5px; color: var(--ink-dim); }
-body.lang-bn .badge { text-transform: none; letter-spacing: 0; font-size: 10.5px; }
-
-/* ---------- Stops timeline (rstop- prefix so it doesn't clash with the SPA stop-row) ---------- */
-.stops-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 22px 24px; box-shadow: var(--shadow-sm); }
-.rstop-row { display: grid; grid-template-columns: 30px 1fr 96px; gap: 10px; align-items: center; padding: 10px 0; position: relative; }
-.rstop-row:not(:last-child)::after { content: ""; position: absolute; left: 10px; top: 28px; bottom: -10px; width: 1px; background: var(--line-strong); }
-.rstop-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--surface); border: 2px solid var(--amber); position: relative; z-index: 1; justify-self: center; }
-.rstop-dot.term { background: var(--amber); }
-.rstop-name { font-weight: 500; font-size: 13.5px; color: var(--ink); }
-.rstop-name.first-last { font-weight: 700; }
-.rstop-km { font-family: var(--font-mono); font-size: 11.5px; color: var(--ink-dim); text-align: right; }
-body.lang-bn .rstop-km { font-family: var(--font-body); }
-
-/* ---------- FAQ ---------- */
-.faq-item { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; }
-.faq-item summary { cursor: pointer; font-weight: 600; font-size: 14.5px; padding: 15px 18px; list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-.faq-item summary::-webkit-details-marker { display: none; }
-.faq-item summary::after { content: "+"; font-family: var(--font-mono); color: var(--amber-ink); font-size: 17px; flex-shrink: 0; }
-.faq-item[open] summary::after { content: "â€“"; }
-.faq-item summary:hover { color: var(--amber-ink); }
-.faq-item p { padding: 0 18px 15px; color: var(--ink-dim); font-size: 14px; line-height: 1.7; }
-
-/* ---------- Related / callout ---------- */
-.rev-callout { margin-top: 14px; font-size: 13px; color: var(--ink-dim); background: var(--amber-soft); border: 1px dashed color-mix(in srgb, var(--amber) 45%, transparent); border-radius: var(--radius); padding: 13px 16px; display: flex; align-items: center; gap: 9px; }
-.rev-callout .icon { color: var(--amber-ink); flex-shrink: 0; }
-.section-title .count { color: var(--ink-dim); font-size: 1rem; font-weight: 500; }
-
-@media (max-width: 560px) {
-  .route-hero { padding: 24px 20px 20px; }
-  .route-dash { margin: 20px -20px 0; }
-  .rstop-row { grid-template-columns: 24px 1fr 72px; }
+:root{
+  --bg:#f5efe1;--bg-alt:#ece2cb;--surface:#fffcf4;--surface-2:#efe6d3;
+  --ink:#211c16;--ink-dim:#6f6653;--border:rgba(33,28,22,.13);--border-strong:rgba(33,28,22,.24);
+  --amber:#b8791f;--amber-ink:#6b4610;--amber-soft:rgba(184,121,31,.14);
+  --maroon:#a13b2e;--maroon-soft:rgba(161,59,46,.13);
+  --green:#3f6b42;--green-soft:rgba(63,107,66,.13);
+  --govt:#35608a;--govt-soft:rgba(53,96,138,.12);
+  --font-display:'Fraunces',Georgia,serif;--font-body:'IBM Plex Sans','IBM Plex Sans Bengali',system-ui,sans-serif;--font-mono:'IBM Plex Mono',ui-monospace,monospace;
 }
+[data-theme="dark"]{
+  --bg:#15121d;--bg-alt:#1c1826;--surface:#201c2b;--surface-2:#29243570;
+  --ink:#f1ead8;--ink-dim:#a89b87;--border:rgba(241,234,216,.1);--border-strong:rgba(241,234,216,.2);
+  --amber:#eda94a;--amber-ink:#f6cd8f;--amber-soft:rgba(237,169,74,.16);
+  --maroon:#e0796a;--maroon-soft:rgba(224,121,106,.16);
+  --green:#85c088;--green-soft:rgba(133,192,136,.16);
+  --govt:#7fabd4;--govt-soft:rgba(127,171,212,.16);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{color-scheme:light dark}
+body{font-family:var(--font-body);background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:var(--amber-ink);text-decoration:none}
+.container{max-width:980px;margin:0 auto;padding:0 18px}
 
-/* ---------- All Routes: search box (ticket-stub card) ---------- */
-.search-card { background: var(--surface); border: 1.5px solid color-mix(in srgb, var(--amber) 45%, var(--line-strong)); border-radius: var(--radius-lg); padding: 20px 22px; box-shadow: var(--shadow); margin-top: 18px; }
-.sc-row { display: flex; align-items: center; gap: 12px; border-bottom: 2px dashed var(--line-strong); padding-bottom: 14px; }
-.sc-icon { width: 20px; height: 20px; color: var(--amber-ink); flex-shrink: 0; }
-#routeSearch { flex: 1; border: none; outline: none; background: transparent; font-size: 17px; font-family: var(--font-body); color: var(--ink); min-width: 0; }
-#routeSearch::placeholder { color: var(--ink-dim); opacity: .75; }
-.sc-hint { font-family: var(--font-mono); font-size: 11px; color: var(--ink-dim); margin-top: 10px; letter-spacing: .04em; }
-body.lang-bn .sc-hint { font-family: var(--font-body); letter-spacing: 0; }
-.sr-list { margin-top: 6px; }
-.sr-item { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; padding: 9px 12px; border-radius: var(--radius); text-decoration: none; color: var(--ink); font-weight: 500; font-size: 14px; }
-.sr-item:hover { background: var(--amber-soft); color: var(--amber-ink); }
-.sr-place { font-family: var(--font-display); }
-body.lang-bn .sr-place { font-family: var(--font-body); }
-.sr-bn { color: var(--ink-dim); font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.sr-empty { padding: 12px; color: var(--ink-dim); font-size: 14px; }
+/* ---- header ---- */
+.header{background:color-mix(in srgb,var(--surface) 88%,transparent);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;backdrop-filter:blur(14px) saturate(1.1)}
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding:13px 0}
+.logo{display:flex;align-items:center;gap:9px;font-family:var(--font-display);font-size:1.3rem;font-weight:700;letter-spacing:-.2px}
+.logo span{color:var(--amber-ink)}
 
-/* ---------- District sections ---------- */
-.district-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); margin-bottom: 14px; overflow: hidden; }
-.district-card summary { cursor: pointer; padding: 16px 20px; font-family: var(--font-display); font-weight: 700; font-size: 16.5px; display: flex; align-items: center; gap: 10px; list-style: none; }
-body.lang-bn .district-card summary { font-family: var(--font-body); }
-.district-card summary::-webkit-details-marker { display: none; }
-.district-card summary .icon { width: 16px; height: 16px; color: var(--amber-ink); flex-shrink: 0; }
-.district-card summary:hover { color: var(--amber-ink); }
-.dist-count { margin-left: auto; font-family: var(--font-mono); font-size: 11px; font-weight: 600; color: var(--ink-dim); background: var(--amber-soft); border: 1px solid color-mix(in srgb, var(--amber) 30%, transparent); padding: 3px 10px; border-radius: 999px; white-space: nowrap; }
-body.lang-bn .dist-count { font-family: var(--font-body); }
-.district-card[open] summary { border-bottom: 1px dashed var(--line-strong); }
-.place-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; padding: 16px 20px 18px; }
-.place-card { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 10px 12px; text-decoration: none; display: flex; flex-direction: column; gap: 3px; }
-.place-card:hover { border-color: var(--amber); box-shadow: var(--shadow-sm); }
-.pc-name { font-weight: 600; font-size: 13.5px; color: var(--ink); font-family: var(--font-display); }
-body.lang-bn .pc-name { font-family: var(--font-body); }
-.pc-count { font-family: var(--font-mono); font-size: 10.5px; color: var(--ink-dim); }
-body.lang-bn .pc-count { font-family: var(--font-body); }
+/* ----- breadcrumb ---- */
+.crumbs{font-family:var(--font-mono);font-size:10.5px;color:var(--ink-dim);text-transform:uppercase;letter-spacing:.06em;display:flex;gap:6px;flex-wrap:wrap;padding:14px 0 0}
+.crumbs a{color:var(--amber-ink)}
 
-/* ---------- All routes A-Z (collapsed) ---------- */
-.all-list { border: 1px dashed var(--line-strong); border-radius: var(--radius-lg); margin-top: 20px; }
-.all-list summary { cursor: pointer; padding: 14px 18px; font-weight: 600; font-size: 14px; color: var(--ink-dim); display: flex; align-items: center; gap: 8px; list-style: none; }
-.all-list summary::-webkit-details-marker { display: none; }
-.all-list summary .icon { width: 15px; height: 15px; }
-.all-list[open] summary { border-bottom: 1px dashed var(--line-strong); }
+/* ---- hero ---- */
+.seo-hero{padding:10px 0 14px}
+.seo-hero h1{font-family:var(--font-display);font-size:clamp(1.45rem,5vw,1.95rem);font-weight:700;letter-spacing:-.5px}
+.seo-hero .arr{color:var(--amber)}
+.bn-sub{font-size:13.5px;color:var(--ink-dim);margin-top:2px}
+.stat-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.schip{display:inline-flex;align-items:center;gap:5px;background:var(--surface);border:1px solid var(--border-strong);border-radius:999px;padding:6px 13px;font-family:var(--font-mono);font-size:12px;font-weight:600}
+.schip.hot{background:var(--amber-soft);border-color:color-mix(in srgb,var(--amber) 40%,transparent);color:var(--amber-ink)}
+
+/* ----ÙXİ[ÛœÈKKKH
+‹Â‹œÙ[Ë\ÙXİ[ÛÛX\™Ú[‹]ÜŒŒœB‹œÙXİ[Û‹]]^Ù›ÛY˜[Z[N˜\ŠKY›ÛY\Ü^JNÙ›Û\Ú^™NŒKŒLœ™[NÙ›Û]ÙZYÚÌÛX\™Ú[‹X›İÛNŒLB‚‹ÊˆKKKHÛÛ\Xİ\È›İÜÈKKKH
+‹Â‹˜\Ë\›İŞÙ\Ü^N™›^Ø[YÛ‹Z][\Î˜Ù[\ÙØ\ŒLœØ˜XÚÙÜ›İ[™˜\ŠK\İ\™˜XÙJNØ›Ü™\Œ\ÛÛY˜\ŠKX›Ü™\ŠNØ›Ü™\‹\˜Y]\ÎŒMÜY[™ÎŒLœMÛX\™Ú[‹X›İÛNB‹˜\Ë\›İÈ™\Ù›ÛY˜[Z[N˜\ŠKY›Û[[Û›ÊNÙ›Û]ÙZYÚÌÙ›Û\Ú^™NŒMK\ÛZ[‹]ÚYÍœB‹˜\Ë\›İÈ™\ÛX[Ù\Ü^N˜›ØÚÎÙ›Û\Ú^™NK\ØÛÛÜ˜\ŠKZ[šËY[JNÙ›Û]ÙZYÚLB‹˜\Ë\›İÈ˜›ZYÙ›^ŒNÛZ[‹]ÚYŒB‹˜\Ë\›İÈ›ÜÙ›Û]ÙZYÚŒÙ›Û\Ú^™NŒLË\İÚ]K\ÜXÙN››İÜ˜\Ûİ™\™›İÎšY[İ^[İ™\™›İÎ™[\Ú\ßB‹˜\Ë\›İÈ›\›İŞÙ\Ü^N™›^ÙØ\ŒLÙ›Û\Ú^™NŒL\ØÛÛÜ˜\ŠKZ[šËY[JNÙ›ÛY˜[Z[N˜\ŠKY›Û[[Û›ÊNÛX\™Ú[‹]ÜŒœB‚‹ÊˆKKKH˜YÙ\ÈKKKH
+‹Â‹˜˜YÙ^Ù\Ü^Nš[›[™KY›^Ø[YÛ‹Z][\Î˜Ù[\Ù›Û\Ú^™NK\Ù›Û]ÙZYÚÌÜY[™ÎŒÜØ›Ü™\‹\˜Y]\Îœİ^]˜[œÙ›Ü›N\\˜Ø\ÙNÛ]\‹\ÜXÚ[™Î‹Œ[NÙ›^\Úš[šÎŒB‹˜˜YÙKYÛİØ˜XÚÙÜ›İ[™˜\ŠKYÛİ\ÛÙ
+NØÛÛÜ˜\ŠKYÛİ
+_B‹˜˜YÙKXXŞØ˜XÚÙÜ›İ[™˜\ŠKYÜ™Y[‹\ÛÙ
+NØÛÛÜ˜\ŠKYÜ™Y[Š_B‹˜˜YÙK\š]Ø˜XÚÙÜ›İ[™˜\ŠK[X\›ÛÛ‹\ÛÙ
+NØÛÛÜ˜\ŠK[X\›ÛÛŠ_B‚‹ÊˆKKKHÜš^›Û[›İ]HX\KKKH
+‹Â‹œ›İ][X\Ø˜XÚÙÜ›İ[™˜\ŠK\İ\™˜XÙJNØ›Ü™\Œ\ÛÛY˜\ŠKX›Ü™\ŠNØ›Ü™\‹\˜Y]\ÎŒŒÜY[™ÎŒNMLÛİ™\™›İÎšY[ŸB‹œ›K]˜XÚŞÜÜÚ][Ûœ™[]]™NÚZYÚMœÛX\™Ú[œB‹œ›K[[™^ÜÜÚ][Û˜XœÛÛ]NİÜŒMÛYŒMÜšYÚŒMØ›Ü™\‹]ÜŒ‹\\ÚY˜\ŠKX›Ü™\‹\İ›Û™Ê_B‹œ›K\İÜŞÜÜÚ][Û˜XœÛÛ]NÚ[œÙ]ŒÙ\Ü^N™›^Ú\İYKXÛÛ[œÜXÙKX™]ÙY[ŸB‹œ›K\İÜÙ\Ü^N™›^Ù›^Y\™Xİ[Û˜ÛÛ[[Ø[YÛ‹Z][\Î˜Ù[\İÚYNB‹œ›KYİİÚYŒL\ÚZYÚŒL\Ø›Ü™\‹\˜Y]\ÎL	NØ˜XÚÙÜ›İ[™˜\ŠK\İ\™˜XÙJNØ›Ü™\Œ‹\ÛÛY˜\ŠKX[X™\ŠNÛX\™Ú[‹]Ü\Ş‹Z[™^Œ_B‹œ›K\İÜ™[™œ›KYİØ˜XÚÙÜ›İ[™˜\ŠK[X\›ÛÛŠNØ›Ü™\‹XÛÛÜ˜\ŠK[X\›ÛÛŠNİÚYŒLÜÚZYÚŒLÜB‹œ›K[˜[Y^Ù›Û\Ú^™NK\Ù›Û]ÙZYÚŒÛX\™Ú[‹]Üœİ^X[YÛ˜Ù[\Û[™KZZYÚŒKŒ_B‹œ›K[[Ü™^Ù›ÛY˜[Z[N˜\ŠKY›Û[[Û›ÊNÙ›Û\Ú^™NK\ØÛÛÜ˜\ŠKZ[šËY[JNİ^X[YÛ˜Ù[\ÛX\™Ú[‹]ÜœB‚‹ÊˆKKKHÚ\ÈKKKH
+‹Â‹˜Ú\\›İŞÙ\Ü^N™›^Ù›^]Ü˜\Ü˜\ÙØ\B‹šXKXÚ\Ø˜XÚÙÜ›İ[™˜\ŠK\İ\™˜XÙKLŠNØ›Ü™\Œ\ÛÛY˜\ŠKX›Ü™\ŠNØ›Ü™\‹\˜Y]\ÎNN\ÜY[™ÎÜMÙ›Û\Ú^™NŒL‹\Ù›Û]ÙZYÚŒB‹œ™[XÚ\Ù\Ü^Nš[›[™KY›^Ø[YÛ‹Z][\Î˜Ù[\ÙØ\œØ˜XÚÙÜ›İ[™˜\ŠK\İ\™˜XÙJNØ›Ü™\Œ\ÛÛY˜\ŠKX›Ü™\ŠNØ›Ü™\‹\˜Y]\ÎŒLÜY[™ÎLÜÙ›Û\Ú^™NŒLœÙ›Û]ÙZYÚŒØÛÛÜ˜\ŠKZ[šÊ_B‚‹ÊˆKKKHTHKKKH
+‹Â™]Z[ŞØ˜XÚÙÜ›İ[™˜\ŠK\İ\™˜XÙJNØ›Ü™\Œ\ÛÛY˜\ŠKX›Ü™\ŠNØ›Ü™\‹\˜Y]\Î\ÛX\™Ú[‹X›İÛNBœİ[[X\^Û\İ\İ[N››Û™NØİ\œÛÜœÚ[\ÜY[™ÎŒLÜM\Ù›Û]ÙZYÚŒÙ›Û\Ú^™NŒLË\Ù\Ü^N™›^Ú\İYKXÛÛ[œÜXÙKX™]ÙY[Ø[YÛ‹Z][\Î˜Ù[\ŸBœİ[[X\N‹]ÙXšÚ]Y]Z[Ë[X\šÙ\Ù\Ü^N››Û™_Bœİ[[X\N˜Y\ØÛÛ[ˆŠÈÙ›ÛY˜[Z[N˜\ŠKY›Û[[Û›ÊNØÛÛÜ˜\ŠKX[X™\ŠNÙ›Û\Ú^™NŒMœÙ›Û]ÙZYÚÌB™]Z[ÖÛÜ[—Hİ[[X\N˜Y\ØÛÛ[ˆ¼'cˆŸB‹™˜KX›Ù^ÜY[™ÎŒM\LÜÙ›Û\Ú^™NŒLÜØÛÛÜ˜\ŠKZ[šËY[JNÛ[™KZZYÚŒK_B‚‹ÊˆKKKH›Ûİ\ˆKKKH
+‹Â‹™›Ûİ\İ^X[YÛ˜Ù[\ÜY[™ÎŒœMœØÛÛÜ˜\ŠKZ[šËY[JNÙ›Û\Ú^™NŒL‹\Ø›Ü™\‹]ÜŒ\\ÚY˜\ŠKX›Ü™\‹\İ›Û™ÊNÛX\™Ú[‹]ÜŒB‹™›Ûİ\‹[[šÜŞÙ\Ü^N™›^Ú\İYKXÛÛ[˜Ù[\ÙØ\Ù›^]Ü˜\Ü˜\ÛX\™Ú[‹X›İÛNŒLœB‹™›Ûİ\‹[[šÜÈ^Ù›Û\Ú^™NŒLœÙ›Û]ÙZYÚŒØÛÛÜ˜\ŠKZ[šËY[JNÜY[™Î\LœØ›Ü™\‹\˜Y]\ÎNN\Ø˜XÚÙÜ›İ[™˜\ŠK\İ\™˜XÙKLŠ_B‹™›Ûİ\ˆ^ØÛÛÜ˜\ŠKX[X™\‹Z[šÊ_B‚‹ÊˆKKKH™\ÜÛœÚ]™HKKKH
+‹ÂYYXJX^]ÚYMŒ
+^Âˆ˜\Ë\›İŞÜY[™ÎŒL\LœÙØ\\Bˆ˜\Ë\›İÈ™\ÛZ[‹]ÚYÙ›Û\Ú^™NŒMBˆœ›K\İÜİÚYBˆœ›K[˜[Y^Ù›Û\Ú^™N\BŸB
