@@ -31,7 +31,7 @@ BASE = os.environ.get(
 
 SITE_NAME = "BusJatri"
 LASTMOD = datetime.now().strftime("%Y-%m-%d")
-CSS = "../css/style.css"
+CSS = "../css/seo.css"
 
 
 # ------------------------------------------------------------
@@ -352,131 +352,67 @@ for (o_, t_), bs_ in route_meta.items():
 # ------------------------------------------------------------
 
 def header_html():
-    return """
-<header class="header">
+    return """<header class="header">
   <div class="container header-inner">
-
-    <a href="../index.html"
-       class="logo"
-       style="text-decoration:none;color:inherit">
-
-      <svg class="icon"
-           viewBox="0 0 24 24"
-           style="width:1.35rem;height:1.35rem;color:var(--amber)"
-           aria-hidden="true">
-
-        <path d="M4 16V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10"/>
-        <path d="M4 16h16"/>
+    <a href="../index.html" class="logo" style="text-decoration:none;color:inherit">
+      <svg class="icon" viewBox="0 0 24 24" style="width:1.35rem;height:1.35rem;color:var(--amber)" aria-hidden="true">
+        <path d="M4 16V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10"/><path d="M4 16h16"/>
       </svg>
-
       Bus<span>Jatri</span>
     </a>
-
-    <nav style="
-      display:flex;
-      gap:14px;
-      align-items:center;
-      font-size:14px;
-    ">
-      <a href="../index.html">Home</a>
-      <a href="./">Routes</a>
+    <nav style="display:flex;gap:10px;align-items:center;font-size:13px">
+      <a href="../index.html" style="color:var(--ink-dim);text-decoration:none;font-weight:600">Home</a>
+      <a href="./" style="color:var(--ink-dim);text-decoration:none;font-weight:600">Routes</a>
     </nav>
-
   </div>
-</header>
-"""
+</header>"""
 
 
 def footer_html():
-    return """
-<footer class="footer">
+    return """<footer class="footer">
   <div class="container">
-
-    <p>
-      <strong>BusJatri</strong> — West Bengal bus timetable
-      and route information.
-    </p>
-
-    <p style="font-size:13px;color:var(--ink-dim)">
-      Timings and routes can change. Please verify with the
-      operator or depot before travelling.
-      BusJatri is not affiliated with any transport corporation.
-    </p>
-
+    <div class="footer-links">
+      <a href="../about.html">About Us</a>
+      <a href="../contact.html">Contact Us</a>
+      <a href="../privacy-policy.html">Privacy Policy</a>
+      <a href="../about.html#credits">Credits</a>
+      <a href="./">All Bus Timetables</a>
+    </div>
+    <p><strong>BusJatri</strong> — West Bengal Bus Timetable<br>
+    Not affiliated with any transport corporation<br>
+    Contact: <a href="mailto:busjatri@zohomail.in">busjatri@zohomail.in</a></p>
   </div>
-</footer>
-"""
+</footer>"""
 
 
 def shell(title, description, canonical, body, schema=""):
     return f"""<!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{esc(title)}</title>
-
-<meta name="description"
-      content="{esc(description)}">
-
-<link rel="canonical"
-      href="{esc(canonical)}">
-
-<meta property="og:title"
-      content="{esc(title)}">
-
-<meta property="og:description"
-      content="{esc(description)}">
-
-<meta property="og:type"
-      content="website">
-
-<meta property="og:url"
-      content="{esc(canonical)}">
-
-<meta name="theme-color"
-      content="#b8791f">
-
-<link rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b8791f' stroke-width='2'%3E%3Cpath d='M4 16V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10'/%3E%3Cpath d='M4 16h16'/%3E%3C/svg%3E">
-
-<link rel="stylesheet"
-      href="{CSS}">
-
+<meta name="description" content="{esc(description)}">
+<link rel="canonical" href="{esc(canonical)}">
+<meta property="og:title" content="{esc(title)}">
+<meta property="og:description" content="{esc(description)}">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{esc(canonical)}">
+<meta name="theme-color" content="#b8791f">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b8791f' stroke-width='2'%3E%3Cpath d='M4 16V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10'/%3E%3Cpath d='M4 16h16'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../css/seo.css">
+<link rel="stylesheet" href="../css/extras.css">
 {schema}
-
 </head>
-
 <body>
-
 {header_html()}
-
-<main class="container"
-      style="
-        padding-top:24px;
-        padding-bottom:56px;
-        max-width:980px;
-      ">
-
+<main class="container seo-main" style="padding-top:18px;padding-bottom:48px;max-width:720px">
 {body}
-
 </main>
-
 {footer_html()}
-
 </body>
-</html>
-"""
+</html>"""
 
-
-# ------------------------------------------------------------
-# SCHEMA
-# ------------------------------------------------------------
 
 def jsonld(payload):
     return (
@@ -607,888 +543,152 @@ def stoppage_summary(buses):
 
 def route_stops_html(buses):
     sequences = []
-
     for bus in buses:
         stops = bus_stops(bus)
-
         if stops:
             sequences.append(stops)
-
     if not sequences:
         return ""
-
-    sequence_counter = Counter(
-        tuple(sequence)
-        for sequence in sequences
-    )
-
-    sequence, frequency = sequence_counter.most_common(1)[0]
-    sequence = list(sequence[:18])
-
-    items = []
-
-    for index, stop in enumerate(sequence):
-        last = index == len(sequence) - 1
-
-        connector = ""
-
-        if not last:
-            connector = """
-<span style="
-  width:2px;
-  height:32px;
-  background:var(--border);
-  display:block;
-"></span>
-"""
-
-        items.append(f"""
-<div style="
-  display:flex;
-  gap:14px;
-  align-items:flex-start;
-">
-
-  <div style="
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    min-width:18px;
-  ">
-
-    <span style="
-      width:12px;
-      height:12px;
-      border-radius:50%;
-      background:var(--amber);
-      border:3px solid var(--panel);
-      box-shadow:0 0 0 1px var(--border);
-      display:block;
-    "></span>
-
-    {connector}
-
+    from collections import Counter as _C
+    sc = _C(tuple(s) for s in sequences)
+    sequence, frequency = sc.most_common(1)[0]
+    sequence = list(sequence[:10])
+    if len(sequence) < 2:
+        return ""
+    dots = ""
+    for i, stop in enumerate(sequence):
+        end_cls = " end" if i in (0, len(sequence)-1) else ""
+        dots += f'<div class="rm-stop{end_cls}"><div class="rm-dot"></div><div class="rm-name">{esc(stop)}</div></div>'
+    more = '<div class="rm-more">▸ full timetable below</div>' if len(sequence) == 10 else ""
+    return f"""<section class="seo-section">
+  <h3 class="section-title">Route Map</h3>
+  <div class="routemap">
+    <div class="rm-track"><div class="rm-line"></div><div class="rm-stops">{dots}</div></div>
+    {more}
   </div>
+</section>"""
 
-  <div style="
-    font-weight:600;
-    padding-bottom:8px;
-  ">
-    {esc(stop)}
-  </div>
-
-</div>
-""")
-
-    note = ""
-
-    if frequency < len(buses):
-        note = """
-<p style="
-  margin-top:10px;
-  color:var(--ink-dim);
-  font-size:13px;
-">
-  The stop sequence shown represents the most commonly
-  listed sequence in the available timetable data.
-</p>
-"""
-
-    return f"""
-<section style="margin-top:34px">
-
-  <h2 style="font-size:1.35rem;margin-bottom:8px">
-    Route &amp; Stoppages
-  </h2>
-
-  <p style="
-    color:var(--ink-dim);
-    margin-top:0;
-    margin-bottom:18px;
-  ">
-    Commonly listed stops between the two locations.
-  </p>
-
-  <div style="
-    background:var(--panel);
-    border:1px solid var(--border);
-    border-radius:16px;
-    padding:20px;
-  ">
-    {''.join(items)}
-    {note}
-  </div>
-
-</section>
-"""
-
-
-# ------------------------------------------------------------
-# BUS CARD
-# ------------------------------------------------------------
 
 def bus_card(bus):
-    name = clean_text(
-        bus.get("bus_name")
-    ) or "Bus service"
-
-    departure = format_time(
-        parse_time(bus.get("departure_time"))
-    )
-
-    arrival = format_time(
-        parse_time(bus.get("arrival_time"))
-    )
-
-    bus_type = bus_type_label(
-        bus.get("bus_type")
-    )
-
+    name = clean_text(bus.get("bus_name")) or "Bus service"
+    dep = format_time(parse_time(bus.get("departure_time")))
+    arr = format_time(parse_time(bus.get("arrival_time")))
     operator = operator_name(bus)
     stops = total_stops(bus)
     duration = calculate_duration(bus)
-
-    duration_text = (
-        fmt_duration(duration)
-        if duration
-        else "Unavailable"
-    )
-
-    source_html = ""
-
-    detail_url = clean_text(
-        bus.get("detail_url")
-    )
-
-    if detail_url.startswith(("http://", "https://")):
-        pass  # source links hidden on site per project decision
-
-    return f"""
-<article style="
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:18px;
-  margin-bottom:12px;
-">
-
-  <div style="
-    display:flex;
-    justify-content:space-between;
-    gap:14px;
-    flex-wrap:wrap;
-    align-items:flex-start;
-  ">
-
-    <div>
-
-      <div style="
-        font-weight:750;
-        font-size:1.05rem;
-        margin-bottom:6px;
-      ">
-        {esc(name)}
-      </div>
-
-      <div style="
-        display:flex;
-        gap:8px;
-        flex-wrap:wrap;
-        align-items:center;
-        font-size:13px;
-        color:var(--ink-dim);
-      ">
-
-        <span>{esc(bus_type)}</span>
-        {f'<span>•</span><span>{esc(operator)}</span>' if operator else ''}
-
-      </div>
-
-    </div>
-
+    dur_text = fmt_duration(duration) if duration else "—"
+    fare = clean_text(bus.get("fare")) or "—"
+    bt_raw = (bus.get("bus_type") or "").lower()
+    if "gov" in bt_raw or "sbstc" in bt_raw or "nbstc" in bt_raw or "wbtc" in bt_raw:
+        badge = '<span class="badge badge-govt">Govt</span>'
+    elif "ac" in bt_raw and "non" not in bt_raw:
+        badge = '<span class="badge badge-ac">AC</span>'
+    else:
+        badge = '<span class="badge badge-priv">Private</span>'
+    op_line = esc(name)
+    if operator:
+        op_line += f' · {esc(operator)}'
+    return f"""<div class="bus-row">
+  <div class="dep">{esc(dep)}<small>{esc(arr)} arr</small></div>
+  <div class="bmid">
+    <div class="op">{op_line}</div>
+    <div class="mrow"><span>{esc(fare)}</span><span>~{esc(dur_text)}</span><span>{stops or 0} stops</span></div>
   </div>
+  {badge}
+</div>"""
 
-  <div style="
-    display:grid;
-    grid-template-columns:
-      repeat(auto-fit,minmax(110px,1fr));
-    gap:10px;
-    margin-top:16px;
-  ">
-
-    <div>
-      <div style="
-        font-size:11px;
-        color:var(--ink-dim);
-        text-transform:uppercase;
-      ">
-        Departure
-      </div>
-
-      <strong style="font-size:1.05rem">
-        {esc(departure)}
-      </strong>
-    </div>
-
-    <div>
-      <div style="
-        font-size:11px;
-        color:var(--ink-dim);
-        text-transform:uppercase;
-      ">
-        Arrival
-      </div>
-
-      <strong style="font-size:1.05rem">
-        {esc(arrival)}
-      </strong>
-    </div>
-
-    <div>
-      <div style="
-        font-size:11px;
-        color:var(--ink-dim);
-        text-transform:uppercase;
-      ">
-        Duration
-      </div>
-
-      <strong style="font-size:1.05rem">
-        {esc(duration_text)}
-      </strong>
-    </div>
-
-    <div>
-      <div style="
-        font-size:11px;
-        color:var(--ink-dim);
-        text-transform:uppercase;
-      ">
-        Stops
-      </div>
-
-      <strong style="font-size:1.05rem">
-        {stops or "—"}
-      </strong>
-    </div>
-
-  </div>
-
-</article>
-"""
-
-
-# ------------------------------------------------------------
-# ROUTE PAGE
-# ------------------------------------------------------------
 
 def generate_route_page(origin, destination, buses):
-    filename = (
-        f"{slug(origin)}-to-{slug(destination)}.html"
-    )
-
-    route_bn = bn_route(
-        origin,
-        destination,
-    )
-
+    filename = f"{slug(origin)}-to-{slug(destination)}.html"
+    route_bn = bn_route(origin, destination)
     stats = route_stats(buses)
-
     first = format_time(stats["first"])
     last = format_time(stats["last"])
     duration = stats["duration"]
     operators = stats["operators"]
-
     count = len(buses)
+    dur_text = fmt_duration(duration) if duration else "—"
 
-    title = (
-        f"{origin} to {destination} Bus Time Table | বাসের সময়সূচী – {SITE_NAME}"
-    )
-
-    description = (
-        f"Find {origin} to {destination} bus timings, "
-        f"operators, stoppages and route information on "
-        f"{SITE_NAME}. See available departures and return "
-        f"route options."
-    )[:300]
-    if route_bn:
-        description = (
-            f"{description} {route_bn} বাসের সময়সূচী ও রুট তথ্য।"
-        )[:300]
-
-    canonical = (
-        f"{BASE}/bus-time-table/{filename}"
-    )
-
+    title = f"{origin} to {destination} Bus Time Table | {SITE_NAME}"
+    description = f"{origin} to {destination} bus timings, operators, stoppages. {count} buses listed. First {first}, last {last}."[:300]
+    canonical = f"{BASE}/bus-time-table/{filename}"
     major_stops = stoppage_summary(buses)
 
-    operator_text = (
-        ", ".join(operators[:5])
-        if operators
-        else "multiple operators"
-    )
-
     faqs = [
-        (
-            f"What is the first bus from {origin} to {destination}?",
-            (
-                f"The earliest listed departure from {origin} "
-                f"to {destination} is {first}. Timings can "
-                f"change, so verify before travelling."
-                if stats["first"] is not None
-                else
-                "The available timetable does not provide a "
-                "reliable first departure time for this route."
-            ),
-        ),
-        (
-            f"What is the last bus from {origin} to {destination}?",
-            (
-                f"The latest listed departure from {origin} "
-                f"to {destination} is {last}. Please verify "
-                f"the current schedule before travelling."
-                if stats["last"] is not None
-                else
-                "See the timetable above for available departures."
-            ),
-        ),
-        (
-            f"How many buses are listed from {origin} to {destination}?",
-            (
-                f"BusJatri currently lists {count} bus services "
-                f"from {origin} to {destination}. Listed "
-                f"operators include {operator_text}."
-            ),
-        ),
+        (f"What is the first bus from {origin} to {destination}?",
+         f"The first bus departs at {first}." if stats["first"] is not None else "Check the timetable above."),
+        (f"What is the last bus from {origin} to {destination}?",
+         f"The last bus departs at {last}." if stats["last"] is not None else "Check the timetable above."),
+        (f"How many buses run from {origin} to {destination}?",
+         f"{count} bus services are listed on this route."),
     ]
 
-    if duration:
-        faqs.append(
-            (
-                f"How long does the bus take from "
-                f"{origin} to {destination}?",
-                (
-                    f"The typical listed journey duration is "
-                    f"approximately {fmt_duration(duration)}. "
-                    f"Actual travel time can vary because of "
-                    f"traffic, stops and operating conditions."
-                ),
-            )
-        )
-
-    if major_stops:
-        faqs.append(
-            (
-                f"Which major stops are on the {origin} to "
-                f"{destination} route?",
-                (
-                    "Commonly listed stops include "
-                    + ", ".join(major_stops[:6])
-                    + ". Stop sequences can differ between "
-                      "individual services."
-                ),
-            )
-        )
-
-    bengali_line = ""
-
-    if route_bn:
-        bengali_line = f"""
-<div style="
-  margin-top:8px;
-  color:var(--ink-dim);
-  font-size:15px;
-">
-  {esc(route_bn)} বাসের সময়সূচী ও রুট তথ্য
-</div>
-"""
-
-    duration_stat = ""
-
-    if duration:
-        duration_stat = f"""
-<div style="
-  flex:1 1 150px;
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:14px 16px;
-">
-
-  <div style="
-    font-size:12px;
-    color:var(--ink-dim);
-  ">
-    Approx. duration
+    bn_sub = f'<p class="bn-sub">{esc(route_bn)} বাসের সময়সূচী</p>' if route_bn else ""
+    hero = f"""<div class="crumbs"><a href="../index.html">Home</a> › <a href="./">Bus Timetable</a> › <span>{esc(origin)} → {esc(destination)}</span></div>
+<div class="seo-hero">
+  <h1>{esc(origin)} <span class="arr">→</span> {esc(destination)}</h1>
+  {bn_sub}
+  <div class="stat-chips">
+    <span class="schip">🚌 {count} buses</span>
+    <span class="schip hot">⏰ First {esc(first)}</span>
+    <span class="schip">⏰ Last {esc(last)}</span>
+    <span class="schip">⏱ ~{esc(dur_text)}</span>
   </div>
+</div>"""
 
-  <strong style="font-size:1.15rem">
-    {esc(fmt_duration(duration))}
-  </strong>
-
-</div>
-"""
-
-    hero = f"""
-<section style="
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:20px;
-  padding:24px;
-  margin-bottom:24px;
-">
-
-  <div style="
-    font-size:13px;
-    color:var(--ink-dim);
-    margin-bottom:14px;
-  ">
-    <a href="../index.html">Home</a>
-    <span style="margin:0 5px">›</span>
-    <a href="./">Bus Timetable</a>
-    <span style="margin:0 5px">›</span>
-    {esc(origin)} → {esc(destination)}
-  </div>
-
-  <div style="
-    display:inline-flex;
-    align-items:center;
-    gap:7px;
-    padding:6px 10px;
-    border-radius:999px;
-    background:var(--bg);
-    border:1px solid var(--border);
-    color:var(--ink-dim);
-    font-size:12px;
-    margin-bottom:12px;
-  ">
-    {count} listed bus services
-  </div>
-
-  <h1 style="
-    font-size:clamp(1.8rem,5vw,2.7rem);
-    line-height:1.15;
-    margin:0;
-  ">
-    {esc(origin)} → {esc(destination)}
-    <br>
-    <span style="
-      font-size:.72em;
-      color:var(--ink-dim);
-    ">
-      Bus Time Table · বাসের সময়সূচী
-    </span>
-  </h1>
-
-  {bengali_line}
-
-  <p style="
-    max-width:700px;
-    margin:16px 0 20px;
-    color:var(--ink-dim);
-    line-height:1.7;
-  ">
-    Check available bus departures, arrival times,
-    operators and commonly listed stoppages for travel
-    from {esc(origin)} to {esc(destination)}.
-  </p>
-
-  <a href="../index.html"
-     style="
-       display:inline-block;
-       padding:10px 15px;
-       border:1px solid var(--border);
-       border-radius:10px;
-       text-decoration:none;
-       font-weight:600;
-     ">
-    Search another route
-  </a>
-
-</section>
-"""
-
-    stats_html = f"""
-<section style="
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-bottom:32px;
-">
-
-  <div style="
-    flex:1 1 150px;
-    background:var(--panel);
-    border:1px solid var(--border);
-    border-radius:14px;
-    padding:14px 16px;
-  ">
-    <div style="font-size:12px;color:var(--ink-dim)">
-      Services
-    </div>
-    <strong style="font-size:1.15rem">{count}</strong>
-  </div>
-
-  <div style="
-    flex:1 1 150px;
-    background:var(--panel);
-    border:1px solid var(--border);
-    border-radius:14px;
-    padding:14px 16px;
-  ">
-    <div style="font-size:12px;color:var(--ink-dim)">
-      First listed
-    </div>
-    <strong style="font-size:1.15rem">
-      {esc(first)}
-    </strong>
-  </div>
-
-  <div style="
-    flex:1 1 150px;
-    background:var(--panel);
-    border:1px solid var(--border);
-    border-radius:14px;
-    padding:14px 16px;
-  ">
-    <div style="font-size:12px;color:var(--ink-dim)">
-      Last listed
-    </div>
-    <strong style="font-size:1.15rem">
-      {esc(last)}
-    </strong>
-  </div>
-
-  {duration_stat}
-
-</section>
-"""
-
-    sorted_buses = sorted(
-        buses,
-        key=lambda bus: (
-            parse_time(bus.get("departure_time"))
-            if parse_time(bus.get("departure_time")) is not None
-            else 9999
-        ),
-    )
-
-    timetable = f"""
-<section>
-
-  <h2 style="font-size:1.4rem;margin-bottom:6px">
-    {esc(origin)} to {esc(destination)} Bus Timings
-  </h2>
-
-  <p style="
-    margin:5px 0 14px;
-    color:var(--ink-dim);
-    font-size:14px;
-  ">
-    Available departures sorted by departure time.
-  </p>
-
-  {''.join(bus_card(bus) for bus in sorted_buses)}
-
-  <p style="
-    color:var(--ink-dim);
-    font-size:12.5px;
-    margin-top:10px;
-  ">
-    Timetable information is based on the available
-    BusJatri dataset. Schedules may change.
-  </p>
-
-</section>
-"""
-
-    major_section = ""
-
-    if major_stops:
-        chips = "".join(
-            f"""
-<span style="
-  display:inline-block;
-  padding:7px 10px;
-  margin:4px 4px 4px 0;
-  border:1px solid var(--border);
-  border-radius:999px;
-  font-size:13px;
-">
-  {esc(stop)}
-</span>
-"""
-            for stop in major_stops
-        )
-
-        major_section = f"""
-<section style="margin-top:34px">
-
-  <h2 style="font-size:1.35rem">
-    Major Stoppages
-  </h2>
-
-  <p style="color:var(--ink-dim);margin-top:0">
-    Frequently listed stops across the services on
-    this route.
-  </p>
-
-  <div>{chips}</div>
-
-</section>
-"""
-
-    operators_section = ""
-
-    if operators:
-        operators_section = f"""
-<section style="margin-top:34px">
-
-  <h2 style="font-size:1.35rem">
-    Bus Operators
-  </h2>
-
-  <p style="color:var(--ink-dim);margin-top:0">
-    Operators appearing in the available timetable data.
-  </p>
-
-  <ul>
-    {''.join(
-        f'<li style="margin-bottom:6px">{esc(operator)}</li>'
-        for operator in operators[:10]
-    )}
-  </ul>
-
-</section>
-"""
+    sorted_buses = sorted(buses, key=lambda b: parse_time(b.get("departure_time")) or 9999)
+    timetable = f"""<section class="seo-section">
+  <h3 class="section-title">Today's Departures</h3>
+  {''.join(bus_card(b) for b in sorted_buses)}
+</section>"""
 
     route_section = route_stops_html(buses)
 
-    journey_section = f"""
-<section style="margin-top:34px">
-
-  <h2 style="font-size:1.35rem">
-    Journey Information
-  </h2>
-
-  <div style="
-    background:var(--panel);
-    border:1px solid var(--border);
-    border-radius:16px;
-    padding:18px;
-    line-height:1.75;
-  ">
-
-    <p style="margin-top:0">
-      <strong>Route:</strong>
-      {esc(origin)} → {esc(destination)}
-    </p>
-
-    <p>
-      <strong>Listed services:</strong>
-      {count}
-    </p>
-
-    <p>
-      <strong>First listed departure:</strong>
-      {esc(first)}
-    </p>
-
-    <p>
-      <strong>Last listed departure:</strong>
-      {esc(last)}
-    </p>
-
-    <p style="
-      margin-bottom:0;
-      color:var(--ink-dim);
-    ">
-      Actual journey time and service availability can
-      vary because of traffic, route changes, holidays
-      and operator schedules.
-    </p>
-
-  </div>
-
-</section>
-"""
+    major_section = ""
+    if major_stops:
+        chips = "".join(f'<span class="via-chip">{esc(s)}</span>' for s in major_stops)
+        major_section = f"""<section class="seo-section">
+  <h3 class="section-title">Via Stoppages</h3>
+  <div class="chip-row">{chips}</div>
+</section>"""
 
     faq_html = "".join(
-        f"""
-<details style="
-  border-bottom:1px solid var(--border);
-  padding:14px 0;
-">
-
-  <summary style="
-    cursor:pointer;
-    font-weight:650;
-  ">
-    {esc(question)}
-  </summary>
-
-  <p style="
-    margin:9px 0 0;
-    color:var(--ink-dim);
-    line-height:1.65;
-  ">
-    {esc(answer)}
-  </p>
-
-</details>
-"""
-        for question, answer in faqs
+        f'<details{" open" if i==0 else ""}><summary>{esc(q)}</summary><div class="fa-body">{esc(a)}</div></details>'
+        for i, (q, a) in enumerate(faqs)
     )
-
-    faq_section = f"""
-<section style="margin-top:36px">
-
-  <h2 style="font-size:1.35rem">
-    Frequently Asked Questions
-  </h2>
-
+    faq_section = f"""<section class="seo-section">
+  <h3 class="section-title">FAQ</h3>
   {faq_html}
+</section>"""
 
-</section>
-"""
-
-    reverse_filename = (
-        f"{slug(destination)}-to-{slug(origin)}.html"
-    )
-
-    reverse_section = ""
-
-    if (destination, origin) in route_meta:
-        reverse_section = f"""
-<section style="margin-top:36px">
-
-  <h2 style="font-size:1.35rem">
-    Return Route
-  </h2>
-
-  <a href="{esc(reverse_filename)}"
-     style="
-       display:block;
-       background:var(--panel);
-       border:1px solid var(--border);
-       border-radius:14px;
-       padding:16px;
-       text-decoration:none;
-     ">
-
-    <strong>
-      {esc(destination)} → {esc(origin)}
-    </strong>
-
-    <div style="
-      color:var(--ink-dim);
-      font-size:13px;
-      margin-top:4px;
-    ">
-      View return-direction bus timetable →
-    </div>
-
-  </a>
-
-</section>
-"""
-
-    related = [
-        (o, t)
-        for (o, t) in route_meta
-        if o == origin and t != destination
-    ]
-
-    related = sorted(
-        related,
-        key=lambda pair: -len(route_meta[pair]),
-    )[:8]
-
+    related = [(o, t) for (o, t) in route_meta if o == origin and t != destination]
+    related = sorted(related, key=lambda p: -len(route_meta[p]))[:8]
     related_section = ""
-
     if related:
         links = "".join(
-            f"""
-<a href="{slug(o)}-to-{slug(t)}.html"
-   style="
-     display:block;
-     padding:12px 14px;
-     border-bottom:1px solid var(--border);
-     text-decoration:none;
-   ">
-
-  {esc(o)} → {esc(t)}
-
-  <span style="
-    float:right;
-    color:var(--ink-dim);
-    font-size:13px;
-  ">
-    {len(route_meta[(o, t)])} buses
-  </span>
-
-</a>
-"""
+            f'<a class="rel-chip" href="{slug(o)}-to-{slug(t)}.html">{esc(o)} → {esc(t)}</a>'
             for o, t in related
         )
+        related_section = f"""<section class="seo-section">
+  <h3 class="section-title">More Routes from {esc(origin)}</h3>
+  <div class="chip-row">{links}</div>
+</section>"""
 
-        related_section = f"""
-<section style="margin-top:36px">
+    reverse_section = ""
+    if (destination, origin) in route_meta:
+        rev_file = f"{slug(destination)}-to-{slug(origin)}.html"
+        reverse_section = f"""<section class="seo-section">
+  <a class="rel-chip" href="{rev_file}">↩ {esc(destination)} → {esc(origin)} (return)</a>
+</section>"""
 
-  <h2 style="font-size:1.35rem">
-    More Bus Routes from {esc(origin)}
-  </h2>
-
-  <div style="
-    background:var(--panel);
-    border:1px solid var(--border);
-    border-radius:16px;
-    overflow:hidden;
-  ">
-    {links}
-  </div>
-
-</section>
-"""
-
-    body = (
-        hero
-        + stats_html
-        + timetable
-        + route_section
-        + major_section
-        + operators_section
-        + journey_section
-        + faq_section
-        + reverse_section
-        + related_section
-    )
+    body = hero + timetable + route_section + major_section + faq_section + reverse_section + related_section
 
     schema = (
-        faq_schema(faqs)
-        + "\n"
-        + breadcrumb_schema([
-            ("Home", "/"),
-            ("Bus Timetable", "/bus-time-table/"),
-            (
-                f"{origin} to {destination}",
-                f"/bus-time-table/{filename}",
-            ),
-        ])
+        faq_schema(faqs) + "\n" +
+        breadcrumb_schema([("Home", "/"), ("Bus Timetable", "/bus-time-table/"), (f"{origin} to {destination}", f"/bus-time-table/{filename}")])
     )
+    return filename, shell(title, description, canonical, body, schema)
 
-    return filename, shell(
-        title,
-        description,
-        canonical,
-        body,
-        schema,
-    )
-
-
-# ------------------------------------------------------------
-# PLACE PAGE
-# ------------------------------------------------------------
 
 def generate_place_page(place, buses):
     count = len(buses)
