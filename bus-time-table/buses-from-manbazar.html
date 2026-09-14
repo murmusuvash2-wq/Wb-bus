@@ -15,23 +15,27 @@
 <link rel="stylesheet" href="../css/seo.css">
 <link rel="stylesheet" href="../css/extras.css">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://wb-bus.vercel.app/"}, {"@type": "ListItem", "position": 2, "name": "Bus Timetable", "item": "https://wb-bus.vercel.app/bus-time-table/"}, {"@type": "ListItem", "position": 3, "name": "Buses from Manbazar", "item": "https://wb-bus.vercel.app/bus-time-table/buses-from-manbazar.html"}]}</script>
+<script>
+function seoTheme(){var d=document.body;d.classList.toggle('dark');document.getElementById('themeBtn').textContent=d.classList.contains('dark')?'☀️':'🌙';try{localStorage.setItem('seo-theme',d.classList.contains('dark')?'dark':'light')}catch(e){}}
+function seoLang(){var b=document.body;b.classList.toggle('lang-bn');document.getElementById('langBtn').textContent=b.classList.contains('lang-bn')?'English':'বাংলা';try{localStorage.setItem('seo-lang',b.classList.contains('lang-bn')?'bn':'en')}catch(e){}}
+function toggleBus(card,e){if(e&&e.target&&e.target.closest('a'))return;card.classList.toggle('open')}
+function toggleAllBuses(btn){var h=document.querySelectorAll('.bus-card.hidden-bus');var s=h.length>0&&h[0].classList.contains('show');h.forEach(function(c){c.classList.toggle('show',!s)});btn.innerHTML=s?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg> Show all buses':'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m18 15-6-6-6 6"/></svg> Show fewer'}
+function swapFromTo(){var f=document.getElementById('fromInput'),t=document.getElementById('toInput');if(!f||!t)return;var x=f.value;f.value=t.value;t.value=x}
+function seoSearch(){var f=document.getElementById('fromInput'),t=document.getElementById('toInput'),s=document.getElementById('stopInput');if(!f)return;var from=f.value.trim(),to=t?t.value.trim():'',stop=s?s.value.trim():'';if(from&&to){window.location.href='../index.html#/search?from='+encodeURIComponent(from)+'&to='+encodeURIComponent(to)}else if(stop){window.location.href='../index.html#/search?stop='+encodeURIComponent(stop)}else if(from){window.location.href='../index.html#/search?from='+encodeURIComponent(from)}}
+(function(){try{var th=localStorage.getItem('seo-theme');if(th==='dark')document.body.classList.add('dark');var ln=localStorage.getItem('seo-lang');if(ln==='bn')document.body.classList.add('lang-bn')}catch(e){}})();
+</script>
 </head>
 <body>
-<header class="header">
-  <div class="container header-inner">
-    <a href="../index.html" class="logo" style="text-decoration:none;color:inherit">
-      <svg class="icon" viewBox="0 0 24 24" style="width:1.35rem;height:1.35rem;color:var(--amber)" aria-hidden="true">
-        <path d="M4 16V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10"/><path d="M4 16h16"/>
-      </svg>
-      Bus<span>Jatri</span>
-    </a>
-    <nav style="display:flex;gap:10px;align-items:center;font-size:13px">
-      <a href="../index.html" style="color:var(--ink-dim);text-decoration:none;font-weight:600">Home</a>
-      <a href="./" style="color:var(--ink-dim);text-decoration:none;font-weight:600">Routes</a>
-    </nav>
+<header class="top-bar">
+  <div class="top-inner">
+    <a href="../index.html" class="brand">Bus<span class="accent">Jatri</span></a>
+    <div class="top-actions">
+      <button class="top-btn" onclick="seoLang()" id="langBtn">বাংলা</button>
+      <button class="top-btn" onclick="seoTheme()" id="themeBtn">🌙</button>
+    </div>
   </div>
 </header>
-<main class="container seo-main" style="padding-top:18px;padding-bottom:48px;max-width:720px">
+<main class="container" style="padding-top:14px;padding-bottom:48px">
 
 <section style="
   background:var(--panel);
@@ -374,18 +378,17 @@
 </section>
 
 </main>
-<footer class="footer">
+<footer class="seo-footer">
   <div class="container">
     <div class="footer-links">
-      <a href="../about.html">About Us</a>
-      <a href="../contact.html">Contact Us</a>
+      <a href="../index.html">Home</a>
+      <a href="../about.html">About</a>
+      <a href="../contact.html">Contact</a>
       <a href="../privacy-policy.html">Privacy Policy</a>
-      <a href="../about.html#credits">Credits</a>
-      <a href="./">All Bus Timetables</a>
+      <a href="./">All Routes</a>
     </div>
-    <p><strong>BusJatri</strong> — West Bengal Bus Timetable<br>
-    Not affiliated with any transport corporation<br>
-    Contact: <a href="mailto:busjatri@zohomail.in">busjatri@zohomail.in</a></p>
+    <p>© 2026 BusJatri — West Bengal Bus Timetable<br>
+    Not affiliated with any transport corporation</p>
   </div>
 </footer>
 </body>

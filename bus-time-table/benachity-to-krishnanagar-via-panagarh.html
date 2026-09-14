@@ -16,37 +16,40 @@
 <link rel="stylesheet" href="../css/extras.css">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How many buses run from Benachity to Krishnanagar via Panagarh?", "acceptedAnswer": {"@type": "Answer", "text": "2 of the 12 buses on the Benachity to Krishnanagar route pass through Panagarh."}}, {"@type": "Question", "name": "What is the first bus from Benachity to Krishnanagar via Panagarh?", "acceptedAnswer": {"@type": "Answer", "text": "The first bus passing through Panagarh departs Benachity at 5:45 AM."}}, {"@type": "Question", "name": "What is the last bus from Benachity to Krishnanagar via Panagarh?", "acceptedAnswer": {"@type": "Answer", "text": "The last bus passing through Panagarh departs Benachity at 6:55 AM."}}, {"@type": "Question", "name": "Do I have to change buses at Panagarh?", "acceptedAnswer": {"@type": "Answer", "text": "No, these are through-buses. They pass through Panagarh on the way from Benachity to Krishnanagar."}}]}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://wb-bus.vercel.app/"}, {"@type": "ListItem", "position": 2, "name": "Bus Timetable", "item": "https://wb-bus.vercel.app/bus-time-table/"}, {"@type": "ListItem", "position": 3, "name": "Benachity to Krishnanagar via Panagarh", "item": "https://wb-bus.vercel.app/bus-time-table/benachity-to-krishnanagar-via-panagarh.html"}]}</script>
+<script>
+function seoTheme(){var d=document.body;d.classList.toggle('dark');document.getElementById('themeBtn').textContent=d.classList.contains('dark')?'☀️':'🌙';try{localStorage.setItem('seo-theme',d.classList.contains('dark')?'dark':'light')}catch(e){}}
+function seoLang(){var b=document.body;b.classList.toggle('lang-bn');document.getElementById('langBtn').textContent=b.classList.contains('lang-bn')?'English':'বাংলা';try{localStorage.setItem('seo-lang',b.classList.contains('lang-bn')?'bn':'en')}catch(e){}}
+function toggleBus(card,e){if(e&&e.target&&e.target.closest('a'))return;card.classList.toggle('open')}
+function toggleAllBuses(btn){var h=document.querySelectorAll('.bus-card.hidden-bus');var s=h.length>0&&h[0].classList.contains('show');h.forEach(function(c){c.classList.toggle('show',!s)});btn.innerHTML=s?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg> Show all buses':'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m18 15-6-6-6 6"/></svg> Show fewer'}
+function swapFromTo(){var f=document.getElementById('fromInput'),t=document.getElementById('toInput');if(!f||!t)return;var x=f.value;f.value=t.value;t.value=x}
+function seoSearch(){var f=document.getElementById('fromInput'),t=document.getElementById('toInput'),s=document.getElementById('stopInput');if(!f)return;var from=f.value.trim(),to=t?t.value.trim():'',stop=s?s.value.trim():'';if(from&&to){window.location.href='../index.html#/search?from='+encodeURIComponent(from)+'&to='+encodeURIComponent(to)}else if(stop){window.location.href='../index.html#/search?stop='+encodeURIComponent(stop)}else if(from){window.location.href='../index.html#/search?from='+encodeURIComponent(from)}}
+(function(){try{var th=localStorage.getItem('seo-theme');if(th==='dark')document.body.classList.add('dark');var ln=localStorage.getItem('seo-lang');if(ln==='bn')document.body.classList.add('lang-bn')}catch(e){}})();
+</script>
 </head>
 <body>
-<header class="header">
-  <div class="container header-inner">
-    <a href="../index.html" class="logo" style="text-decoration:none;color:inherit">
-      <svg class="icon" viewBox="0 0 24 24" style="width:1.35rem;height:1.35rem;color:var(--amber)" aria-hidden="true">
-        <path d="M4 16V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10"/><path d="M4 16h16"/>
-      </svg>
-      Bus<span>Jatri</span>
-    </a>
-    <nav style="display:flex;gap:10px;align-items:center;font-size:13px">
-      <a href="../index.html" style="color:var(--ink-dim);text-decoration:none;font-weight:600">Home</a>
-      <a href="./" style="color:var(--ink-dim);text-decoration:none;font-weight:600">Routes</a>
-    </nav>
+<header class="top-bar">
+  <div class="top-inner">
+    <a href="../index.html" class="brand">Bus<span class="accent">Jatri</span></a>
+    <div class="top-actions">
+      <button class="top-btn" onclick="seoLang()" id="langBtn">বাংলা</button>
+      <button class="top-btn" onclick="seoTheme()" id="themeBtn">🌙</button>
+    </div>
   </div>
 </header>
-<main class="container seo-main" style="padding-top:18px;padding-bottom:48px;max-width:720px">
+<main class="container" style="padding-top:14px;padding-bottom:48px">
 <section style="max-width:760px;margin:0 auto;padding:28px 16px 40px"><div style="font-size:13px;color:var(--ink-dim);margin-bottom:8px"><a href="../index.html" style="color:var(--amber);text-decoration:none">Home</a> / <a href="index.html" style="color:var(--amber);text-decoration:none">Bus Timetable</a> / Benachity to Krishnanagar via Panagarh</div><h1 style="font-size:1.8rem;margin:0 0 6px">Benachity to Krishnanagar Bus Time Table</h1><p style="color:var(--amber);font-weight:600;margin:0 0 4px">via Panagarh</p><p style="color:var(--ink-dim);font-size:13px;margin:0 0 20px">Updated 2026-09-14 - 2 of 12 buses pass through Panagarh</p><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:28px;font-size:13px"><div style="background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center"><div style="font-size:1.4rem;font-weight:700">2</div><div style="color:var(--ink-dim)">Buses via Panagarh</div></div><div style="background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center"><div style="font-size:1.4rem;font-weight:700">5:45 AM</div><div style="color:var(--ink-dim)">First bus</div></div><div style="background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center"><div style="font-size:1.4rem;font-weight:700">6:55 AM</div><div style="color:var(--ink-dim)">Last bus</div></div></div><h2 style="font-size:1.35rem;margin:28px 0 12px">Benachity to Krishnanagar - via Panagarh Timings</h2><div style="overflow-x:auto;border:1px solid var(--border);border-radius:12px"><table style="width:100%;border-collapse:collapse;font-size:14px"><thead><tr style="background:var(--panel);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.5px"><th style="padding:10px 12px;text-align:left">Bus</th><th style="padding:10px 12px;text-align:left">Departure</th><th style="padding:10px 12px;text-align:left">At Panagarh</th><th style="padding:10px 12px;text-align:left">Arrival</th><th style="padding:10px 12px;text-align:center">Stops</th></tr></thead><tbody><tr><td style="padding:10px 12px;border-bottom:1px solid var(--border)">PARAMANASHA TTRAVELS<br><span style="font-size:12px;color:var(--ink-dim)">Private - NON AC</span></td><td style="padding:10px 12px;border-bottom:1px solid var(--border);white-space:nowrap">5:45 AM</td><td style="padding:10px 12px;border-bottom:1px solid var(--border);white-space:nowrap;color:var(--amber)">—</td><td style="padding:10px 12px;border-bottom:1px solid var(--border);white-space:nowrap">10:45 AM</td><td style="padding:10px 12px;border-bottom:1px solid var(--border);text-align:center">12</td></tr><tr><td style="padding:10px 12px;border-bottom:1px solid var(--border)">—<br><span style="font-size:12px;color:var(--ink-dim)">Private - NON AC</span></td><td style="padding:10px 12px;border-bottom:1px solid var(--border);white-space:nowrap">6:55 AM</td><td style="padding:10px 12px;border-bottom:1px solid var(--border);white-space:nowrap;color:var(--amber)">7:40 AM</td><td style="padding:10px 12px;border-bottom:1px solid var(--border);white-space:nowrap">12:10 PM</td><td style="padding:10px 12px;border-bottom:1px solid var(--border);text-align:center">16</td></tr></tbody></table></div><h2 style="font-size:1.35rem;margin:36px 0 12px">FAQ</h2><details style="border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin-bottom:10px"><summary style="cursor:pointer;font-weight:600">How many buses run from Benachity to Krishnanagar via Panagarh?</summary><p style="margin:8px 0 0;color:var(--ink-dim);font-size:14px">2 of the 12 buses on the Benachity to Krishnanagar route pass through Panagarh.</p></details><details style="border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin-bottom:10px"><summary style="cursor:pointer;font-weight:600">What is the first bus from Benachity to Krishnanagar via Panagarh?</summary><p style="margin:8px 0 0;color:var(--ink-dim);font-size:14px">The first bus passing through Panagarh departs Benachity at 5:45 AM.</p></details><details style="border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin-bottom:10px"><summary style="cursor:pointer;font-weight:600">What is the last bus from Benachity to Krishnanagar via Panagarh?</summary><p style="margin:8px 0 0;color:var(--ink-dim);font-size:14px">The last bus passing through Panagarh departs Benachity at 6:55 AM.</p></details><details style="border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin-bottom:10px"><summary style="cursor:pointer;font-weight:600">Do I have to change buses at Panagarh?</summary><p style="margin:8px 0 0;color:var(--ink-dim);font-size:14px">No, these are through-buses. They pass through Panagarh on the way from Benachity to Krishnanagar.</p></details><details style="border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin-bottom:10px"><summary style="cursor:pointer;font-weight:600">When do buses reach Panagarh from Benachity?</summary><p style="margin:8px 0 0;color:var(--ink-dim);font-size:14px">Buses reach Panagarh between 7:40 AM and 7:40 AM depending on departure time.</p></details><h2 style="font-size:1.35rem;margin:36px 0 12px">Related Routes</h2><div style="background:var(--panel);border:1px solid var(--border);border-radius:16px;overflow:hidden"><a href="benachity-to-krishnanagar.html" style="display:block;padding:12px 14px;border-bottom:1px solid var(--border);text-decoration:none">Direct Benachity to Krishnanagar route <span style="float:right;color:var(--ink-dim);font-size:13px">12 buses</span></a><a href="benachity-to-krishnanagar-via-nadanghat.html" style="display:block;padding:12px 14px;border-bottom:1px solid var(--border);text-decoration:none">via Nadanghat</a></div></section>
 </main>
-<footer class="footer">
+<footer class="seo-footer">
   <div class="container">
     <div class="footer-links">
-      <a href="../about.html">About Us</a>
-      <a href="../contact.html">Contact Us</a>
+      <a href="../index.html">Home</a>
+      <a href="../about.html">About</a>
+      <a href="../contact.html">Contact</a>
       <a href="../privacy-policy.html">Privacy Policy</a>
-      <a href="../about.html#credits">Credits</a>
-      <a href="./">All Bus Timetables</a>
+      <a href="./">All Routes</a>
     </div>
-    <p><strong>BusJatri</strong> — West Bengal Bus Timetable<br>
-    Not affiliated with any transport corporation<br>
-    Contact: <a href="mailto:busjatri@zohomail.in">busjatri@zohomail.in</a></p>
+    <p>© 2026 BusJatri — West Bengal Bus Timetable<br>
+    Not affiliated with any transport corporation</p>
   </div>
 </footer>
 </body>

@@ -14,73 +14,130 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b8791f' stroke-width='2'%3E%3Cpath d='M4 16V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10'/%3E%3Cpath d='M4 16h16'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="../css/seo.css">
 <link rel="stylesheet" href="../css/extras.css">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is the first bus from Eden City to Amity University?", "acceptedAnswer": {"@type": "Answer", "text": "Check the timetable above."}}, {"@type": "Question", "name": "What is the last bus from Eden City to Amity University?", "acceptedAnswer": {"@type": "Answer", "text": "Check the timetable above."}}, {"@type": "Question", "name": "How many buses run from Eden City to Amity University?", "acceptedAnswer": {"@type": "Answer", "text": "1 bus services are listed on this route."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is the first bus from Eden City to Amity University?", "acceptedAnswer": {"@type": "Answer", "text": "Check the timetable above for departure times."}}, {"@type": "Question", "name": "What is the last bus from Eden City to Amity University?", "acceptedAnswer": {"@type": "Answer", "text": "Check the timetable above for departure times."}}, {"@type": "Question", "name": "How many buses run from Eden City to Amity University?", "acceptedAnswer": {"@type": "Answer", "text": "1 bus services are listed on this route."}}, {"@type": "Question", "name": "How long is the journey from Eden City to Amity University?", "acceptedAnswer": {"@type": "Answer", "text": "Journey time varies by bus and traffic."}}]}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://wb-bus.vercel.app/"}, {"@type": "ListItem", "position": 2, "name": "Bus Timetable", "item": "https://wb-bus.vercel.app/bus-time-table/"}, {"@type": "ListItem", "position": 3, "name": "Eden City to Amity University", "item": "https://wb-bus.vercel.app/bus-time-table/eden-city-to-amity-university.html"}]}</script>
+<script>
+function seoTheme(){var d=document.body;d.classList.toggle('dark');document.getElementById('themeBtn').textContent=d.classList.contains('dark')?'☀️':'🌙';try{localStorage.setItem('seo-theme',d.classList.contains('dark')?'dark':'light')}catch(e){}}
+function seoLang(){var b=document.body;b.classList.toggle('lang-bn');document.getElementById('langBtn').textContent=b.classList.contains('lang-bn')?'English':'বাংলা';try{localStorage.setItem('seo-lang',b.classList.contains('lang-bn')?'bn':'en')}catch(e){}}
+function toggleBus(card,e){if(e&&e.target&&e.target.closest('a'))return;card.classList.toggle('open')}
+function toggleAllBuses(btn){var h=document.querySelectorAll('.bus-card.hidden-bus');var s=h.length>0&&h[0].classList.contains('show');h.forEach(function(c){c.classList.toggle('show',!s)});btn.innerHTML=s?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg> Show all buses':'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m18 15-6-6-6 6"/></svg> Show fewer'}
+function swapFromTo(){var f=document.getElementById('fromInput'),t=document.getElementById('toInput');if(!f||!t)return;var x=f.value;f.value=t.value;t.value=x}
+function seoSearch(){var f=document.getElementById('fromInput'),t=document.getElementById('toInput'),s=document.getElementById('stopInput');if(!f)return;var from=f.value.trim(),to=t?t.value.trim():'',stop=s?s.value.trim():'';if(from&&to){window.location.href='../index.html#/search?from='+encodeURIComponent(from)+'&to='+encodeURIComponent(to)}else if(stop){window.location.href='../index.html#/search?stop='+encodeURIComponent(stop)}else if(from){window.location.href='../index.html#/search?from='+encodeURIComponent(from)}}
+(function(){try{var th=localStorage.getItem('seo-theme');if(th==='dark')document.body.classList.add('dark');var ln=localStorage.getItem('seo-lang');if(ln==='bn')document.body.classList.add('lang-bn')}catch(e){}})();
+</script>
 </head>
 <body>
-<header class="header">
-  <div class="container header-inner">
-    <a href="../index.html" class="logo" style="text-decoration:none;color:inherit">
-      <svg class="icon" viewBox="0 0 24 24" style="width:1.35rem;height:1.35rem;color:var(--amber)" aria-hidden="true">
-        <path d="M4 16V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10"/><path d="M4 16h16"/>
-      </svg>
-      Bus<span>Jatri</span>
-    </a>
-    <nav style="display:flex;gap:10px;align-items:center;font-size:13px">
-      <a href="../index.html" style="color:var(--ink-dim);text-decoration:none;font-weight:600">Home</a>
-      <a href="./" style="color:var(--ink-dim);text-decoration:none;font-weight:600">Routes</a>
-    </nav>
+<header class="top-bar">
+  <div class="top-inner">
+    <a href="../index.html" class="brand">Bus<span class="accent">Jatri</span></a>
+    <div class="top-actions">
+      <button class="top-btn" onclick="seoLang()" id="langBtn">বাংলা</button>
+      <button class="top-btn" onclick="seoTheme()" id="themeBtn">🌙</button>
+    </div>
   </div>
 </header>
-<main class="container seo-main" style="padding-top:18px;padding-bottom:48px;max-width:720px">
-<div class="crumbs"><a href="../index.html">Home</a> › <a href="./">Bus Timetable</a> › <span>Eden City → Amity University</span></div>
-<div class="seo-hero">
-  <h1>Eden City <span class="arr">→</span> Amity University</h1>
+<main class="container" style="padding-top:14px;padding-bottom:48px">
+<div class="breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="./">Bus Time Table</a><span class="sep">/</span><span>Eden City → Amity University</span></div>
+<div class="hero">
+  <div class="hero-route-line"><svg class="icon" viewBox="0 0 24 24"><path d="M4 16V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10"/><path d="M4 16h16"/><path d="M4 16v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2"/><path d="M17 16v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2"/><path d="M6 10h12"/></svg></div>
+  <span class="eyebrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4Z"/><path d="M10 6v12" stroke-dasharray="2 3"/></svg> Eden City → Amity University · West Bengal</span>
+  <h1>Eden City <span class="arrow">→</span> <span class="accent">Amity University</span> Bus Time Table</h1>
   
+  <p class="tagline">Complete bus timings, operators and stoppages. 1 buses on this route.</p>
   <div class="stat-chips">
-    <span class="schip">🚌 1 buses</span>
-    <span class="schip hot">⏰ First —</span>
-    <span class="schip">⏰ Last —</span>
-    <span class="schip">⏱ ~—</span>
+    <span class="stat-chip"><strong>1</strong> buses</span>
+    <span class="stat-chip">First <strong>—</strong></span>
+    <span class="stat-chip">Last <strong>—</strong></span>
+    <span class="stat-chip">~<strong>—</strong> journey</span>
+    <span class="stat-chip">WBTC</span>
   </div>
-</div><section class="seo-section">
-  <h3 class="section-title">Today's Departures</h3>
-  <div class="bus-row">
-  <div class="dep">—<small>— arr</small></div>
-  <div class="bmid">
-    <div class="op">AC-49 · WBTC</div>
-    <div class="mrow"><span>—</span><span>~—</span><span>40 stops</span></div>
+</div><div class="search-box">
+  <div class="search-row">
+    <div class="search-field">
+      <label><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-6.1 7-11.3A7 7 0 0 0 5 9.7C5 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg> From</label>
+      <input id="fromInput" placeholder="e.g. Eden City" value="Eden City">
+    </div>
+    <button class="swap-btn" onclick="swapFromTo()" title="Swap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 3h5v5"/><path d="M8 3H3v5"/><path d="M21 3 12 12"/><path d="M3 3l9 9"/></svg></button>
+    <div class="search-field">
+      <label><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 3v2.2M12 18.8V21M21 12h-2.2M5.2 12H3"/></svg> To</label>
+      <input id="toInput" placeholder="e.g. Amity University" value="Amity University">
+    </div>
+    <div class="search-field">
+      <label><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="2"/><circle cx="6" cy="18" r="2"/><path d="M6 8v8"/><path d="M6 12h9a3 3 0 0 0 3-3V7"/></svg> Stoppage <span class="via-hint">(optional)</span></label>
+      <input id="stopInput" placeholder="e.g. Kolaghat">
+    </div>
   </div>
-  <span class="badge badge-govt">Govt</span>
+  <div class="search-actions">
+    <button class="search-btn" onclick="seoSearch()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m20 20-4.3-4.3"/></svg>
+      Search buses
+    </button>
+  </div>
+</div><div class="lv-wrap">
+  <div class="lv-clock-wrap">
+    <div>
+      <div class="lv-clock-label"><span class="ldot"></span> Live Departures</div>
+      <div class="lv-clock-big" id="lvClock">--:--:--<small>IST</small></div>
+    </div>
+    <div class="lv-geo" id="lvGeo">West Bengal</div>
+  </div>
+  <div class="lv-board">
+    <div class="lv-tabs" id="lvTabs"></div>
+    <div id="lvRows"></div>
+  </div>
 </div>
+<script>
+var SEO_TABS={"Eden City": [], "Amity University": []};
+var boardTab="Eden City";
+function t2m(t){var m=String(t).match(/^(\d+):#+)\s*(AM|PM)?/i);if(!m)return null;var h=+m[1],mm=+m[2],ap=(m[3]|"").toUpperCase();if(mm>59)return null;if(ap){if(h<1||h>12)return null}else{if(h>23)return null}if(ap==="PM"&&h<12)h+=12;if(ap==="AM"&&h===12)h=0;return h*60+mm}
+function minutesNow(){var d=new Date();return d.getHours()*60+d.getMinutes()}
+function cd(m){if(m<60)return m+"m";var h=Math.floor(m/60),r=m%60;return h+"h "+r?r+"m":"")}
+function fmtT(m){var h=Math.floor(m/60),mm=m%60;var ap=h>=12?"PM":"AM";if(h>12)h-=12;if(h===0)h=12;return h+":"+String(mm).padStart(2,"0")+" "+ap}
+function renderBoard(anim){var el=document.getElementById("lvRows");if(el)el.classList.toggle("still",anim===false);var tabs=Object.keys(SEO_TABS);document.getElementById("lvTabs").innerHTML=tabs.map(function(t){return '<button class="lv-tab'+(t===boardTab?" on":"")+'" onclick="boardTab=\''+t+'\';renderBoard(true)">'+t+'</button>'}).join("");var deps=SEO_TABS[boardTab]||[],now=minutesNow();var nextIdx=-1;for(var i=0;i<deps.length;i++){if(deps[i].t>now){nextIdx=i;break}}if(nextIdx<0&&deps.length)nextIdx=0;var rows=deps.map(function(n,i){var cls="",right="";if(i===nextIdx){cls="next";right='<span class="ltag">'+(n.t<=now?"tmrw +":"in ")+cd(Math.abs(n.t-now))+'</span>'}else if(i>nextIdx){right='<span class="lgone">+'+cd(n.t-now)+'</span>'}else{cls="past";right='<span class="lgone">departed</span>'}return '<div class="lv-row '+cls+'" style="animation-delay:'+(i*0.07)+'s">'+'<span class="lt">'+fmtT(n.t).replace(" ","")+'</span>'+'<span class="lnm">'+n.n+'</span>'+'<span class="ldst">'+arrow+' '+n.d+'</span>'+right+'</div>'}).join("");el.innerHTML=rows||'<div class="lv-row"><span class="lnm">No timed departures</span></div>'}
+function tickClock(){var t=new Date().toLocaleTimeString("en-IN",{hour12:false,timeZone:"Asia/Kolkata"});document.getElementById("lvClock").innerHTML=t+"<small>IST</small>"}
+tickClock();setInterval(tickClock,1000);renderBoard(true);setInterval(function(){renderBoard(false)},30000);
+</script><div class="ad-zone" id="ad1"></div><section class="section">
+  <div class="section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4z"/><path d="M10 6v12" stroke-dasharray="2 3"/></svg> All Buses on This Route</div>
+  <div class="bus-list"><div class="bus-card" style="--i:0" onclick="toggleBus(this,event)">
+  <div class="bus-head">
+    <div class="bus-info">
+      <div class="name">AC-49 <span class="badge badge-govt">Govt</span><span class="badge badge-ac">AC</span></div>
+      <div class="route">Eden City → Amity University</div>
+    </div>
+    <span class="no-time">—:—</span>
+    <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+  </div>
+  <div class="bus-body"><div class="bus-body-inner">
+    <div class="bus-meta-grid"><div class="meta-item"><div class="lb">Operator</div><div class="vl">WBTC</div></div><div class="meta-item"><div class="lb">Stops</div><div class="vl">40</div></div></div>
+    <div class="mini-timeline"><div class="mini-stop"><span class="dot"></span><span class="st-name">Eden City</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">Nungi</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">Bata</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">Dakghar</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">Mollar Gate</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">Rampur Quarter</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">SM Nagar</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">Sarkarpool</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">Jhinjhira Bazar</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">Brace Bridge</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">Taratala</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">New Alipore</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">Durgapur Bridge</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">Chetla Park</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">Rashbehari</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">Deshapriya Park</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">Gariahat</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">Ballygunge Station</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">Kasba PS</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">Bosepukur</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">Acropolis Mall</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">GST Bhawan</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">Ruby</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">VIP Bazar</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">Uttar Panchannagram</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">Science City</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">Mathpukur</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">Chingrighata</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">Nicco Park</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">SDF</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">College More</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">Technopolis</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">DLF 1</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">Newtown</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">Axis Mall</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">Narkelbagan</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">Unitech Gate 2</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">DLF 2</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">Ecospace</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">Amity University</span></div></div>
+  </div></div>
+</div></div>
+  
 </section><section class="seo-section">
   <h3 class="section-title">Route Map</h3>
   <div class="routemap">
     <div class="rm-track"><div class="rm-line"></div><div class="rm-stops"><div class="rm-stop end"><div class="rm-dot"></div><div class="rm-name">Eden City</div></div><div class="rm-stop"><div class="rm-dot"></div><div class="rm-name">Nungi</div></div><div class="rm-stop"><div class="rm-dot"></div><div class="rm-name">Bata</div></div><div class="rm-stop"><div class="rm-dot"></div><div class="rm-name">Dakghar</div></div><div class="rm-stop"><div class="rm-dot"></div><div class="rm-name">Mollar Gate</div></div><div class="rm-stop"><div class="rm-dot"></div><div class="rm-name">Rampur Quarter</div></div><div class="rm-stop"><div class="rm-dot"></div><div class="rm-name">SM Nagar</div></div><div class="rm-stop"><div class="rm-dot"></div><div class="rm-name">Sarkarpool</div></div><div class="rm-stop"><div class="rm-dot"></div><div class="rm-name">Jhinjhira Bazar</div></div><div class="rm-stop end"><div class="rm-dot"></div><div class="rm-name">Brace Bridge</div></div></div></div>
     <div class="rm-more">▸ full timetable below</div>
   </div>
-</section><section class="seo-section">
-  <h3 class="section-title">FAQ</h3>
-  <details open><summary>What is the first bus from Eden City to Amity University?</summary><div class="fa-body">Check the timetable above.</div></details><details><summary>What is the last bus from Eden City to Amity University?</summary><div class="fa-body">Check the timetable above.</div></details><details><summary>How many buses run from Eden City to Amity University?</summary><div class="fa-body">1 bus services are listed on this route.</div></details>
-</section><section class="seo-section">
-  <a class="rel-chip" href="amity-university-to-eden-city.html">↩ Amity University → Eden City (return)</a>
-</section><section class="seo-section">
-  <h3 class="section-title">More Routes from Eden City</h3>
-  <div class="chip-row"><a class="rel-chip" href="eden-city-to-howrah-station.html">Eden City → Howrah Station</a></div>
-</section>
+</section><div class="ad-zone" id="ad2"></div><section class="section">
+  <div class="section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.5h.01"/></svg> Frequently Asked Questions</div>
+  <div class="faq-list"><div class="faq-item" style="--i:0" onclick="this.classList.toggle('open')"><div class="faq-q">What is the first bus from Eden City to Amity University?<svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div><div class="faq-a"><p>Check the timetable above for departure times.</p></div></div><div class="faq-item" style="--i:1" onclick="this.classList.toggle('open')"><div class="faq-q">What is the last bus from Eden City to Amity University?<svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div><div class="faq-a"><p>Check the timetable above for departure times.</p></div></div><div class="faq-item" style="--i:2" onclick="this.classList.toggle('open')"><div class="faq-q">How many buses run from Eden City to Amity University?<svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div><div class="faq-a"><p>1 bus services are listed on this route.</p></div></div><div class="faq-item" style="--i:3" onclick="this.classList.toggle('open')"><div class="faq-q">How long is the journey from Eden City to Amity University?<svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div><div class="faq-a"><p>Journey time varies by bus and traffic.</p></div></div></div>
+</section><section class="section"><a class="rel-chip" href="amity-university-to-eden-city.html">↩ Amity University → Eden City (return)</a></section><section class="section">
+  <div class="section-title">More Routes from Eden City</div>
+  <div class="chip-row"><a class="rel-chip" style="--i:0" href="eden-city-to-howrah-station.html">Eden City → Howrah Station</a></div>
+</section><div class="ad-zone" id="ad3"></div>
 </main>
-<footer class="footer">
+<footer class="seo-footer">
   <div class="container">
     <div class="footer-links">
-      <a href="../about.html">About Us</a>
-      <a href="../contact.html">Contact Us</a>
+      <a href="../index.html">Home</a>
+      <a href="../about.html">About</a>
+      <a href="../contact.html">Contact</a>
       <a href="../privacy-policy.html">Privacy Policy</a>
-      <a href="../about.html#credits">Credits</a>
-      <a href="./">All Bus Timetables</a>
+      <a href="./">All Routes</a>
     </div>
-    <p><strong>BusJatri</strong> — West Bengal Bus Timetable<br>
-    Not affiliated with any transport corporation<br>
-    Contact: <a href="mailto:busjatri@zohomail.in">busjatri@zohomail.in</a></p>
+    <p>© 2026 BusJatri — West Bengal Bus Timetable<br>
+    Not affiliated with any transport corporation</p>
   </div>
 </footer>
 </body>
