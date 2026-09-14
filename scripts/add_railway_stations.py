@@ -74,7 +74,19 @@ def in_wb(lat, lon):
 
 
 def norm(s):
-    return re.sub(r"[^a-z]", "", (s or "").lower())
+    s = re.sub(r"[^a-z]", "", (s or "").lower())
+    aliases = {
+        "garbeta": "garhbeta",
+        "garhbeta": "garhbeta",
+        "midnapore": "medinipur",
+        "midnapur": "medinipur",
+        "medinipur": "medinipur",
+        "burdwan": "bardhaman",
+        "barddhaman": "bardhaman",
+        "tarakeswar": "tarkeshwar",
+        "tarkeswar": "tarkeshwar",
+    }
+    return aliases.get(s, s)
 
 
 def norm_tokens(s):
@@ -274,18 +286,28 @@ def load_existing_cache(path):
 
 
 def pick_railway(coord, stations, stop_name):
-    """Prefer exact name match within 15 km, else nearest station."""
+    """Prefer station with matching name (even if coords are off), else nearest."""
     best, bd = None, 1e9
     exact, ed = None, 1e9
+    nstop = norm(stop_name)
     for st in stations:
         d = haversine(coord, (st["lat"], st["lon"]))
         if d < bd:
             bd, best = d, st
-        if d < NAME_MATCH_STATION_KM and norm(st["name"]) == norm(stop_name) and d < ed:
+        nst = norm(st["name"])
+        if nst == nstop and d < ed:
             ed, exact = d, st
-    pick = exact or best
-    km = ed if exact else bd
-    return pick, km, bool(exact)
+        elif (
+            exact is None
+            and len(nstop) >= 5
+            and (nstop in nst or nst in nstop)
+            and d < 25
+            and d < ed
+        ):
+            ed, exact = d, st
+    if exact is not None and ed <= 50:
+        return exact, ed, True
+    return best, bd, False
 
 
 def main():
