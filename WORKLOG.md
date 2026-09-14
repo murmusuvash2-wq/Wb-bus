@@ -9,7 +9,15 @@ Permanent memory of all work done on this site. Read this before starting any ne
 - Why: 20+ failed workflow runs; the Garhbeta railway fix never got applied
 - Files: `.github/workflows/fix-garhbeta-railway.yml`
 - Commit: 1be91d9c56b27948403a8ee5c29cba139328546f
-- Status: needs-verify — trigger the workflow manually from Actions tab to confirm it passes; it should patch `scripts/add_railway_stations.py`, re-attach railways, assert GBA for Garhbeta, and commit
+- Status: superseded — indentation fix was correct but NOT the root cause; the workflow still failed after it (runs #34+). Real root cause found and fixed in the entry below.
+
+## 2026-09-14 — Fix Garhbeta workflow (real root cause) + restore geocode cache
+- What: `fix-garhbeta-railway.yml` Step 1 did `json.loads(data/stop_coords.json)` but that file contained the literal text `PLACEHOLDER_COORDS` (not JSON) — committed by mistake in 7f42033 ("free geocode pass"). This raised JSONDecodeError on every run, so the Garhbeta railway fix never applied (live data still had Garhbeta → SALBONI 17.3km). Fixed by (a) restoring the real 677-entry geocode cache (269 non-null coords) from commit 54e9f96 as pure-ASCII JSON, and (b) wrapping the workflow's `json.loads` in try/except so it falls back to `{}` instead of hard-failing on a bad/placeholder cache.
+- Why: 33+ failed workflow runs; Garhbeta showed the wrong railway station on the live site. The cache file is build-time only (frontend `js/app.js` does NOT load `stop_coords.json`), so the placeholder didn't break the live site directly but blocked all railway re-attachment.
+- Files: `data/stop_coords.json` (restored, ASCII), `.github/workflows/fix-garhbeta-railway.yml` (defensive json.loads)
+- Commits: eab3acf (cache restore — got UTF-8 corrupted via base64 tool path), 39de048 (workflow fix — also base64-corrupted), 128cbc4 (workflow fix corrected as plain text), a070671 (cache restored clean as ASCII JSON)
+- Status: done — workflow runs #36 and #37 both SUCCESS. Live `busjatri_data.json` now has Garhbeta → GARHBETA (GBA) 0.0km, and 251 stops retain a `nearest_station` (key routes verified: Kharagpur→KGP, Digha→DGHA, Bankura→BQA, Siliguri→SGUJ, Asansol→ASNE).
+- Lesson: the GitHub file-commit tool can corrupt UTF-8 bytes when given base64 input — commit non-ASCII data as plain text, or pre-flatten to ASCII (`json.dumps(ensure_ascii=True)`).
 
 ## 2026-09-14 — UI/UX + SEO audit of live site
 - What: Full audit of colour contrast, text sizes, responsiveness, tap targets, focus states, and SEO tags on index.html and route pages
@@ -46,7 +54,7 @@ Permanent memory of all work done on this site. Read this before starting any ne
 - [ ] Add og:image + twitter:card to route pages (generator change)
 - [ ] Add noindex to admin.html
 - [ ] Submit sitemap.xml in Google Search Console; request indexing for top routes
-- [ ] Verify fix-garhbeta-railway.yml passes when triggered
+- [x] Verify fix-garhbeta-railway.yml passes when triggered — DONE 2026-09-14 (runs #36, #37 success)
 
 ### Month 2 — Content & UX
 - [ ] Fix sub-12px text sizes (raise to 12px floor, especially Bengali text)
@@ -67,3 +75,5 @@ Permanent memory of all work done on this site. Read this before starting any ne
 
 ### Data sources
 - [ ] Identify new official sources (WBTC/SBSTC/NBSTC route data) and wire scrapers into scheduled workflows
+- [ ] Monitor `Auto-update from bussathi.in` — run #4 was cancelled (not failed); check the next scheduled run completes, debug if it repeats
+- [ ] Optional: full geocode run (without SKIP_GEOCODE) to give the remaining ~2,470 uncached stops coords + railway stations
