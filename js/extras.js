@@ -1,1 +1,127 @@
-LyogQnVzSmF0cmkgRXh0cmFzIOKAlCBXaGF0c0FwcCBzaGFyZSwgZ2VvbG9jYXRpb24sIHJlcG9ydCB0aW1lLCBhZG1pbiAqLwoKLyogV2hhdHNBcHAgU2hhcmUg4oCUIGJ1cyB0aW1lICsgc2l0ZSBsaW5rICovCmZ1bmN0aW9uIHNoYXJlV2hhdHNBcHAoYnVzTmFtZSwgb3JpZ2luLCBkZXN0aW5hdGlvbiwgZGVwYXJ0dXJlLCBzdG9wcykgewogIHZhciBtc2cgPSAiQnVzSmF0cmkg4oCUIFdlc3QgQmVuZ2FsIEJ1cyBUaW1ldGFibGVcblxuIjsKICBtc2cgKz0gIkJ1czogIiArIChidXNOYW1lIHx8ICLigJQiKSArICJcbiI7CiAgbXNnICs9ICJSb3V0ZTogIiArIChvcmlnaW4gfHwgIuKAlCIpICsgIiBcdTIxOTIgIiArIChkZXN0aW5hdGlvbiB8fCAi4oCUIikgKyAiXG4iOwogIGlmIChkZXBhcnR1cmUpIG1zZyArPSAiRGVwYXJ0dXJlOiAiICsgZGVwYXJ0dXJlICsgIlxuIjsKICBpZiAoc3RvcHMpIG1zZyArPSAiU3RvcHM6ICIgKyBzdG9wcyArICJcbiI7CiAgbXNnICs9ICJcblZpZXcgZnVsbCB0aW1ldGFibGU6XG5odHRwczovL3diLWJ1cy52ZXJjZWwuYXBwIjsKICBtc2cgKz0gIlxuXG5Nb3JlIGJ1c2VzIG9uIEJ1c0phdHJpICjgpqzgpr7gprgg4Kav4Ka+4Kak4KeN4Kaw4KeAKSI7CiAgd2luZG93Lm9wZW4oImh0dHBzOi8vd2EubWUvP3RleHQ9IiArIGVuY29kZVVSSUNvbXBvbmVudChtc2cpLCAiX2JsYW5rIik7Cn0KCi8qIEdlb2xvY2F0aW9uIEF1dG8tRGV0ZWN0IOKAlCBwcmVmaWxsICJGcm9tIiBmaWVsZCAqLwpmdW5jdGlvbiBkZXRlY3RMb2NhdGlvbigpIHsKICBpZiAoIW5hdmlnYXRvci5nZW9sb2NhdGlvbikgcmV0dXJuOwogIG5hdmlnYXRvci5nZW9sb2NhdGlvbi5nZXRDdXJyZW50UG9zaXRpb24oZnVuY3Rpb24ocG9zKSB7CiAgICBmZXRjaCgiaHR0cHM6Ly9ub21pbmF0aW0ub3BlbnN0cmVldG1hcC5vcmcvcmV2ZXJzZT9sYXQ9IiArIHBvcy5jb29yZHMubGF0aXR1ZGUgKyAiJmxvbj0iICsgcG9zLmNvb3Jkcy5sb25naXR1ZGUgKyAiJmZvcm1hdD1qc29uJmFjY2VwdC1sYW5ndWFnZT1lbiIpCiAgICAgIC50aGVuKGZ1bmN0aW9uKHIpIHsgcmV0dXJuIHIuanNvbigpOyB9KQogICAgICAudGhlbihmdW5jdGlvbihkYXRhKSB7CiAgICAgICAgdmFyIGEgPSBkYXRhLmFkZHJlc3MgfHwge307CiAgICAgICAgdmFyIGNpdHkgPSBhLmNpdHkgfHwgYS50b3duIHx8IGEudmlsbGFnZSB8fCBhLmNvdW50eSB8fCBhLnN0YXRlX2Rpc3RyaWN0OwogICAgICAgIGlmIChjaXR5KSB7CiAgICAgICAgICB2YXIgaW5wdXRzID0gZG9jdW1lbnQucXVlcnlTZWxlY3RvckFsbCgiLnNlYXJjaC1maWVsZCBpbnB1dCIpOwogICAgICAgICAgaWYgKGlucHV0c1swXSAmJiAhaW5wdXRzWzBdLnZhbHVlKSB7CiAgICAgICAgICAgIGlucHV0c1swXS52YWx1ZSA9IGNpdHk7CiAgICAgICAgICAgIHZhciBoaW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3RvcigiLmdlby1oaW50Iik7CiAgICAgICAgICAgIGlmIChoaW50KSB7CiAgICAgICAgICAgICAgaGludC5jbGFzc0xpc3QuYWRkKCJzaG93Iik7CiAgICAgICAgICAgICAgdmFyIGNpdHlFbCA9IGhpbnQucXVlcnlTZWxlY3RvcigiLmdlby1jaXR5Iik7CiAgICAgICAgICAgICAgaWYgKGNpdHlFbCkgY2l0eUVsLnRleHRDb250ZW50ID0gY2l0eTsKICAgICAgICAgICAgfQogICAgICAgICAgfQogICAgICAgIH0KICAgICAgfSkKICAgICAgLmNhdGNoKGZ1bmN0aW9uKCkge30pOwogIH0sIGZ1bmN0aW9uKCkge30sIHsgdGltZW91dDogNTAwMCwgZW5hYmxlSGlnaEFjY3VyYWN5OiBmYWxzZSB9KTsKfQoKLyogRW1wdHkgU2VhcmNoIFN0YXRlIOKAlCBzaG93IG1lc3NhZ2Ugd2hlbiBmaWVsZHMgZW1wdHkgKi8KZnVuY3Rpb24gaGFuZGxlU2VhcmNoKCkgewogIHZhciBpbnB1dHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCIuc2VhcmNoLWZpZWxkIGlucHV0Iik7CiAgdmFyIGZyb20gPSBpbnB1dHNbMF0gPyBpbnB1dHNbMF0udmFsdWUudHJpbSgpIDogIiI7CiAgdmFyIHRvID0gaW5wdXRzWzFdID8gaW5wdXRzWzFdLnZhbHVlLnRyaW0oKSA6ICIiOwogIHZhciBlbXB0eSA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoIi5lbXB0eS1zZWFyY2giKTsKICBpZiAoIWZyb20gfHwgIXRvKSB7CiAgICBpZiAoZW1wdHkpIGVtcHR5LmNsYXNzTGlzdC5hZGQoInNob3ciKTsKICAgIHJldHVybiBmYWxzZTsKICB9CiAgaWYgKGVtcHR5KSBlbXB0eS5jbGFzc0xpc3QucmVtb3ZlKCJzaG93Iik7CiAgcmV0dXJuIHRydWU7Cn0KCi8qIFN3YXAgb3JpZ2luL2Rlc3RpbmF0aW9uICovCmZ1bmN0aW9uIHN3YXBTZWFyY2goKSB7CiAgdmFyIGlucHV0cyA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3JBbGwoIi5zZWFyY2gtZmllbGQgaW5wdXQiKTsKICBpZiAoaW5wdXRzWzBdICYmIGlucHV0c1sxXSkgewogICAgdmFyIHRtcCA9IGlucHV0c1swXS52YWx1ZTsKICAgIGlucHV0c1swXS52YWx1ZSA9IGlucHV0c1sxXS52YWx1ZTsKICAgIGlucHV0c1sxXS52YWx1ZSA9IHRtcDsKICB9Cn0KCi8qIFJlcG9ydCBUaW1lIOKAlCBzaG93IGZvcm0gKi8KZnVuY3Rpb24gc2hvd1JlcG9ydEZvcm0oc3RvcE5hbWUpIHsKICB2YXIgZm9ybSA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoIi5yZXBvcnQtZm9ybSIpOwogIGlmIChmb3JtKSB7CiAgICBmb3JtLmNsYXNzTGlzdC5hZGQoInNob3ciKTsKICAgIHZhciB0aXRsZSA9IGZvcm0ucXVlcnlTZWxlY3RvcigiLnJlcG9ydC10aXRsZSIpOwogICAgaWYgKHRpdGxlKSB0aXRsZS50ZXh0Q29udGVudCA9ICJSZXBvcnQgdGltZSBmb3IgIiArIHN0b3BOYW1lOwogICAgZm9ybS5zY3JvbGxJbnRvVmlldyh7IGJlaGF2aW9yOiAic21vb3RoIiwgYmxvY2s6ICJuZWFyZXN0IiB9KTsKICB9Cn0KCi8qIFJlcG9ydCBUaW1lIOKAlCBzdWJtaXQgKi8KZnVuY3Rpb24gc3VibWl0UmVwb3J0KCkgewogIHZhciB0aW1lSW5wdXQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKCIucmVwb3J0LWZvcm0gaW5wdXRbdHlwZT10aW1lXSIpOwogIGlmICh0aW1lSW5wdXQgJiYgdGltZUlucHV0LnZhbHVlKSB7CiAgICB2YXIgZG9uZSA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoIi5yZXBvcnQtZG9uZSIpOwogICAgaWYgKGRvbmUpIGRvbmUuY2xhc3NMaXN0LmFkZCgic2hvdyIpOwogICAgdGltZUlucHV0LnN0eWxlLmRpc3BsYXkgPSAibm9uZSI7CiAgICB2YXIgYnRuID0gZG9jdW1lbnQucXVlcnlTZWxlY3RvcigiLnJlcG9ydC1mb3JtIGJ1dHRvbiIpOwogICAgaWYgKGJ0bikgYnRuLnN0eWxlLmRpc3BsYXkgPSAibm9uZSI7CiAgfQp9CgovKiBDb250YWN0IEZvcm0g4oCUIG9wZW4gbWFpbHRvIHdpdGggcHJlZmlsbGVkIGNvbnRlbnQgKi8KZnVuY3Rpb24gc2VuZENvbnRhY3QoKSB7CiAgdmFyIG5hbWUgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgiY05hbWUiKSA/IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCJjTmFtZSIpLnZhbHVlIDogIiI7CiAgdmFyIGVtYWlsID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoImNFbWFpbCIpID8gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoImNFbWFpbCIpLnZhbHVlIDogIiI7CiAgdmFyIHN1YmplY3QgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgiY1N1YmplY3QiKSA/IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCJjU3ViamVjdCIpLnZhbHVlIDogIkJ1c0phdHJpIENvbnRhY3QiOwogIHZhciBtZXNzYWdlID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoImNNZXNzYWdlIikgPyBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgiY01lc3NhZ2UiKS52YWx1ZSA6ICIiOwogIHZhciBib2R5ID0gIk5hbWU6ICIgKyAobmFtZSB8fCAi4oCUIikgKyAiXG5FbWFpbDogIiArIChlbWFpbCB8fCAi4oCUIikgKyAiXG5cbiIgKyAobWVzc2FnZSB8fCAiIik7CiAgd2luZG93LmxvY2F0aW9uLmhyZWYgPSAibWFpbHRvOmJ1c2phdHJpQHpvaG9tYWlsLmluP3N1YmplY3Q9IiArIGVuY29kZVVSSUNvbXBvbmVudChzdWJqZWN0KSArICImYm9keT0iICsgZW5jb2RlVVJJQ29tcG9uZW50KGJvZHkpOwogIHZhciBzdWNjZXNzID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoImNvbnRhY3RTdWNjZXNzIik7CiAgaWYgKHN1Y2Nlc3MpIHN1Y2Nlc3MuY2xhc3NMaXN0LmFkZCgic2hvdyIpOwp9CgovKiBBZG1pbiDigJQgYXBwcm92ZSByZXBvcnQgKi8KZnVuY3Rpb24gYXBwcm92ZVJlcG9ydChidG4pIHsKICBidG4ucGFyZW50RWxlbWVudC5zdHlsZS5vcGFjaXR5ID0gIjAuNSI7CiAgYnRuLnRleHRDb250ZW50ID0gIlx1MjcxMyI7CiAgYnRuLmRpc2FibGVkID0gdHJ1ZTsKfQoKLyogQWRtaW4g4oCUIHVwZGF0ZSBidXMgdGltZSAqLwpmdW5jdGlvbiBhZG1pblVwZGF0ZShidG4sIG1zZykgewogIGFsZXJ0KG1zZyk7Cn0KCi8qIFRoZW1lIHRvZ2dsZSBmb3Igc3RhdGljIHBhZ2VzICovCmZ1bmN0aW9uIGluaXRUaGVtZSgpIHsKICB2YXIgc2F2ZWQgPSBsb2NhbFN0b3JhZ2UuZ2V0SXRlbSgiYmotdGhlbWUiKTsKICBpZiAoc2F2ZWQpIGRvY3VtZW50LmRvY3VtZW50RWxlbWVudC5zZXRBdHRyaWJ1dGUoImRhdGEtdGhlbWUiLCBzYXZlZCk7Cn0KZnVuY3Rpb24gdG9nZ2xlVGhlbWVTdGF0aWMoKSB7CiAgdmFyIGN1ciA9IGRvY3VtZW50LmRvY3VtZW50RWxlbWVudC5nZXRBdHRyaWJ1dGUoImRhdGEtdGhlbWUiKSB8fCAibGlnaHQiOwogIHZhciBuZXh0ID0gY3VyID09PSAiZGFyayIgPyAibGlnaHQiIDogImRhcmsiOwogIGRvY3VtZW50LmRvY3VtZW50RWxlbWVudC5zZXRBdHRyaWJ1dGUoImRhdGEtdGhlbWUiLCBuZXh0KTsKICBsb2NhbFN0b3JhZ2Uuc2V0SXRlbSgiYmotdGhlbWUiLCBuZXh0KTsKICB2YXIgYnRuID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoInRoZW1lQnRuIik7CiAgaWYgKGJ0bikgewogICAgYnRuLmlubmVySFRNTCA9IG5leHQgPT09ICJkYXJrIgogICAgICA?ICc8c3ZnIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSI1Ii8+PHBhdGggZD0iTTEyIDF2Mk0xMiAyMXYyTTQuMjIgNC4yMmwxLjQyIDEuNDJNMTguMzYgMTguMzZsMS40MiAxLjQyTTEgMTJoMk0yMSAxMmgyTTQuMjIgMTkuNzhsMS40Mi0xLjQyTTE4LjM2IDUuNjRsMS40Mi0xLjQyIi8+PC9zdmc+JwogICAgICA6ICc8c3ZnIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIj48cGF0aCBkPSJNMjEgMTIuNzlBOSA5IDAgMSAxIDExLjIxIDMgNyA3IDAgMCAwIDIxIDEyLjc5eiIvPjwvc3ZnPic7CiAgfQp9CgovKiBJbml0IG9uIGxvYWQgKi8KaWYgKHR5cGVvZiB3aW5kb3cgIT09ICJ1bmRlZmluZWQiKSB7CiAgd2luZG93LmFkZEV2ZW50TGlzdGVuZXIoIkRPTUNvbnRlbnRMb2FkZWQiLCBmdW5jdGlvbigpIHsKICAgIGluaXRUaGVtZSgpOwogICAgLyogU2V0IHVwIHRoZW1lIGJ1dHRvbiBvbiBzdGF0aWMgcGFnZXMgKi8KICAgIHZhciBidG4gPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgidGhlbWVCdG4iKTsKICAgIGlmIChidG4gJiYgdHlwZW9mIHRvZ2dsZVRoZW1lID09PSAidW5kZWZpbmVkIikgewogICAgICBidG4ub25jbGljayA9IHRvZ2dsZVRoZW1lU3RhdGljOwogICAgICB0b2dnbGVUaGVtZVN0YXRpYygpOyAvKiBzZXQgY29ycmVjdCBpY29uICovCiAgICB9CiAgICAvKiBTZXQgdXAgc3dhcCBidXR0b24gKi8KICAgIHZhciBzd2FwQnRuID0gZG9jdW1lbnQucXVlcnlTZWxlY3RvcigiLnN3YXAtYnRuIik7CiAgICBpZiAoc3dhcEJ0bikgc3dhcEJ0bi5vbmNsaWNrID0gc3dhcFNlYXJjaDsKICAgIC8qIFNldCB1cCBzZWFyY2ggYnV0dG9uICovCiAgICB2YXIgc2VhcmNoQnRuID0gZG9jdW1lbnQucXVlcnlTZWxlY3RvcigiLnNlYXJjaC1idG4iKTsKICAgIGlmIChzZWFyY2hCdG4gJiYgdHlwZW9mIGRvU2VhcmNoID09PSAidW5kZWZpbmVkIikgewogICAgICBzZWFyY2hCdG4ub25jbGljayA9IGZ1bmN0aW9uKGUpIHsgaWYgKCFoYW5kbGVTZWFyY2goKSkgZS5wcmV2ZW50RGVmYXVsdCgpOyB9OwogICAgfQogICAgLyogQXV0by1kZXRlY3QgbG9jYXRpb24gb24gaG9tZSBwYWdlICovCiAgICBpZiAoZG9jdW1lbnQucXVlcnlTZWxlY3RvcigiLnNlYXJjaC1maWVsZCBpbnB1dCIpKSB7CiAgICAgIHNldFRpbWVvdXQoZGV0ZWN0TG9jYXRpb24sIDE1MDApOwogICAgfQogIH0pOwp9Cg==
+/* BusJatri Extras — WhatsApp share, geolocation, report time, admin, static-page helpers */
+
+/* ---------- Theme (static pages) ---------- */
+function toggleThemeStatic() {
+  var cur = document.documentElement.getAttribute('data-theme') ||
+    (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  var next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  try { localStorage.setItem('bj-theme', next); } catch (e) {}
+  updateThemeIconStatic(next);
+}
+function updateThemeIconStatic(theme) {
+  var btn = document.getElementById('themeBtn');
+  if (!btn) return;
+  btn.innerHTML = theme === 'dark'
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+}
+(function () {
+  var saved = null;
+  try { saved = localStorage.getItem('bj-theme'); } catch (e) {}
+  if (saved) document.documentElement.setAttribute('data-theme', saved);
+  var eff = saved || (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  updateThemeIconStatic(eff);
+})();
+
+/* ---------- WhatsApp Share — bus time + site link ---------- */
+function shareWhatsApp(busName, origin, destination, departure, stops) {
+  var msg = "BusJatri — West Bengal Bus Timetable\n\n";
+  msg += "Bus: " + (busName || "—") + "\n";
+  msg += "Route: " + (origin || "—") + " → " + (destination || "—") + "\n";
+  if (departure) msg += "Departure: " + departure + "\n";
+  if (stops) msg += "Stops: " + stops + "\n";
+  msg += "\nView full timetable:\nhttps://wb-bus.vercel.app";
+  msg += "\n\nMore buses on BusJatri (বাস যাত্রী)";
+  window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
+}
+
+/* ---------- Geolocation Auto-Detect — prefill "From" field ---------- */
+function detectLocation() {
+  if (!navigator.geolocation) return;
+  navigator.geolocation.getCurrentPosition(function (pos) {
+    fetch("https://nominatim.openstreetmap.org/reverse?lat=" + pos.coords.latitude + "&lon=" + pos.coords.longitude + "&format=json&accept-language=en")
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        var a = data.address || {};
+        var city = a.city || a.town || a.village || a.county || a.state_district;
+        if (city) {
+          var inputs = document.querySelectorAll(".search-field input");
+          if (inputs[0] && !inputs[0].value) {
+            inputs[0].value = city;
+            var hint = document.querySelector(".geo-hint");
+            if (hint) {
+              var c = hint.querySelector(".geo-city");
+              if (c) c.textContent = city;
+              hint.classList.add("show");
+            }
+          }
+        }
+      })
+      .catch(function () { /* silent — detection is best-effort only */ });
+  }, function () { /* denied or failed — ignore */ }, { timeout: 8000 });
+}
+
+/* ---------- Contact Form — opens user's email client ---------- */
+function sendContact() {
+  var name = (document.getElementById("cName") || {}).value || "";
+  var email = (document.getElementById("cEmail") || {}).value || "";
+  var subject = (document.getElementById("cSubject") || {}).value || "Feedback";
+  var message = (document.getElementById("cMessage") || {}).value || "";
+  var body = "Name: " + name + "\nEmail: " + email + "\n\n" + message;
+  var url = "mailto:busjatri@zohomail.in?subject=" + encodeURIComponent("[BusJatri] " + subject) + "&body=" + encodeURIComponent(body);
+  var ok = document.getElementById("contactSuccess");
+  if (ok) ok.style.display = "flex";
+  window.location.href = url;
+}
+
+/* ---------- Report Time — on bus detail pages ---------- */
+function toggleReport(btn) {
+  var form = document.getElementById("reportForm");
+  if (!form) return;
+  var showing = form.classList.toggle("show");
+  if (btn) btn.style.display = showing ? "none" : "inline-flex";
+}
+function submitReport() {
+  var form = document.getElementById("reportForm");
+  var done = document.getElementById("reportDone");
+  var t = (document.getElementById("reportTime") || {}).value || "";
+  if (!t) { alert("Please enter the correct time."); return; }
+  if (form) form.classList.remove("show");
+  if (done) done.classList.add("show");
+  /* Time corrections go to the team via email */
+  var msg = "BusJatri time correction:\n" + document.title + "\nCorrect time: " + t;
+  window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
+}
+
+/* ---------- Admin Dashboard (demo actions) ---------- */
+function adminUpdate(btn, msg) {
+  if (!btn) return;
+  var old = btn.textContent;
+  btn.textContent = "✓ Saved";
+  btn.disabled = true;
+  setTimeout(function () { btn.textContent = old; btn.disabled = false; }, 1600);
+  if (msg) {
+    var bar = document.getElementById("adminMsg");
+    if (bar) { bar.textContent = msg; bar.style.display = "block"; setTimeout(function () { bar.style.display = "none"; }, 2600); }
+  }
+}
+function approveReport(btn) {
+  if (!btn) return;
+  var row = btn.closest(".admin-report-row");
+  btn.textContent = "Approved ✓";
+  btn.disabled = true;
+  if (row) { row.style.opacity = ".55"; }
+}
+
+/* ---------- AdSense zone activation (when ads script present) ---------- */
+(function () {
+  if (window.adsbygoogle) {
+    document.querySelectorAll(".ad-zone").forEach(function (z) { z.classList.add("active"); });
+  }
+})();
+
+/* ---------- Auto-detect location on home page ---------- */
+document.addEventListener("DOMContentLoaded", function () {
+  if (document.querySelector(".search-field")) detectLocation();
+});
