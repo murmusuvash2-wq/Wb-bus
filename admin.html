@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Admin Dashboard | BusJatri</title>
+  <meta name="description" content="BusJatri admin dashboard for bus time updates, route management, and community report review.">
+  <meta name="theme-color" content="#b8791f">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b8791f' stroke-width='2'><path d='M4 16V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10M4 16h16M6 10h12'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;0,900&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Bengali:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/extras.css">
+</head><body>
+<header class="header">
+  <div class="container header-inner">
+    <div class="logo" onclick="location.href='index.html'">
+      <svg class="icon" viewBox="0 0 24 24" style="width:1.35rem;height:1.35rem;color:var(--amber);stroke-width:1.6"><path d="M4 16V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10"/><path d="M4 16h16"/><path d="M4 16v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2"/><path d="M17 16v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2"/><path d="M6 10h12"/></svg>
+      Bus<span>Jatri</span>
+    </div>
+    <span class="admin-badge">Admin</span>
+    <div class="header-actions">
+      <button class="icon-btn" id="themeBtn" onclick="toggleThemeStatic()" title="Toggle theme" aria-label="Toggle dark mode"></button>
+      <div class="lang-group">
+        <button class="lang-btn active">EN</button>
+        <button class="lang-btn">বাংলা</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="bus-anim">
+  <div class="route-line"></div>
+  <div class="stop-dot d1"></div>
+  <div class="stop-dot d2"></div>
+  <div class="stop-dot d3"></div>
+  <div class="bus-slide">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10"/><path d="M4 16h16"/><path d="M4 16v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2"/><path d="M17 16v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2"/><path d="M6 10h12"/></svg>
+  </div>
+</div>
+<main class="page-section">
+  <h1>Admin Dashboard</h1>
+  <p class="page-sub">Bus times, routes aur data manage karo.</p>
+
+  <div class="admin-grid">
+    <div class="admin-stat"><div class="lb">Total Buses</div><div class="vl">1,247</div></div>
+    <div class="admin-stat"><div class="lb">Routes</div><div class="vl">340</div></div>
+    <div class="admin-stat"><div class="lb">Stops</div><div class="vl">890</div></div>
+    <div class="admin-stat"><div class="lb" style="color:var(--amber)">Pending</div><div class="vl" style="color:var(--amber)">12</div></div>
+  </div>
+
+  <div class="contact-form">
+    <h3 style="font-size:14px;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:6px">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--amber)"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      Update Bus Time
+    </h3>
+    <div class="form-row">
+      <div class="field"><label>Select Bus</label>
+        <select><option>SBSTC Bankura-Kolkata</option><option>Digha Express</option><option>Barasat-Digha</option></select>
+      </div>
+      <div class="field"><label>Select Stop</label>
+        <select><option>Bankura</option><option>Durgapur</option><option>Asansol</option><option>Bardhaman</option><option>Kolkata</option></select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="field"><label>New Departure</label><input type="time" value="06:00"></div>
+      <div class="field"><label>New Arrival</label><input type="time"></div>
+    </div>
+    <button class="submit-btn" onclick="adminUpdate(this,'Bus time updated successfully!')">Update Time</button>
+  </div>
+
+  <div class="contact-form">
+    <h3 style="font-size:14px;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:6px">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--amber)"><path d="M3 21h18M5 21V8l7-5 7 5v13"/></svg>
+      Add / Update Route
+    </h3>
+    <div class="form-row">
+      <div class="field"><label>Origin</label><input type="text" placeholder="e.g. Bankura"></div>
+      <div class="field"><label>Destination</label><input type="text" placeholder="e.g. Kolkata"></div>
+    </div>
+    <div class="form-row">
+      <div class="field"><label>Via (optional)</label><input type="text" placeholder="e.g. Durgapur"></div>
+      <div class="field"><label>Number of Buses</label><input type="number" value="3"></div>
+    </div>
+    <button class="submit-btn" onclick="adminUpdate(this,'Route saved successfully!')">Save Route</button>
+  </div>
+
+  <div class="page-card">
+    <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Pending Time Reports</h3>
+    <p style="font-size:12px;color:var(--ink-dim);margin-bottom:10px">User-reported times - verify aur approve karo.</p>
+    <div class="admin-report-row"><span style="flex:1"><strong>Asansol</strong> - SBSTC Bankura-Kolkata</span><span style="font-family:var(--font-mono);color:var(--amber);font-weight:700">8:00 AM</span><button class="admin-approve" onclick="approveReport(this)">Approve</button></div>
+    <div class="admin-report-row"><span style="flex:1"><strong>Kolkata</strong> - Digha Express</span><span style="font-family:var(--font-mono);color:var(--amber);font-weight:700">9:45 PM</span><button class="admin-approve" onclick="approveReport(this)">Approve</button></div>
+    <div class="admin-report-row"><span style="flex:1"><strong>Bardhaman</strong> - Barasat-Digha</span><span style="font-family:var(--font-mono);color:var(--amber);font-weight:700">10:30 AM</span><button class="admin-approve" onclick="approveReport(this)">Approve</button></div>
+  </div>
+
+  <div class="page-card">
+    <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>Data Management</h3>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="admin-btn" onclick="alert('JSON exported (demo)')">Export JSON</button>
+      <button class="admin-btn" onclick="alert('Import JSON (demo)')">Import JSON</button>
+      <button class="admin-btn primary" onclick="alert('Changes committed to GitHub (demo)')">Sync to GitHub</button>
+    </div>
+    <p style="font-size:11px;color:var(--ink-dim);margin-top:10px;text-align:center">Changes verify hokar data/busjatri_data.json mein save hote hain. GitHub push se live update hota hai.</p>
+  </div>
+</main>
+<footer class="footer">
+  <div class="container">
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About Us</a>
+      <a href="contact.html">Contact Us</a>
+      <a href="privacy-policy.html">Privacy Policy</a>
+      <a href="about.html#credits">Credits</a>
+      <a href="bus-time-table/">All Bus Timetables</a>
+    </div>
+    <p><strong>BusJatri</strong> - West Bengal Bus Timetable<br>
+    Not affiliated with any transport corporation<br>
+    Contact: <a href="mailto:busjatri@zohomail.in">busjatri@zohomail.in</a></p>
+  </div>
+</footer>
+<script src="js/extras.js"></script>
+</body>
+</html>
