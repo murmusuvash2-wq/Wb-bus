@@ -1,0 +1,64 @@
+def header_html():
+    return """<header class="top-bar">
+  <div class="top-inner">
+    <a href="../index.html" class="brand">Bus<span class="accent">Jatri</span></a>
+    <div class="top-actions">
+      <button class="top-btn" onclick="seoLang()" id="langBtn">বাংলা</button>
+      <button class="top-btn" onclick="seoTheme()" id="themeBtn">🌙</button>
+    </div>
+  </div>
+</header>"""
+
+
+def footer_html():
+    return """<footer class="seo-footer">
+  <div class="container">
+    <div class="footer-links">
+      <a href="../index.html">Home</a>
+      <a href="../about.html">About</a>
+      <a href="../contact.html">Contact</a>
+      <a href="../privacy-policy.html">Privacy Policy</a>
+      <a href="./">All Routes</a>
+    </div>
+    <p>© 2026 BusJatri — West Bengal Bus Timetable<br>
+    Not affiliated with any transport corporation</p>
+  </div>
+</footer>"""
+
+
+def shell(title, description, canonical, body, schema=""):
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{esc(title)}</title>
+<meta name="description" content="{esc(description)}">
+<link rel="canonical" href="{esc(canonical)}">
+<meta property="og:title" content="{esc(title)}">
+<meta property="og:description" content="{esc(description)}">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{esc(canonical)}">
+<meta name="theme-color" content="#b8791f">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b8791f' stroke-width='2'%3E%3Cpath d='M4 16V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10'/%3E%3Cpath d='M4 16h16'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../css/seo.css">
+<link rel="stylesheet" href="../css/extras.css">
+{schema}
+<script>
+function seoTheme(){{var d=document.body;d.classList.toggle('dark');document.getElementById('themeBtn').textContent=d.classList.contains('dark')?'☀️':'🌙';try{{localStorage.setItem('seo-theme',d.classList.contains('dark')?'dark':'light')}}catch(e){{}}}}
+function seoLang(){{var b=document.body;b.classList.toggle('lang-bn');document.getElementById('langBtn').textContent=b.classList.contains('lang-bn')?'English':'বাংলা';try{{localStorage.setItem('seo-lang',b.classList.contains('lang-bn')?'bn':'en')}}catch(e){{}}}}
+function toggleBus(card,e){{if(e&&e.target&&e.target.closest('a'))return;card.classList.toggle('open')}}
+function toggleAllBuses(btn){{var h=document.querySelectorAll('.bus-card.hidden-bus');var s=h.length>0&&h[0].classList.contains('show');h.forEach(function(c){{c.classList.toggle('show',!s)}});btn.innerHTML=s?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg> Show all buses':'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m18 15-6-6-6 6"/></svg> Show fewer'}}
+function swapFromTo(){{var f=document.getElementById('fromInput'),t=document.getElementById('toInput');if(!f||!t)return;var x=f.value;f.value=t.value;t.value=x}}
+function seoSearch(){{var f=document.getElementById('fromInput'),t=document.getElementById('toInput'),s=document.getElementById('stopInput');if(!f)return;var from=f.value.trim(),to=t?t.value.trim():'',stop=s?s.value.trim():'';if(from&&to){{window.location.href='../index.html#/search?from='+encodeURIComponent(from)+'&to='+encodeURIComponent(to)}}else if(stop){{window.location.href='../index.html#/search?stop='+encodeURIComponent(stop)}}else if(from){{window.location.href='../index.html#/search?from='+encodeURIComponent(from)}}}}
+(function(){{try{{var th=localStorage.getItem('seo-theme');if(th==='dark')document.body.classList.add('dark');var ln=localStorage.getItem('seo-lang');if(ln==='bn')document.body.classList.add('lang-bn')}}catch(e){{}}}})();
+</script>
+</head>
+<body>
+{header_html()}
+<main class="container" style="padding-top:14px;padding-bottom:48px">
+{body}
+</main>
+{footer_html()}
+</body>
+</html>"""
