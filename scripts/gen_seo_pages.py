@@ -1296,145 +1296,368 @@ for (origin, destination), vv_ in sorted(VIA.items(), key=lambda kv: -len(route_
 # ROUTE INDEX
 # ------------------------------------------------------------
 
+# ============================================================
+# BUS TIME TABLE INDEX (v6 — animated all-bus-time-table page)
+# ============================================================
+
 by_origin = defaultdict(list)
 
 for origin, destination in route_meta:
-    by_origin[origin].append(
-        (origin, destination)
-    )
+    by_origin[origin].append((origin, destination))
 
 
-origin_sections = []
+_total_places = len(by_origin)
+_total_routes = len(route_meta)
+_total_buses = sum(len(v) for v in route_meta.values())
 
-for origin, routes in sorted(
+
+# Popular: top 16 by total buses
+_popular = sorted(
     by_origin.items(),
-    key=lambda item: -len(item[1]),
-):
+    key=lambda kv: -sum(len(route_meta[(o, t)]) for o, t in kv[1]),
+)[:16]
 
-    links = []
-
-    for o, t in sorted(routes):
-        filename = (
-            f"{slug(o)}-to-{slug(t)}.html"
-        )
-
-        links.append(
-            f"""
-<a href="{filename}"
-   style="
-     display:block;
-     padding:11px 13px;
-     border-bottom:1px solid var(--border);
-     text-decoration:none;
-   ">
-
-  <span>
-    {esc(o)} → {esc(t)}
-  </span>
-
-  <span style="
-    float:right;
-    color:var(--ink-dim);
-    font-size:13px;
-  ">
-    {len(route_meta[(o, t)])} buses
-  </span>
-
-</a>
-"""
-        )
-
-    origin_sections.append(
-        f"""
-<section style="margin-top:28px">
-
-  <h2 style="
-    font-size:1.2rem;
-    margin-bottom:10px;
-  ">
-    {esc(origin)}
-  </h2>
-
-  <div style="
-    background:var(--panel);
-    border:1px solid var(--border);
-    border-radius:15px;
-    overflow:hidden;
-  ">
-    {''.join(links)}
-  </div>
-
-</section>
-"""
-    )
-
-
-place_links = " · ".join(
-    f'<a href="buses-from-{slug(place)}.html">'
-    f'Buses from {esc(place)}</a>'
-    for place in top_places[:20]
+_popular_html = "\n".join(
+    f'<a class="place-card" style="--i:{i}" href="buses-from-{slug(p)}.html">'
+    f'<div class="pc-top"><span class="pc-count">{len(rs)}</span></div>'
+    f'<div class="pc-name">{esc(p)}</div>'
+    f'<div class="pc-meta">{sum(len(route_meta[(o, t)]) for o, t in rs)} buses daily '
+    f'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">'
+    f'<path d="M5 12h14m-6-6 6 6-6 6"/></svg></div></a>'
+    for i, (p, rs) in enumerate(_popular)
 )
 
 
-index_body = f"""
-<section style="
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:20px;
-  padding:24px;
-">
+# A-Z groups (static HTML — crawlable place names)
+_az_places = sorted(by_origin.keys())
 
-  <div style="
-    font-size:13px;
-    color:var(--ink-dim);
-    margin-bottom:14px;
-  ">
-    <a href="../index.html">Home</a>
-    <span style="margin:0 5px">›</span>
-    Bus Timetable
+_az_letters = sorted(set(
+    (p[0].upper() if p and p[0].isalpha() else "#")
+    for p in _az_places
+))
+
+_az_groups_html = []
+for letter in _az_letters:
+    group_places = [
+        p for p in _az_places
+        if (p[0].upper() if p and p[0].isalpha() else "#") == letter
+    ]
+    _az_groups_html.append(f'<div class="letter-group reveal" id="L{letter}">')
+    _az_groups_html.append(f'<div class="letter-head">{letter}</div>')
+    _az_groups_html.append('<div class="place-list">')
+    for p in group_places:
+        rs = by_origin[p]
+        _az_groups_html.append(
+            f'<div class="place-row" data-place="{esc(p)}">'
+            f'<div class="pr-head" onclick="togglePlace(this,event)">'
+            f'<span class="pr-dots"></span>'
+            f'<span class="pr-name">{esc(p)}</span>'
+            f'<span class="pr-n">{len(rs)} routes</span>'
+            f'<svg class="pr-chev" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>'
+            f'</div><div class="pr-body"><div class="pr-inner"></div></div></div>'
+        )
+    _az_groups_html.append('</div></div>')
+
+_az_html = "".join(_az_groups_html)
+
+
+# Embedded JSON for search: place -> [[to, n], ...]
+_btt_json = {}
+for p in _az_places:
+    _btt_json[p] = [
+        [t, len(route_meta[(o, t)])]
+        for o, t in sorted(by_origin[p])
+    ]
+
+_btt_json_str = json.dumps(_btt_json, ensure_ascii=False, separators=(",", ":"))
+
+
+# Quick chips
+_quick_names = [
+    "Esplanade", "Howrah", "Digha", "Kolkata",
+    "Bankura", "Siliguri", "Bardhaman", "Durgapur",
+]
+_quick_html = "".join(
+    f'<button class="qchip" onclick="qsearch(\'{esc(n).lower()}\')">{esc(n)}</button>'
+    for n in _quick_names
+)
+
+
+# FAQ
+_faqs = [
+    (
+        "How many bus routes are listed on BusJatri?",
+        f"The timetable covers {_total_routes:,} bus routes connecting {_total_places} places across West Bengal, with {_total_buses:,} daily bus services listed.",
+    ),
+    (
+        "How do I find a bus time table on this page?",
+        "Use the search box to type a place name (e.g. Esplanade, Digha). Matching places and routes appear instantly. You can also browse places alphabetically with the A-Z index.",
+    ),
+    (
+        "Which places have the most bus connections?",
+        "Esplanade, Howrah Station, Digha, Kolkata and Karunamoyee are the busiest starting points, with the widest choice of long-distance and local buses.",
+    ),
+    (
+        "Are the bus timings updated?",
+        "Timetable data is refreshed regularly from published SBSTC, WBTC, NBSTC and private operator schedules. Always confirm the current departure at the bus stand.",
+    ),
+]
+_faq_html = "\n".join(
+    f'<div class="faq-item" style="--i:{i}" onclick="this.classList.toggle(\'open\')">'
+    f'<div class="faq-q">{esc(q)}<svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div>'
+    f'<div class="faq-a"><p>{esc(a)}</p></div></div>'
+    for i, (q, a) in enumerate(_faqs)
+)
+
+
+# --- CSS (new classes only — base from seo.css) ---
+_btt_css = """<style>
+.hero h1{font-size:clamp(1.6rem,5vw,2.4rem)}
+.stat-chip strong{font-variant-numeric:tabular-nums}
+.eyebrow svg{animation:wiggle 2.6s ease-in-out infinite}
+@keyframes wiggle{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;animation:lvPulse 1.8s infinite;flex-shrink:0}
+.result-info{font-family:var(--font-mono);font-size:11px;color:var(--ink-dim);padding:10px 4px 0;display:none}
+.clear-btn{background:none;border:none;cursor:pointer;color:var(--ink-dim);padding:6px;display:none}
+.qchips{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.qchips-l{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-dim);align-self:center;font-weight:600}
+.qchip{background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:6px 13px;font-size:12px;font-weight:600;color:var(--ink-dim);cursor:pointer;font-family:var(--font-body);transition:all .15s;min-height:32px}
+.qchip:hover{border-color:var(--amber);color:var(--amber);background:var(--amber-soft)}
+.place-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.place-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:13px 14px;cursor:pointer;color:var(--ink);transition:all .15s;animation:fadeUp .4s ease both;animation-delay:calc(var(--i)*35ms);display:flex;flex-direction:column;gap:3px;text-decoration:none}
+.place-card:hover{border-color:var(--amber);background:var(--amber-soft);transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+.pc-top{display:flex;justify-content:space-between;align-items:center}
+.pc-count{font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--amber-ink);background:var(--amber-soft);border-radius:999px;padding:2px 9px;align-self:flex-start}
+.pc-name{font-weight:700;font-size:14.5px;line-height:1.25}
+.pc-meta{font-size:11px;color:var(--ink-dim);display:flex;align-items:center;gap:4px}
+.pc-meta svg{transition:transform .15s}
+.place-card:hover .pc-meta svg{transform:translateX(3px);color:var(--amber)}
+.rm-chip{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:8px 15px;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;transition:all .15s;animation:fadeUp .3s ease both;text-decoration:none}
+.rm-chip:hover{border-color:var(--amber);background:var(--amber-soft)}
+.rm-chip .arr{color:var(--amber);font-family:var(--font-mono)}
+.rm-chip .n{font-family:var(--font-mono);font-size:10px;color:var(--ink-dim);background:var(--surface-2);border-radius:999px;padding:1px 8px}
+.az-nav{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:16px;position:sticky;top:60px;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(10px);padding:8px 0;z-index:50;border-bottom:1px solid var(--line)}
+.az-btn{font-family:var(--font-mono);font-size:12px;font-weight:700;color:var(--ink-dim);background:var(--surface);border:1px solid var(--line);border-radius:7px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .12s}
+.az-btn:hover{border-color:var(--amber);color:var(--amber)}
+.az-btn.has{color:var(--ink);border-color:var(--line-strong)}
+.az-btn.miss{opacity:.35;cursor:default}
+.letter-group{margin-bottom:6px}
+.letter-head{font-family:var(--font-display);font-size:1.35rem;font-weight:700;color:var(--amber);padding:12px 4px 8px;position:sticky;top:100px;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);z-index:40;border-bottom:1px solid var(--line)}
+.place-list{display:flex;flex-direction:column;gap:6px;padding-top:8px}
+.place-row{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);overflow:hidden;animation:fadeUp .35s ease both}
+.place-row.open{border-color:var(--amber)}
+.pr-head{display:flex;align-items:center;gap:10px;padding:11px 14px;cursor:pointer;user-select:none}
+.pr-head:hover{background:var(--surface-2)}
+.pr-dots{width:9px;height:9px;border-radius:50%;background:var(--amber);flex-shrink:0}
+.pr-name{flex:1;font-weight:700;font-size:14px}
+.pr-n{font-family:var(--font-mono);font-size:10.5px;color:var(--ink-dim);white-space:nowrap}
+.pr-chev{color:var(--ink-dim);transition:transform .25s;flex-shrink:0}
+.place-row.open .pr-chev{transform:rotate(180deg)}
+.pr-body{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.place-row.open .pr-body{max-height:800px}
+.pr-inner{padding:4px 14px 12px;border-top:1px dashed var(--line-strong)}
+.route-chip{display:inline-flex;align-items:center;gap:6px;background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:12.5px;font-weight:600;color:var(--ink);cursor:pointer;transition:all .13s;margin:3px 4px 3px 0;text-decoration:none;opacity:0}
+.route-chip:hover{border-color:var(--amber);background:var(--amber-soft);color:var(--ink)}
+.route-chip .arr{color:var(--amber);font-family:var(--font-mono);font-size:11px}
+.route-chip .n{font-family:var(--font-mono);font-size:9.5px;color:var(--ink-dim)}
+.place-row .route-chip{opacity:0}
+.place-row.open .route-chip{animation:popIn .34s cubic-bezier(.22,.61,.36,1) both;animation-delay:calc(min(var(--i),42)*13ms)}
+@keyframes popIn{0%{opacity:0;transform:scale(.82) translateY(6px)}100%{opacity:1;transform:none}}
+.pr-empty{padding:10px 4px;font-size:12px;color:var(--ink-dim)}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .55s cubic-bezier(.22,.61,.36,1),transform .55s cubic-bezier(.22,.61,.36,1)}
+.reveal.in{opacity:1;transform:none}
+.empty{padding:34px 16px;text-align:center;color:var(--ink-dim);display:none;animation:fadeUp .3s ease both}
+.empty svg{width:34px;height:34px;opacity:.5;margin-bottom:10px}
+.empty b{display:block;color:var(--ink);font-size:15px;margin-bottom:3px}
+@media(max-width:640px){.place-grid{grid-template-columns:repeat(2,1fr)}.az-nav{top:56px}.letter-head{top:96px;font-size:1.15rem}.search-field input{font-size:16px}}
+@media(prefers-reduced-motion:reduce){.reveal,.eyebrow svg,.live-dot,.place-row .route-chip,.place-card,.tagline,.hero h1{animation:none!important;transition:none!important;opacity:1!important;transform:none!important}}
+</style>"""
+
+
+# --- JS (reads data from embedded JSON at runtime) ---
+_btt_js = """<script>
+var BTT=JSON.parse(document.getElementById('bttData').textContent);
+var ROWS=[],LETTERS="";
+(function(){
+  var ps=Object.keys(BTT);
+  ps.sort(function(a,b){return a.localeCompare(b)});
+  for(var i=0;i<ps.length;i++){
+    var p=ps[i],L=p[0].toUpperCase();
+    if(!/[A-Z]/.test(L))L="#";
+    ROWS.push([p,L,BTT[p]]);
+    if(LETTERS.indexOf(L)<0)LETTERS+=L;
+  }
+})();
+function slug(s){return(s||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'')}
+function renderAZ(){
+  var nav=document.getElementById("azNav");nav.innerHTML="";
+  LETTERS.split("").sort().forEach(function(L){
+    var has=ROWS.some(function(r){return r[1]===L});
+    var b=document.createElement("button");
+    b.className="az-btn "+(has?"has":"miss");
+    b.textContent=L;
+    if(has)b.onclick=function(){document.getElementById("L"+L).scrollIntoView({behavior:"smooth",block:"start"})};
+    nav.appendChild(b);
+  });
+}
+function togglePlace(head,e){
+  if(e&&e.target.closest("a"))return;
+  var row=head.parentElement,inner=row.querySelector(".pr-inner");
+  var place=row.getAttribute("data-place");
+  if(!inner.children.length){
+    var routes=BTT[place]||[];
+    inner.innerHTML=routes.map(function(r,ci){
+      var href=slug(place)+'-to-'+slug(r[0])+'.html';
+      return '<a class="route-chip" style="--i:'+ci+'" href="'+href+'"><span class="arr">\\u2192</span><span class="to">'+r[0]+'</span><span class="n">'+r[1]+' buses</span></a>';
+    }).join("")||'<div class="pr-empty">No routes</div>';
+  }
+  row.classList.toggle("open");
+}
+function qsearch(q){
+  document.getElementById("q").value=q;doSearch();
+  document.getElementById("popSection").scrollIntoView({behavior:"smooth",block:"start"});
+}
+function doSearch(){
+  var q=document.getElementById("q").value.trim().toLowerCase();
+  var info=document.getElementById("resultInfo"),empty=document.getElementById("emptyState");
+  var rm=document.getElementById("routeMatchesSec"),rmc=document.getElementById("rmChips");
+  var pop=document.getElementById("popSection");
+  document.querySelectorAll(".letter-group").forEach(function(g){g.style.display="";g.classList.add("in")});
+  document.querySelectorAll(".place-row").forEach(function(r){r.style.display="";r.classList.remove("open")});
+  if(!q){info.style.display="none";empty.style.display="none";rm.style.display="none";pop.style.display="";return}
+  pop.style.display="none";
+  var shown=0,routeChips=[];
+  document.querySelectorAll(".letter-group").forEach(function(g){
+    var any=false;
+    g.querySelectorAll(".place-row").forEach(function(r){
+      var n=r.getAttribute("data-place"),hit=n.toLowerCase().indexOf(q)>=0;
+      if(hit){any=true;shown++;r.style.display=""}else r.style.display="none";
+      var rs=BTT[n]||[];
+      rs.forEach(function(rt){
+        if(rt[0].toLowerCase().indexOf(q)>=0&&routeChips.length<24){
+          var href=slug(n)+'-to-'+slug(rt[0])+'.html';
+          routeChips.push('<a class="rm-chip" href="'+href+'">'+n+' <span class="arr">\\u2192</span> '+rt[0]+' <span class="n">'+rt[1]+' buses</span></a>');
+        }
+      });
+    });
+    g.style.display=any?"":"none";
+    if(any)g.classList.add("in");
+  });
+  rmc.innerHTML=routeChips.join("");
+  rm.style.display=routeChips.length?"":"none";
+  info.textContent="Showing "+shown+" places and "+routeChips.length+(routeChips.length>=24?"+":"")+" routes matching \\u201c"+q+"\\u201d";
+  info.style.display="block";
+  if(!shown&&!routeChips.length)empty.style.display="block";else empty.style.display="none";
+}
+function countUp(el,target,dur){
+  var s=performance.now();
+  function tk(now){
+    var p=Math.min(1,(now-s)/dur);
+    var e=1-Math.pow(1-p,3);
+    el.textContent=Math.round(target*e).toLocaleString("en-IN");
+    if(p<1)requestAnimationFrame(tk);
+  }
+  requestAnimationFrame(tk);
+}
+function initAnim(){
+  document.querySelectorAll("[data-count]").forEach(function(el){
+    var n=parseInt(el.getAttribute("data-count"),10);
+    if(window.matchMedia&&window.matchMedia("(prefers-reduced-motion:reduce)").matches){el.textContent=n.toLocaleString("en-IN");return}
+    countUp(el,n,1200);
+  });
+  var q=document.getElementById("q"),cb=document.getElementById("clearBtn");
+  if(q&&cb)q.addEventListener("input",function(){cb.style.display=q.value?"flex":"none"});
+  if("IntersectionObserver" in window){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}});
+    },{rootMargin:"0px 0px -8% 0px"});
+    document.querySelectorAll(".reveal").forEach(function(el){io.observe(el)});
+  }else{
+    document.querySelectorAll(".reveal").forEach(function(el){el.classList.add("in")});
+  }
+}
+(function(){
+  try{
+    var t=localStorage.getItem("seo-theme");
+    if(t==="dark")document.body.classList.add("dark");
+    if(t==="dark"&&document.getElementById("themeBtn"))document.getElementById("themeBtn").textContent="\\u2600\\ufe0f";
+    var l=localStorage.getItem("seo-lang");
+    if(l==="bn"){document.body.classList.add("lang-bn");if(document.getElementById("langBtn"))document.getElementById("langBtn").textContent="English"}
+  }catch(e){}
+  renderAZ();
+  initAnim();
+})();
+</script>"""
+
+
+_index_body = f"""{_btt_css}
+
+<div class="breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><span>Bus Time Table</span></div>
+
+<div class="hero">
+  <span class="eyebrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 16V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10"/><path d="M4 16h16"/></svg> West Bengal Bus Routes</span>
+  <h1>West Bengal <span class="accent">Bus Time Table</span></h1>
+  <p class="tagline">Complete bus timings for every route — SBSTC, WBTC, NBSTC and private operators across all districts.</p>
+  <div class="stat-chips">
+    <span class="stat-chip"><strong data-count="{_total_places}">0</strong> places</span>
+    <span class="stat-chip"><strong data-count="{_total_routes}">0</strong> routes</span>
+    <span class="stat-chip"><strong data-count="{_total_buses}">0</strong> bus services</span>
   </div>
+</div>
 
-  <h1 style="
-    font-size:clamp(1.8rem,5vw,2.5rem);
-    line-height:1.2;
-    margin:0;
-  ">
-    West Bengal Bus Time Table · সব বাস সময়সূচী
-  </h1>
+<div class="search-box">
+  <div class="search-row">
+    <div class="search-field">
+      <label><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m20 20-4.3-4.3"/></svg> <span class="live-dot"></span> Search place or route</label>
+      <input id="q" type="text" placeholder="e.g. Esplanade, Digha, Bankura..." oninput="doSearch()" autocomplete="off">
+    </div>
+    <button class="clear-btn" id="clearBtn" onclick="document.getElementById('q').value='';doSearch()" title="Clear"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+  </div>
+  <div class="qchips">
+    <span class="qchips-l">Quick:</span>
+    {_quick_html}
+  </div>
+</div>
+<div class="result-info" id="resultInfo"></div>
 
-  <p style="
-    max-width:720px;
-    color:var(--ink-dim);
-    line-height:1.7;
-    margin-bottom:0;
-  ">
-    Browse BusJatri route timetables for bus services
-    across West Bengal. Find departures, operators,
-    destinations and commonly listed stoppages.
-  </p>
+<div class="ad-zone" id="ad1"></div>
 
+<section class="section" id="routeMatchesSec" style="display:none">
+  <div class="section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4z"/><path d="M10 6v12" stroke-dasharray="2 3"/></svg> Matching Routes</div>
+  <div class="chip-row" id="rmChips"></div>
 </section>
 
-<section style="margin-top:28px">
-
-  <h2 style="font-size:1.3rem">
-    Popular Starting Places
-  </h2>
-
-  <p style="
-    line-height:1.9;
-    color:var(--ink-dim);
-  ">
-    {place_links}
-  </p>
-
+<section class="section" id="popSection">
+  <div class="section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.1-7-11.3A7 7 0 0 0 5 9.7C5 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg> Popular Starting Places</div>
+  <div class="place-grid">
+{_popular_html}
+  </div>
 </section>
 
-{''.join(origin_sections)}
-"""
+<section class="section">
+  <div class="section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h12"/></svg> All Places &middot; A to Z</div>
+  <div class="az-nav" id="azNav"></div>
+  <div id="azGroups">{_az_html}</div>
+  <div class="empty" id="emptyState">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+    <b>No matches found</b>Try a different place name
+  </div>
+</section>
+
+<div class="ad-zone" id="ad2"></div>
+
+<section class="section">
+  <div class="section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.5h.01"/></svg> Frequently Asked Questions</div>
+  <div class="faq-list">
+{_faq_html}
+  </div>
+</section>
+
+<script type="application/json" id="bttData">{_btt_json_str}</script>
+{_btt_js}"""
 
 
-index_schema = (
+_index_schema = (
     website_schema()
     + "\n"
     + breadcrumb_schema([
@@ -1451,15 +1674,16 @@ with open(
 ) as f:
     f.write(
         shell(
-            "West Bengal Bus Time Table – All Routes | সব বাস সময়সূচী | BusJatri",
+            "West Bengal Bus Time Table \u2013 All Routes | BusJatri",
             (
-                "Browse West Bengal bus timetables with "
-                "route information, operators, departures "
-                "and stoppages on BusJatri."
+                "Complete West Bengal bus time table: "
+                f"{_total_routes} routes from {_total_places} places. "
+                "Find SBSTC, WBTC, NBSTC and private bus timings with departure "
+                "times, operators and stoppages."
             ),
             f"{BASE}/bus-time-table/",
-            index_body,
-            index_schema,
+            _index_body,
+            _index_schema,
         )
     )
 
