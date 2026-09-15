@@ -12,6 +12,8 @@ async function renderBus(el, id) {
   const INITIAL = 8;
   const showAll = location.hash.includes('full=1');
   const visible = showAll ? stops : stops.slice(0, INITIAL);
+  const returnDeparture = stops.slice().reverse().find(s => s.down_time)?.down_time || '';
+  const returnArrival = stops.find(s => s.down_time)?.down_time || '';
 
   const stopNames = stops.map(s => s.name).filter(Boolean);
   let mapUrl = '';
@@ -55,6 +57,7 @@ async function renderBus(el, id) {
           (b.depot_name ? '<div class="info-item"><div class="lbl">Depot</div><div class="val">' + esc(b.depot_name) + '</div></div>' : '') +
           (b.contact_number && b.contact_number !== 'Not Available !' ? '<div class="info-item"><div class="lbl">Contact</div><div class="val"><a href="tel:' + esc(b.contact_number) + '">' + esc(b.contact_number) + '</a></div></div>' : '') +
         '</div>' +
+        (returnDeparture ? '<div class="return-journey"><strong>Return journey</strong><span>' + esc(pn(b.destination)) + ' → ' + esc(pn(b.origin)) + '</span><span>Departs ' + esc(returnDeparture) + (returnArrival ? ' · arrives around ' + esc(returnArrival) : '') + '</span></div>' : '') +
       '</div>' +
       '<div class="wa-row">' +
         (mapUrl ? '<a class="map-btn" href="' + mapUrl + '" target="_blank" rel="noopener">' + icon('map') + ' <span class="label-en">Route on Google Maps</span></a>' : '') +

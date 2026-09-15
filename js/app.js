@@ -210,6 +210,17 @@ function quickSearch(name) {
   location.hash = '#/search?' + q.toString();
 }
 
+function placeMatches(value, query) {
+  const v = String(value || '').toLowerCase().trim();
+  const q = String(query || '').toLowerCase().trim();
+  if (!v || !q) return false;
+  if (v.includes(q)) return true;
+  const compact = s => s.replace(/[^a-z0-9]/g, '');
+  const vc = compact(v).replace(/ac$/, '');
+  const qc = compact(q).replace(/ac$/, '');
+  return vc === qc || vc.includes(qc);
+}
+
 async function loadFullBus(id) {
   if (FULL_BUSES && FULL_BUSES[id]) return FULL_BUSES[id];
   const res = await fetch('data/bus-details.json');
@@ -448,11 +459,11 @@ function renderSearch(el) {
 
   if (from && to) {
     const posIn = (b, q) => {
-      if ((b.origin || '').toLowerCase().includes(q)) return 0;
+      if (placeMatches(b.origin, q)) return 0;
       const sts = b.stoppages || [];
-      const idx = sts.findIndex(s => (s.name || '').toLowerCase().includes(q));
+      const idx = sts.findIndex(s => placeMatches(s.name, q));
       if (idx >= 0) return idx + 1;
-      if ((b.destination || '').toLowerCase().includes(q)) return sts.length + 2;
+      if (placeMatches(b.destination, q)) return sts.length + 2;
       return -1;
     };
     results = results.filter(b => {
@@ -479,8 +490,8 @@ function renderSearch(el) {
   } else if (from || to) {
     const q = from || to;
     results = results.filter(b =>
-      (b.origin || '').toLowerCase().includes(q) ||
-      (b.destination || '').toLowerCase().includes(q) ||
+      placeMatches(b.origin, q) ||
+      placeMatches(b.destination, q) ||
       (b.bus_name || '').toLowerCase().includes(q) ||
       (b.route || '').toLowerCase().includes(q) ||
       (b.stoppages || []).some(s => (s.name || '').toLowerCase().includes(q))
