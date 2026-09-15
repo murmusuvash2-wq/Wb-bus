@@ -242,6 +242,8 @@ body.lang-bn .tagline.bn { font-family: var(--font-body); }
 .search-field input:focus { outline: none; border-bottom-color: var(--amber); }
 .search-field input::placeholder { color: var(--ink-dim); opacity: .55; }
 .search-actions { display: flex; padding: 12px 2px 0; }
+.browse-btn { display:inline-flex; align-items:center; justify-content:center; margin-left:8px; padding:0 14px; border:1px solid var(--line-strong); border-radius:11px; color:var(--amber-ink); font-size:12px; font-weight:700; white-space:nowrap; }
+.browse-btn:hover { background:var(--amber-soft); text-decoration:none; border-color:var(--amber); }
 .search-btn {
   flex: 1; background: var(--amber); color: #fff9ee; border: none; border-radius: 11px;
   padding: 13px 24px; font-size: 15px; font-weight: 700; font-family: var(--font-body); cursor: pointer;
@@ -270,7 +272,7 @@ body.lang-bn .tagline.bn { font-family: var(--font-body); }
 }
 .section-title .icon { color: var(--amber); width: 1.1em; height: 1.1em; }
 
-.place-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); grid-auto-flow: dense; gap: 12px; }
+.place-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr)); grid-auto-flow: dense; gap: 12px; min-width:0; }
 .place-card {
   background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
   padding: 18px 14px; text-align: left; cursor: pointer; transition: transform .2s, box-shadow .2s, border-color .2s;
@@ -428,7 +430,7 @@ body.lang-bn .label-bn { display: inline; }
 .swap-btn:hover { border-color: var(--amber); color: var(--amber); transform: rotate(180deg); }
 .swap-btn:active { transform: rotate(180deg) scale(.94); }
 .swap-btn .icon { width: 15px; height: 15px; }
-@media (max-width: 639px) { .swap-btn { display: none; } }
+@media (max-width: 639px) { .swap-btn { display: none; } .search-actions{flex-direction:column;gap:8px}.browse-btn{margin-left:0;min-height:42px} }
 
 .via-hint { font-weight: 400; color: var(--ink-dim); text-transform: none; letter-spacing: 0; font-family: var(--font-body); }
 

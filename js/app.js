@@ -422,6 +422,7 @@ function renderHome(el) {
         </div>
         <div class="search-actions">
           <button class="search-btn" onclick="doSearch()">${icon('search')} <span class="label-en">Search buses</span><span class="label-bn">খুঁজুন</span></button>
+          <a class="browse-btn" href="bus-time-table/"><span class="label-en">Browse all timetables</span><span class="label-bn">সব টাইমটেবিল দেখুন</span> →</a>
         </div>
         <datalist id="stopList">${Object.values(STOPS).slice(0, 800).map(s => `<option value="${esc(s.name)}">`).join('')}</datalist>
       </div>

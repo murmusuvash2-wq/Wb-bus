@@ -60,6 +60,9 @@
 .pc-meta svg{transition:transform .15s}
 .place-card:hover .pc-meta svg{transform:translateX(3px);color:var(--amber)}
 .rm-chip{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:8px 15px;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;transition:all .15s;animation:fadeUp .3s ease both;text-decoration:none}
+.route-match-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.route-match-grid .rm-chip{width:100%;justify-content:space-between;border-radius:12px;padding:12px 14px;box-shadow:var(--shadow-sm)}
+.route-match-grid .rm-chip .to{flex:1}
 .rm-chip:hover{border-color:var(--amber);background:var(--amber-soft)}
 .rm-chip .arr{color:var(--amber);font-family:var(--font-mono)}
 .rm-chip .n{font-family:var(--font-mono);font-size:10px;color:var(--ink-dim);background:var(--surface-2);border-radius:999px;padding:1px 8px}
@@ -96,7 +99,7 @@
 .empty{padding:34px 16px;text-align:center;color:var(--ink-dim);display:none;animation:fadeUp .3s ease both}
 .empty svg{width:34px;height:34px;opacity:.5;margin-bottom:10px}
 .empty b{display:block;color:var(--ink);font-size:15px;margin-bottom:3px}
-@media(max-width:640px){.place-grid{grid-template-columns:repeat(2,1fr)}.az-nav{top:56px}.letter-head{top:96px;font-size:1.15rem}.search-field input{font-size:16px}}
+@media(max-width:640px){.place-grid{grid-template-columns:repeat(2,1fr)}.route-match-grid{grid-template-columns:1fr}.az-nav{top:56px}.letter-head{top:96px;font-size:1.15rem}.search-field input{font-size:16px}}
 @media(prefers-reduced-motion:reduce){.reveal,.eyebrow svg,.live-dot,.place-row .route-chip,.place-card,.tagline,.hero h1{animation:none!important;transition:none!important;opacity:1!important;transform:none!important}}
 </style>
 
@@ -132,7 +135,7 @@
 
 <section class="section" id="routeMatchesSec" style="display:none">
   <div class="section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4z"/><path d="M10 6v12" stroke-dasharray="2 3"/></svg> Matching Routes</div>
-  <div class="chip-row" id="rmChips"></div>
+  <div class="route-match-grid" id="rmChips"></div>
 </section>
 
 <section class="section" id="popSection">
@@ -236,7 +239,7 @@ function doSearch(){
     var any=false;
     g.querySelectorAll(".place-row").forEach(function(r){
       var n=r.getAttribute("data-place"),hit=n.toLowerCase().indexOf(q)>=0;
-      if(hit){any=true;shown++;r.style.display=""}else r.style.display="none";
+      if(hit){any=true;shown++;r.style.display="";var head=r.querySelector('.pr-head'),inner=r.querySelector('.pr-inner');if(inner&&!inner.children.length)togglePlace(head);else r.classList.add('open')}else r.style.display="none";
       var rs=BTT[n]||[];
       rs.forEach(function(rt){
         if(rt[0].toLowerCase().indexOf(q)>=0&&routeChips.length<24){

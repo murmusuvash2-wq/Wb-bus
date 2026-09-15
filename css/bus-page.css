@@ -34,5 +34,14 @@
 .stop-name .rail{display:block;font-size:10px;color:var(--govt);font-weight:500}
 .stop-times{display:flex;gap:14px;font-family:var(--font-mono);font-size:12px;font-weight:600}
 .stop-times .no-t{color:var(--ink-dim);font-weight:400}
+.schedule-legend{display:flex;flex-wrap:wrap;gap:8px 18px;margin:8px 0 10px;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2);font-size:11px;color:var(--ink-dim)}
+.legend-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}.legend-dot.outbound{background:var(--amber)}.legend-dot.inbound{background:var(--maroon)}
+.schedule-table{overflow:hidden;border:1px solid var(--line);border-radius:16px;background:var(--surface)}
+.schedule-head{display:grid;grid-template-columns:minmax(0,1fr) 86px 86px;gap:10px;padding:10px 16px;background:var(--surface-2);border-bottom:1px solid var(--line);font-family:var(--font-mono);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-dim)}
+.schedule-head span:not(:first-child){text-align:right}.schedule-table .stop-list{border:0;border-radius:0;margin:0;padding:8px 16px 8px}
+.schedule-table .stop-row{grid-template-columns:22px minmax(0,1fr) 86px;gap:10px;padding:10px 0;border-bottom:1px solid color-mix(in srgb,var(--line) 65%,transparent)}
+.schedule-table .stop-times{justify-content:flex-end;gap:12px}.schedule-table .stop-times span{min-width:34px;text-align:right}
+.schedule-table .show-all{margin:10px 0 4px}
+@media(max-width:560px){.schedule-head{grid-template-columns:minmax(0,1fr) 70px 70px;padding:9px 10px;font-size:9px}.schedule-table .stop-list{padding-left:10px;padding-right:10px}.schedule-table .stop-row{grid-template-columns:18px minmax(0,1fr) 70px;gap:7px}.schedule-table .stop-times{gap:7px;font-size:11px}}
 .show-all{display:block;width:100%;margin:10px 0 6px;padding:11px;background:var(--surface-2);border:1px dashed var(--line-strong);border-radius:10px;font-weight:700;font-size:13px;cursor:pointer;color:var(--ink);font-family:var(--font-body)}
 .show-all:hover{border-color:var(--amber);color:var(--amber-ink)}

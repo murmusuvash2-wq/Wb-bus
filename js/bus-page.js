@@ -65,7 +65,7 @@ async function renderBus(el, id) {
         '<a class="share-x-btn" href="javascript:void(0)" onclick="shareTwitter(this.dataset)" data-bus="' + esc(b.bus_name) + '" data-org="' + esc(pn(b.origin)) + '" data-dest="' + esc(pn(b.destination)) + '" data-dep="' + esc(b.departure_time||'') + '">' + icon('info') + ' <span class="label-en">Share on X</span></a>' +
       '</div>' +
       (b.destination && b.destination !== '\u2014' ? '<div class="weather-card" id="weatherCard" data-dest="' + esc(b.destination) + '"><div class="lbl">Weather in ' + esc(b.destination) + ' (now)</div><div class="val" id="weatherVal">Loading\u2026</div></div>' : '') +
-      (stops.length ? '<h3 class="section-title" style="margin-top:22px">' + icon('ticket') + ' <span class="label-en">Route Timetable</span></h3><div class="stop-list">' + stopHTML + showMoreBtn + '</div>' : '<p style="color:var(--ink-dim);margin-top:12px">Stoppage details not available.</p>') +
+      (stops.length ? '<h3 class="section-title" style="margin-top:22px">' + icon('ticket') + ' <span class="label-en">Route Timetable</span></h3><div class="schedule-legend"><span><i class="legend-dot outbound"></i> From ' + esc(pn(b.origin)) + '</span><span><i class="legend-dot inbound"></i> Return to ' + esc(pn(b.origin)) + '</span></div><div class="schedule-table"><div class="schedule-head"><span>Stop</span><span>Outbound</span><span>Return</span></div><div class="stop-list">' + stopHTML + showMoreBtn + '</div></div>' : '<p style="color:var(--ink-dim);margin-top:12px">Stoppage details not available.</p>') +
       '<p style="font-size:12px;color:var(--ink-dim);margin:10px 0 0">Data updated: ' + esc((DATA.meta||{}).last_updated || '') + '</p>' +
     '</div>';
   loadWeather();
