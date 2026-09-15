@@ -1,6 +1,32 @@
 /* BusJatri — Bus Detail Page redesign (overrides app.js renderBus)
    Loaded AFTER app.js so function redefinition takes effect at call time.
    Depends on globals from app.js: BUSES, STOPS, DATA, esc, pn, busTypeBadge, icon, loadWeather */
+var COMMUNITY_TIME_KEY = 'busjatri-community-times-v1';
+function communityTimes() {
+  try { return JSON.parse(localStorage.getItem(COMMUNITY_TIME_KEY) || '{}'); } catch (e) { return {}; }
+}
+function communityTimeKey(busId, stopIndex, direction) { return busId + '|' + stopIndex + '|' + direction; }
+function normalizeCommunityTime(value) {
+  var v = String(value || '').trim().replace('.', ':').toUpperCase();
+  var m = v.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/);
+  if (!m || Number(m[1]) < 1 || Number(m[1]) > 12 || Number(m[2]) > 59) return '';
+  return Number(m[1]) + ':' + m[2] + ' ' + m[3];
+}
+function addCommunityTime(busId, stopIndex, direction) {
+  var value = normalizeCommunityTime(window.prompt('Enter time, for example 11:30 AM'));
+  if (!value) { window.alert('Please enter time like 11:30 AM.'); return; }
+  var times = communityTimes();
+  times[communityTimeKey(busId, stopIndex, direction)] = value;
+  try { localStorage.setItem(COMMUNITY_TIME_KEY, JSON.stringify(times)); } catch (e) {}
+  render();
+}
+function timeCell(stop, stopIndex, direction, busId) {
+  var official = stop[direction + '_time'] || '';
+  if (official) return '<span>' + esc(official) + '</span>';
+  var userTime = communityTimes()[communityTimeKey(busId, stopIndex, direction)];
+  if (userTime) return '<span class="community-time">' + esc(userTime) + '<small>User updated</small></span>';
+  return '<button class="add-time-btn" onclick="addCommunityTime(\'' + esc(busId) + '\',' + stopIndex + ',\'' + direction + '\')">+ Add time</button>';
+}
 async function renderBus(el, id) {
   id = id.split('?')[0];
   const b = typeof loadFullBus === 'function' ? await loadFullBus(id) : BUSES[id];
@@ -30,9 +56,9 @@ async function renderBus(el, id) {
     var isEnd = i === 0 || i === visible.length - 1;
     var stn = (STOPS[s.name] || {}).nearest_station;
     var stnBadge = stn ? '<span class="rail">Railway: ' + esc(stn.name) + (stn.code ? ' (' + esc(stn.code) + ')' : '') + ' \u00b7 ~' + stn.km + ' km</span>' : '';
-    var upT = s.up_time ? '<span>' + esc(s.up_time) + '</span>' : '<span class="no-t">\u2014</span>';
-    var dnT = s.down_time ? '<span>' + esc(s.down_time) + '</span>' : '<span class="no-t">\u2014</span>';
-    return '<div class="stop-row ' + (isEnd ? 'end' : '') + '"><span class="stop-dot"></span><span class="stop-name">' + esc(pn(s.name)) + stnBadge + '</span><span class="stop-times">' + upT + dnT + '</span></div>';
+    var upT = timeCell(s, i, 'up', id);
+    var dnT = timeCell(s, i, 'down', id);
+    return '<div class="stop-row ' + (isEnd ? 'end' : '') + '"><span class="stop-dot"></span><span class="stop-name">' + esc(pn(s.name)) + stnBadge + '</span><span class="stop-times"><span class="time-out">' + upT + '</span><span class="time-in">' + dnT + '</span></span></div>';
   }).join('');
 
   var showMoreBtn = '';
@@ -65,7 +91,7 @@ async function renderBus(el, id) {
         '<a class="share-x-btn" href="javascript:void(0)" onclick="shareTwitter(this.dataset)" data-bus="' + esc(b.bus_name) + '" data-org="' + esc(pn(b.origin)) + '" data-dest="' + esc(pn(b.destination)) + '" data-dep="' + esc(b.departure_time||'') + '">' + icon('info') + ' <span class="label-en">Share on X</span></a>' +
       '</div>' +
       (b.destination && b.destination !== '\u2014' ? '<div class="weather-card" id="weatherCard" data-dest="' + esc(b.destination) + '"><div class="lbl">Weather in ' + esc(b.destination) + ' (now)</div><div class="val" id="weatherVal">Loading\u2026</div></div>' : '') +
-      (stops.length ? '<h3 class="section-title" style="margin-top:22px">' + icon('ticket') + ' <span class="label-en">Route Timetable</span></h3><div class="schedule-legend"><span><i class="legend-dot outbound"></i> From ' + esc(pn(b.origin)) + '</span><span><i class="legend-dot inbound"></i> Return to ' + esc(pn(b.origin)) + '</span></div><div class="schedule-table"><div class="schedule-head"><span>Stop</span><span>Outbound</span><span>Return</span></div><div class="stop-list">' + stopHTML + showMoreBtn + '</div></div>' : '<p style="color:var(--ink-dim);margin-top:12px">Stoppage details not available.</p>') +
+      (stops.length ? '<h3 class="section-title" style="margin-top:22px">' + icon('ticket') + ' <span class="label-en">Route Timetable</span></h3><div class="schedule-legend"><span><i class="legend-dot outbound"></i> From ' + esc(pn(b.origin)) + '</span><span><i class="legend-dot inbound"></i> Return to ' + esc(pn(b.origin)) + '</span><span class="community-note">Times marked “User updated” are community-submitted.</span></div><div class="schedule-table"><div class="schedule-head"><span>Stop</span><span>Outbound</span><span>Return</span></div><div class="stop-list">' + stopHTML + showMoreBtn + '</div></div>' : '<p style="color:var(--ink-dim);margin-top:12px">Stoppage details not available.</p>') +
       '<p style="font-size:12px;color:var(--ink-dim);margin:10px 0 0">Data updated: ' + esc((DATA.meta||{}).last_updated || '') + '</p>' +
     '</div>';
   loadWeather();
