@@ -1,0 +1,52 @@
+name: Apply v6 index page
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/v5/new_index_part1.txt'
+      - 'scripts/v5/new_index_part2.txt'
+      - 'scripts/patches/apply_index.py'
+      - '.github/workflows/apply-index.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Splice v6 index into generator
+        run: python3 scripts/patches/apply_index.py
+
+      - name: Syntax check
+        run: python3 -c "import py_compile; py_compile.compile('scripts/gen_seo_pages.py', doraise=True)"
+
+      - name: Generate all SEO pages
+        run: python3 scripts/gen_seo_pages.py
+
+      - name: Quick validate
+        run: |
+          test $(ls bus-time-table/*.html | wc -l) -gt 300
+          grep -q "place-card" bus-time-table/index.html
+          grep -q "bttData" bus-time-table/index.html
+          grep -q "data-count" bus-time-table/index.html
+          grep -q "letter-group" bus-time-table/index.html
+          grep -q "bus-card" bus-time-table/esplanade-to-digha.html
+          python3 -c "import xml.dom.minidom; xml.dom.minidom.parse('sitemap.xml')"
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add scripts/gen_seo_pages.py bus-time-table sitemap.xml robots.txt
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Apply v6 animated all-bus-time-table index page"
+            git push
+          fi
