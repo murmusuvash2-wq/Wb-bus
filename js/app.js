@@ -1,6 +1,6 @@
 /* BusJatri — app logic. Hash-based router over a single local JSON dataset. */
 
-let DATA = null, BUSES = {}, ROUTES = {}, STOPS = {}, LANG = 'en';
+let DATA = null, BUSES = {}, ROUTES = {}, STOPS = {}, FULL_BUSES = null, LANG = 'en';
 
 const ICONS = {
   bus: '<svg class="icon" viewBox="0 0 24 24"><path d="M4 16V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10"/><path d="M4 16h16"/><path d="M4 16v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2"/><path d="M17 16v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2"/><path d="M6 10h12"/><circle cx="7.5" cy="16" r="0"/></svg>',
@@ -97,7 +97,7 @@ function renderInitialSkeleton() {
 async function loadData() {
   renderInitialSkeleton();
   try {
-    const res = await fetch('data/busjatri_data.json');
+    const res = await fetch('data/app-index.json');
     if (!res.ok) throw new Error('HTTP ' + res.status);
     DATA = await res.json();
     BUSES = {};
@@ -210,13 +210,27 @@ function quickSearch(name) {
   location.hash = '#/search?' + q.toString();
 }
 
-function render() {
+async function loadFullBus(id) {
+  if (FULL_BUSES && FULL_BUSES[id]) return FULL_BUSES[id];
+  const res = await fetch('data/bus-details.json');
+  if (!res.ok) throw new Error('Could not load bus details (HTTP ' + res.status + ')');
+  FULL_BUSES = await res.json();
+  return FULL_BUSES[id];
+}
+function freshnessNote() {
+  const updated = DATA?.meta?.last_updated || '—';
+  return `<div class="data-trust" role="note">Data last refreshed: <strong>${esc(updated)}</strong> · Schedules may change. Verify with the operator before travel.</div>`;
+}
+async function render() {
   const hash = location.hash.slice(1) || '/';
   const app = document.getElementById('app');
   if (hash === '/' || hash === '') renderHome(app);
   else if (hash.startsWith('/search')) renderSearch(app);
   else if (hash.startsWith('/route/')) renderRoute(app, decodeURIComponent(hash.slice(7)));
-  else if (hash.startsWith('/bus/')) renderBus(app, decodeURIComponent(hash.slice(5)));
+  else if (hash.startsWith('/bus/')) {
+    app.innerHTML = `<div class="container" style="padding:40px"><div class="loading">Loading bus details…</div></div>`;
+    try { await renderBus(app, decodeURIComponent(hash.slice(5))); } catch (e) { app.innerHTML = `<div class="container"><div class="error-panel"><p><strong>Could not load bus details.</strong><br>${esc(e.message)}</p></div></div>`; }
+  }
   else if (hash.startsWith('/stop/')) renderStop(app, decodeURIComponent(hash.slice(6)));
   else if (hash.startsWith('/place/')) renderPlace(app, decodeURIComponent(hash.slice(7)));
   else if (hash.startsWith('/about')) renderAbout(app);
@@ -500,6 +514,7 @@ function renderSearch(el) {
 
   el.innerHTML = `
   <div class="container" style="padding-top:22px;padding-bottom:40px">
+    ${freshnessNote()}
     <div class="back-btn" onclick="location.hash='#/'">${icon('chevronLeft')} <span class="label-en">Back</span><span class="label-bn">পিছনে</span></div>
     <h2 class="page-title"><span class="label-en">Search Results</span><span class="label-bn">সার্চ ফলাফল</span> <span style="color:var(--ink-dim);font-family:var(--font-mono);font-size:1rem">(${results.length})</span></h2>
     <p style="font-size:12px;color:var(--ink-dim);margin:2px 0 4px">Data updated: ${esc(DATA.meta?.last_updated || '')}</p>
@@ -551,6 +566,7 @@ function renderPlace(el, placeName) {
 
   el.innerHTML = `
   <div class="container" style="padding-top:22px;padding-bottom:40px">
+    ${freshnessNote()}
     <div class="back-btn" onclick="location.hash='#/'">${icon('chevronLeft')} <span class="label-en">Back</span><span class="label-bn">পিছনে</span></div>
     <h2 class="page-title">${esc(placeName)}</h2>
     <p style="color:var(--ink-dim);font-size:14px;margin-bottom:18px">${related.length} <span class="label-en">buses related to this place</span><span class="label-bn">বাস এই স্থানের সাথে যুক্ত</span></p>
@@ -617,9 +633,9 @@ function startNextBusTicker() {
   }, 30000);
 }
 
-function renderBus(el, id) {
+async function renderBus(el, id) {
   id = id.split('?')[0];  // strip query (?full=1) so the bus ID resolves
-  const b = BUSES[id];
+  const b = await loadFullBus(id);
   if (!b) {
     el.innerHTML = `<div class="container" style="padding:40px"><div class="empty-state">${icon('alert')}<p>Bus not found.</p></div><div class="back-btn" onclick="location.hash='#/'">${icon('chevronLeft')} Back</div></div>`;
     return;
@@ -642,6 +658,7 @@ function renderBus(el, id) {
 
   el.innerHTML = `
   <div class="container" style="padding-top:22px;padding-bottom:40px">
+    ${freshnessNote()}
     <div class="back-btn" onclick="history.length>1?history.back():location.hash='#/'">${icon('chevronLeft')} <span class="label-en">Back</span><span class="label-bn">পিছনে</span></div>
     <div class="bus-detail">
       <h2>${esc(b.bus_name)} ${b.reg_no ? `<span style="font-size:14px;color:var(--ink-dim);font-weight:500;font-family:var(--font-mono)">${esc(b.reg_no)}</span>` : ''}</h2>

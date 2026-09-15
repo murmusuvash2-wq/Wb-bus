@@ -32,13 +32,15 @@ jobs:
         run: python3 scripts/apply_seo_redesign.py
 
       - name: Regenerate SEO pages
-        run: python3 scripts/gen_seo_pages.py
+        run: |
+          python3 scripts/gen_seo_pages.py
+          python3 scripts/build_client_data.py
 
       - name: Commit and push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add scripts/gen_seo_pages.py bus-time-table/ sitemap.xml
+          git add scripts/gen_seo_pages.py bus-time-table/ sitemap.xml data/app-index.json data/bus-details.json
           git diff --staged --quiet && echo "No changes to commit" && exit 0
           git commit -m "Auto: regenerate SEO pages with compact departure-board design [skip ci]"
           git push

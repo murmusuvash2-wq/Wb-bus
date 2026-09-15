@@ -12,6 +12,7 @@ jobs:
         run: |
           if grep -q "Temporary bootstrap" scripts/gen_seo_pages.py; then
             python3 scripts/gen_seo_pages.py
+          python3 scripts/build_client_data.py
             echo "Expanded to $(wc -c < scripts/gen_seo_pages.py) bytes"
           else
             echo "Already expanded"
@@ -22,7 +23,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add scripts/gen_seo_pages.py
+          git add scripts/gen_seo_pages.py data/app-index.json data/bus-details.json
           if git diff --staged --quiet; then
             echo "No changes"
           else

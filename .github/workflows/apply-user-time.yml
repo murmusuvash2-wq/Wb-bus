@@ -25,7 +25,9 @@ jobs:
         run: python3 -c "import py_compile; py_compile.compile('scripts/gen_seo_pages.py', doraise=True)"
 
       - name: Generate all SEO pages
-        run: python3 scripts/gen_seo_pages.py
+        run: |
+          python3 scripts/gen_seo_pages.py
+          python3 scripts/build_client_data.py
 
       - name: Quick validate
         run: |
@@ -41,7 +43,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add scripts/gen_seo_pages.py css/seo.css bus-time-table sitemap.xml robots.txt
+          git add scripts/gen_seo_pages.py css/seo.css bus-time-table sitemap.xml robots.txt data/app-index.json data/bus-details.json
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else

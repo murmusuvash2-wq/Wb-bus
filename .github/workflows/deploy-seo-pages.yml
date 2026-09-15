@@ -34,7 +34,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add bus-time-table scripts data/sbstc_routes.json sitemap.xml robots.txt
+          git add bus-time-table scripts data/sbstc_routes.json sitemap.xml robots.txt data/app-index.json data/bus-details.json
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else

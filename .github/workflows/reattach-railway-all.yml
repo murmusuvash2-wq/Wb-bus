@@ -49,6 +49,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/stop_coords.json data/busjatri_data.json scripts/reattach_railway_all.py
+          git add data/stop_coords.json data/busjatri_data.json scripts/reattach_railway_all.py data/app-index.json data/bus-details.json
           git diff --staged --quiet || git commit -m "data: railway any-distance — Garhbeta GBA 0km, far stations kept"
           git push

@@ -36,6 +36,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/stop_coords.json data/busjatri_data.json
+          git add data/stop_coords.json data/busjatri_data.json data/app-index.json data/bus-details.json
           git diff --staged --quiet || git commit -m "data: apply free geocode — Garhbeta GBA 0km + 25 suspects"
           git push

@@ -36,6 +36,7 @@ jobs:
         run: |
           rm -rf bus-time-table
           python3 scripts/gen_seo_pages.py
+          python3 scripts/build_client_data.py
           test $(ls bus-time-table/*.html | wc -l) -gt 1500
           test $(ls bus-time-table/ | grep -c '\-via\-') -gt 50
           cat scripts/patches/rx_parts/rx_p1 scripts/patches/rx_parts/rx_p2 scripts/patches/rx_parts/rx_p3 scripts/patches/rx_parts/rx_p4 scripts/patches/rx_parts/rx_p5 scripts/patches/rx_parts/rx_p6 > scripts/patches/redesign_seo_index.py
@@ -47,7 +48,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data scripts css js bus-time-table sitemap.xml robots.txt
+          git add data scripts css js bus-time-table sitemap.xml robots.txt data/app-index.json data/bus-details.json
           if git diff --cached -quiet; then
             echo "No changes to commit"
           else

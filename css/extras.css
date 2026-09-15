@@ -190,3 +190,5 @@ body.lang-bn .lv-clock-label{letter-spacing:0;text-transform:none}
 .route-chip .rarr{color:var(--amber);font-family:var(--font-mono)}
 .route-chip .rcnt{font-family:var(--font-mono);font-size:10px;color:var(--ink-dim);background:var(--surface-2);padding:2px 8px;border-radius:999px}
 body.lang-bn .route-chip{letter-spacing:0}
+
+.data-trust{margin:10px 0 14px;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2);color:var(--ink-dim);font-size:12px;line-height:1.45}.data-trust strong{color:var(--ink)}

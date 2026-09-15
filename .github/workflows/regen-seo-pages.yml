@@ -37,7 +37,9 @@ jobs:
         run: python3 scripts/add_railway_stations.py
 
       - name: Regenerate bus-time-table pages
-        run: python3 scripts/gen_seo_pages.py
+        run: |
+          python3 scripts/gen_seo_pages.py
+          python3 scripts/build_client_data.py
 
       - name: Validate
         run: |
@@ -57,7 +59,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add bus-time-table sitemap.xml robots.txt data/busjatri_data.json data/stop_coords.json scripts/gen_seo_pages.py js/app.js og-image.png
+          git add bus-time-table sitemap.xml robots.txt data/busjatri_data.json data/stop_coords.json scripts/gen_seo_pages.py js/app.js og-image.png data/app-index.json data/bus-details.json
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
