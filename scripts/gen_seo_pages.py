@@ -1194,6 +1194,10 @@ for (origin, destination), vv_ in sorted(VIA.items(), key=lambda kv: -len(route_
 # BUS TIME TABLE INDEX (v6 — animated all-bus-time-table page)
 # ============================================================
 
+# ============================================================
+# BUS TIME TABLE INDEX (v6 — animated all-bus-time-table page)
+# ============================================================
+
 by_origin = defaultdict(list)
 
 for origin, destination in route_meta:
