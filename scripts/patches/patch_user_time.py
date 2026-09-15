@@ -49,7 +49,7 @@ def main():
         "chip lines → variable")
 
     # 3. Bus card: dep_html + bus_id
-    patch(GDN,
+    patch(GEN,
         "dep_html = f'<span class=\"dep.time\">{esc(dep)}</span>' if dep != \"\u2014\" else '<span class=\"no-time\">\u2014:\u2014</span>'",
         'bus_id = clean_text(bus.get("id")) or f"{slug(origin)}-{slug(destination)}-{idx}"\n'
         "    if dep != \"\u2014\":\n"
@@ -94,7 +94,7 @@ function saveBusTime(busId){{
   try{{
     var updates=JSON.parse(localStorage.getItem('bj-user-times')||'{{}}');
     updates[busId]={{time:timeStr,ts:Date.now()}};
-    localStorage.setItem('bj-user-times',JSON.stringify(updates));
+    localStorage.setItem('bj=user-times',JSON.stringify(updates));
   }}catch(e){{}}
   var span=document.querySelector('[data-bus-id="'+busId+'"]');
   if(span){{
