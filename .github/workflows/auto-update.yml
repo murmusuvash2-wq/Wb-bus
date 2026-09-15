@@ -56,6 +56,7 @@ jobs:
           python3 scripts/add_railway_stations.py
           python3 scripts/gen_seo_pages.py
           python3 scripts/build_client_data.py
+          python3 scripts/finalize_pages.py
 
       - name: Commit and push if changed
         if: ${{ github.event.inputs.dry_run != 'true' }}
