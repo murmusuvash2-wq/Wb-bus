@@ -1,9 +1,9 @@
 /* BusJatri — Bus Detail Page redesign (overrides app.js renderBus)
    Loaded AFTER app.js so function redefinition takes effect at call time.
    Depends on globals from app.js: BUSES, STOPS, DATA, esc, pn, busTypeBadge, icon, loadWeather */
-function renderBus(el, id) {
+async function renderBus(el, id) {
   id = id.split('?')[0];
-  const b = BUSES[id];
+  const b = typeof loadFullBus === 'function' ? await loadFullBus(id) : BUSES[id];
   if (!b) {
     el.innerHTML = '<div class="container" style="padding:40px"><div class="empty-state">' + icon('alert') + '<p>Bus not found.</p></div><div class="back-btn" onclick="location.hash=\'#/\'">' + icon('chevronLeft') + ' Back</div></div>';
     return;
@@ -58,7 +58,8 @@ function renderBus(el, id) {
       '</div>' +
       '<div class="wa-row">' +
         (mapUrl ? '<a class="map-btn" href="' + mapUrl + '" target="_blank" rel="noopener">' + icon('map') + ' <span class="label-en">Route on Google Maps</span></a>' : '') +
-        '<a class="wa-btn" href="javascript:void(0)" onclick="shareWhatsApp(this.dataset)" data-bus="' + esc(b.bus_name) + '" data-org="' + esc(pn(b.origin)) + '" data-dest="' + esc(pn(b.destination)) + '" data-dep="' + esc(b.departure_time||'') + '" data-stops="' + (stops.length||0) + '">' + icon('waves') + ' <span class="label-en">Share on WhatsApp</span></a>' +
+        '<a class="wa-btn" href="javascript:void(0)" onclick="shareWhatsApp(this.dataset.bus,this.dataset.org,this.dataset.dest,this.dataset.dep,this.dataset.stops)" data-bus="' + esc(b.bus_name) + '" data-org="' + esc(pn(b.origin)) + '" data-dest="' + esc(pn(b.destination)) + '" data-dep="' + esc(b.departure_time||'') + '" data-stops="' + (stops.length||0) + '">' + icon('waves') + ' <span class="label-en">Share on WhatsApp</span></a>' +
+        '<a class="share-x-btn" href="javascript:void(0)" onclick="shareTwitter(this.dataset)" data-bus="' + esc(b.bus_name) + '" data-org="' + esc(pn(b.origin)) + '" data-dest="' + esc(pn(b.destination)) + '" data-dep="' + esc(b.departure_time||'') + '">' + icon('info') + ' <span class="label-en">Share on X</span></a>' +
       '</div>' +
       (b.destination && b.destination !== '\u2014' ? '<div class="weather-card" id="weatherCard" data-dest="' + esc(b.destination) + '"><div class="lbl">Weather in ' + esc(b.destination) + ' (now)</div><div class="val" id="weatherVal">Loading\u2026</div></div>' : '') +
       (stops.length ? '<h3 class="section-title" style="margin-top:22px">' + icon('ticket') + ' <span class="label-en">Route Timetable</span></h3><div class="stop-list">' + stopHTML + showMoreBtn + '</div>' : '<p style="color:var(--ink-dim);margin-top:12px">Stoppage details not available.</p>') +

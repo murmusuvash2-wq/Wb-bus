@@ -31,9 +31,15 @@ function shareWhatsApp(busName, origin, destination, departure, stops) {
   msg += "Route: " + (origin || "—") + " → " + (destination || "—") + "\n";
   if (departure) msg += "Departure: " + departure + "\n";
   if (stops) msg += "Stops: " + stops + "\n";
-  msg += "\nView full timetable:\nhttps://wb-bus.vercel.app";
+  msg += "\nView this bus timetable:\n" + window.location.href;
   msg += "\n\nMore buses on BusJatri (বাস যাত্রী)";
   window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
+}
+function shareTwitter(data) {
+  var text = (data && data.bus ? data.bus + " — " : "") +
+    (data && data.org || "—") + " → " + (data && data.dest || "—");
+  if (data && data.dep) text += " · Departs " + data.dep;
+  window.open("https://x.com/intent/post?text=" + encodeURIComponent(text) + "&url=" + encodeURIComponent(window.location.href), "_blank", "noopener");
 }
 
 /* ---------- Geolocation Auto-Detect — prefill "From" field ---------- */
