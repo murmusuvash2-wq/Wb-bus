@@ -1,0 +1,50 @@
+name: Apply user time update
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/patches/patch_user_time.py'
+      - '.github/workflows/apply-user-time.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Apply user time update patch
+        run: python3 scripts/patches/patch_user_time.py
+
+      - name: Syntax check
+        run: python3 -c "import py_compile; py_compile.compile('scripts/gen_seo_pages.py', doraise=True)"
+
+      - name: Generate all SEO pages
+        run: python3 scripts/gen_seo_pages.py
+
+      - name: Quick validate
+        run: |
+          test $(ls bus-time-table/*.html | wc -l) -gt 300
+          grep -q "bus-card" bus-time-table/esplanade-to-digha.html
+          grep -q "Not Available" bus-time-table/digha-to-esplanade.html
+          grep -q "update-time-btn" bus-time-table/digha-to-esplanade.html
+          grep -q "openTimeUpdate" bus-time-table/digha-to-esplanade.html
+          grep -q "First 2:15 PM" bus-time-table/kolkata-to-bankura.html
+          python3 -c "import xml.dom.minidom; xml.dom.minidom.parse('sitemap.xml')"
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add scripts/gen_seo_pages.py css/seo.css bus-time-table sitemap.xml robots.txt
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "fix: 'First —' bug + 'Not Available' + user time update feature"
+            git push
+          fi
