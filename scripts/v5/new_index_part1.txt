@@ -1,0 +1,178 @@
+# ============================================================
+# BUS TIME TABLE INDEX (v6 — animated all-bus-time-table page)
+# ============================================================
+
+by_origin = defaultdict(list)
+
+for origin, destination in route_meta:
+    by_origin[origin].append((origin, destination))
+
+
+_total_places = len(by_origin)
+_total_routes = len(route_meta)
+_total_buses = sum(len(v) for v in route_meta.values())
+
+
+# Popular: top 16 by total buses
+_popular = sorted(
+    by_origin.items(),
+    key=lambda kv: -sum(len(route_meta[(o, t)]) for o, t in kv[1]),
+)[:16]
+
+_popular_html = "\n".join(
+    f'<a class="place-card" style="--i:{i}" href="buses-from-{slug(p)}.html">'
+    f'<div class="pc-top"><span class="pc-count">{len(rs)}</span></div>'
+    f'<div class="pc-name">{esc(p)}</div>'
+    f'<div class="pc-meta">{sum(len(route_meta[(o, t)]) for o, t in rs)} buses daily '
+    f'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">'
+    f'<path d="M5 12h14m-6-6 6 6-6 6"/></svg></div></a>'
+    for i, (p, rs) in enumerate(_popular)
+)
+
+
+# A-Z groups (static HTML — crawlable place names)
+_az_places = sorted(by_origin.keys())
+
+_az_letters = sorted(set(
+    (p[0].upper() if p and p[0].isalpha() else "#")
+    for p in _az_places
+))
+
+_az_groups_html = []
+for letter in _az_letters:
+    group_places = [
+        p for p in _az_places
+        if (p[0].upper() if p and p[0].isalpha() else "#") == letter
+    ]
+    _az_groups_html.append(f'<div class="letter-group reveal" id="L{letter}">')
+    _az_groups_html.append(f'<div class="letter-head">{letter}</div>')
+    _az_groups_html.append('<div class="place-list">')
+    for p in group_places:
+        rs = by_origin[p]
+        _az_groups_html.append(
+            f'<div class="place-row" data-place="{esc(p)}">'
+            f'<div class="pr-head" onclick="togglePlace(this,event)">'
+            f'<span class="pr-dots"></span>'
+            f'<span class="pr-name">{esc(p)}</span>'
+            f'<span class="pr-n">{len(rs)} routes</span>'
+            f'<svg class="pr-chev" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>'
+            f'</div><div class="pr-body"><div class="pr-inner"></div></div></div>'
+        )
+    _az_groups_html.append('</div></div>')
+
+_az_html = "".join(_az_groups_html)
+
+
+# Embedded JSON for search: place -> [[to, n], ...]
+_btt_json = {}
+for p in _az_places:
+    _btt_json[p] = [
+        [t, len(route_meta[(o, t)])]
+        for o, t in sorted(by_origin[p])
+    ]
+
+_btt_json_str = json.dumps(_btt_json, ensure_ascii=False, separators=(",", ":"))
+
+
+# Quick chips
+_quick_names = [
+    "Esplanade", "Howrah", "Digha", "Kolkata",
+    "Bankura", "Siliguri", "Bardhaman", "Durgapur",
+]
+_quick_html = "".join(
+    f'<button class="qchip" onclick="qsearch(\'{esc(n).lower()}\')">{esc(n)}</button>'
+    for n in _quick_names
+)
+
+
+# FAQ
+_faqs = [
+    (
+        "How many bus routes are listed on BusJatri?",
+        f"The timetable covers {_total_routes:,} bus routes connecting {_total_places} places across West Bengal, with {_total_buses:,} daily bus services listed.",
+    ),
+    (
+        "How do I find a bus time table on this page?",
+        "Use the search box to type a place name (e.g. Esplanade, Digha). Matching places and routes appear instantly. You can also browse places alphabetically with the A-Z index.",
+    ),
+    (
+        "Which places have the most bus connections?",
+        "Esplanade, Howrah Station, Digha, Kolkata and Karunamoyee are the busiest starting points, with the widest choice of long-distance and local buses.",
+    ),
+    (
+        "Are the bus timings updated?",
+        "Timetable data is refreshed regularly from published SBSTC, WBTC, NBSTC and private operator schedules. Always confirm the current departure at the bus stand.",
+    ),
+]
+_faq_html = "\n".join(
+    f'<div class="faq-item" style="--i:{i}" onclick="this.classList.toggle(\'open\')">'
+    f'<div class="faq-q">{esc(q)}<svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div>'
+    f'<div class="faq-a"><p>{esc(a)}</p></div></div>'
+    for i, (q, a) in enumerate(_faqs)
+)
+
+
+# --- CSS (new classes only — base from seo.css) ---
+_btt_css = """<style>
+.hero h1{font-size:clamp(1.6rem,5vw,2.4rem)}
+.stat-chip strong{font-variant-numeric:tabular-nums}
+.eyebrow svg{animation:wiggle 2.6s ease-in-out infinite}
+@keyframes wiggle{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;animation:lvPulse 1.8s infinite;flex-shrink:0}
+.result-info{font-family:var(--font-mono);font-size:11px;color:var(--ink-dim);padding:10px 4px 0;display:none}
+.clear-btn{background:none;border:none;cursor:pointer;color:var(--ink-dim);padding:6px;display:none}
+.qchips{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.qchips-l{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-dim);align-self:center;font-weight:600}
+.qchip{background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:6px 13px;font-size:12px;font-weight:600;color:var(--ink-dim);cursor:pointer;font-family:var(--font-body);transition:all .15s;min-height:32px}
+.qchip:hover{border-color:var(--amber);color:var(--amber);background:var(--amber-soft)}
+.place-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.place-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:13px 14px;cursor:pointer;color:var(--ink);transition:all .15s;animation:fadeUp .4s ease both;animation-delay:calc(var(--i)*35ms);display:flex;flex-direction:column;gap:3px;text-decoration:none}
+.place-card:hover{border-color:var(--amber);background:var(--amber-soft);transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+.pc-top{display:flex;justify-content:space-between;align-items:center}
+.pc-count{font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--amber-ink);background:var(--amber-soft);border-radius:999px;padding:2px 9px;align-self:flex-start}
+.pc-name{font-weight:700;font-size:14.5px;line-height:1.25}
+.pc-meta{font-size:11px;color:var(--ink-dim);display:flex;align-items:center;gap:4px}
+.pc-meta svg{transition:transform .15s}
+.place-card:hover .pc-meta svg{transform:translateX(3px);color:var(--amber)}
+.rm-chip{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:8px 15px;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;transition:all .15s;animation:fadeUp .3s ease both;text-decoration:none}
+.rm-chip:hover{border-color:var(--amber);background:var(--amber-soft)}
+.rm-chip .arr{color:var(--amber);font-family:var(--font-mono)}
+.rm-chip .n{font-family:var(--font-mono);font-size:10px;color:var(--ink-dim);background:var(--surface-2);border-radius:999px;padding:1px 8px}
+.az-nav{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:16px;position:sticky;top:60px;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(10px);padding:8px 0;z-index:50;border-bottom:1px solid var(--line)}
+.az-btn{font-family:var(--font-mono);font-size:12px;font-weight:700;color:var(--ink-dim);background:var(--surface);border:1px solid var(--line);border-radius:7px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .12s}
+.az-btn:hover{border-color:var(--amber);color:var(--amber)}
+.az-btn.has{color:var(--ink);border-color:var(--line-strong)}
+.az-btn.miss{opacity:.35;cursor:default}
+.letter-group{margin-bottom:6px}
+.letter-head{font-family:var(--font-display);font-size:1.35rem;font-weight:700;color:var(--amber);padding:12px 4px 8px;position:sticky;top:100px;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);z-index:40;border-bottom:1px solid var(--line)}
+.place-list{display:flex;flex-direction:column;gap:6px;padding-top:8px}
+.place-row{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);overflow:hidden;animation:fadeUp .35s ease both}
+.place-row.open{border-color:var(--amber)}
+.pr-head{display:flex;align-items:center;gap:10px;padding:11px 14px;cursor:pointer;user-select:none}
+.pr-head:hover{background:var(--surface-2)}
+.pr-dots{width:9px;height:9px;border-radius:50%;background:var(--amber);flex-shrink:0}
+.pr-name{flex:1;font-weight:700;font-size:14px}
+.pr-n{font-family:var(--font-mono);font-size:10.5px;color:var(--ink-dim);white-space:nowrap}
+.pr-chev{color:var(--ink-dim);transition:transform .25s;flex-shrink:0}
+.place-row.open .pr-chev{transform:rotate(180deg)}
+.pr-body{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.place-row.open .pr-body{max-height:800px}
+.pr-inner{padding:4px 14px 12px;border-top:1px dashed var(--line-strong)}
+.route-chip{display:inline-flex;align-items:center;gap:6px;background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:12.5px;font-weight:600;color:var(--ink);cursor:pointer;transition:all .13s;margin:3px 4px 3px 0;text-decoration:none;opacity:0}
+.route-chip:hover{border-color:var(--amber);background:var(--amber-soft);color:var(--ink)}
+.route-chip .arr{color:var(--amber);font-family:var(--font-mono);font-size:11px}
+.route-chip .n{font-family:var(--font-mono);font-size:9.5px;color:var(--ink-dim)}
+.place-row .route-chip{opacity:0}
+.place-row.open .route-chip{animation:popIn .34s cubic-bezier(.22,.61,.36,1) both;animation-delay:calc(min(var(--i),42)*13ms)}
+@keyframes popIn{0%{opacity:0;transform:scale(.82) translateY(6px)}100%{opacity:1;transform:none}}
+.pr-empty{padding:10px 4px;font-size:12px;color:var(--ink-dim)}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .55s cubic-bezier(.22,.61,.36,1),transform .55s cubic-bezier(.22,.61,.36,1)}
+.reveal.in{opacity:1;transform:none}
+.empty{padding:34px 16px;text-align:center;color:var(--ink-dim);display:none;animation:fadeUp .3s ease both}
+.empty svg{width:34px;height:34px;opacity:.5;margin-bottom:10px}
+.empty b{display:block;color:var(--ink);font-size:15px;margin-bottom:3px}
+@media(max-width:640px){.place-grid{grid-template-columns:repeat(2,1fr)}.az-nav{top:56px}.letter-head{top:96px;font-size:1.15rem}.search-field input{font-size:16px}}
+@media(prefers-reduced-motion:reduce){.reveal,.eyebrow svg,.live-dot,.place-row .route-chip,.place-card,.tagline,.hero h1{animation:none!important;transition:none!important;opacity:1!important;transform:none!important}}
+</style>"""
+
+
