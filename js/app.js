@@ -222,11 +222,15 @@ function placeMatches(value, query) {
 }
 
 async function loadFullBus(id) {
-  if (FULL_BUSES && FULL_BUSES[id]) return FULL_BUSES[id];
+  await loadFullBusData();
+  return FULL_BUSES[id];
+}
+async function loadFullBusData() {
+  if (FULL_BUSES) return FULL_BUSES;
   const res = await fetch('data/bus-details.json');
   if (!res.ok) throw new Error('Could not load bus details (HTTP ' + res.status + ')');
   FULL_BUSES = await res.json();
-  return FULL_BUSES[id];
+  return FULL_BUSES;
 }
 function freshnessNote() {
   const updated = DATA?.meta?.last_updated || '—';
@@ -451,12 +455,16 @@ function renderHome(el) {
   detectLocation();
 }
 
-function renderSearch(el) {
+async function renderSearch(el) {
   const params = new URLSearchParams(location.hash.split('?')[1] || '');
   const from = (params.get('from') || '').toLowerCase().trim();
   const to = (params.get('to') || '').toLowerCase().trim();
   const stop = (params.get('stop') || '').toLowerCase().trim();
-  let results = Object.values(BUSES);
+  if (from || to || stop) {
+    el.innerHTML = '<div class="container" style="padding:40px"><div class="loading">Searching the full timetable…</div></div>';
+    try { await loadFullBusData(); } catch (e) { /* fall back to compact index below */ }
+  }
+  let results = Object.values(FULL_BUSES || BUSES);
 
   if (from && to) {
     const posIn = (b, q) => {
