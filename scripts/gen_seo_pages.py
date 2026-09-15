@@ -355,29 +355,35 @@ for (o_, t_), bs_ in route_meta.items():
 
 
 def header_html():
-    return """<header class="top-bar">
-  <div class="top-inner">
-    <a href="../index.html" class="brand">Bus<span class="accent">Jatri</span></a>
-    <div class="top-actions">
-      <button class="top-btn" onclick="seoLang()" id="langBtn">বাংলা</button>
-      <button class="top-btn" onclick="seoTheme()" id="themeBtn">🌙</button>
-    </div>
+    return """<header class="header">
+  <div class="container header-inner">
+    <a href="../index.html" class="logo" style="text-decoration:none;color:inherit">
+      <svg class="icon" viewBox="0 0 24 24" style="width:1.35rem;height:1.35rem;color:var(--amber)" aria-hidden="true">
+        <path d="M4 16V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10"/><path d="M4 16h16"/>
+      </svg>
+      Bus<span>Jatri</span>
+    </a>
+    <nav style="display:flex;gap:10px;align-items:center;font-size:13px">
+      <a href="../index.html" style="color:var(--ink-dim);text-decoration:none;font-weight:600">Home</a>
+      <a href="./" style="color:var(--ink-dim);text-decoration:none;font-weight:600">Routes</a>
+    </nav>
   </div>
 </header>"""
 
 
 def footer_html():
-    return """<footer class="seo-footer">
+    return """<footer class="footer">
   <div class="container">
     <div class="footer-links">
-      <a href="../index.html">Home</a>
-      <a href="../about.html">About</a>
-      <a href="../contact.html">Contact</a>
+      <a href="../about.html">About Us</a>
+      <a href="../contact.html">Contact Us</a>
       <a href="../privacy-policy.html">Privacy Policy</a>
-      <a href="./">All Routes</a>
+      <a href="../about.html#credits">Credits</a>
+      <a href="./">All Bus Timetables</a>
     </div>
-    <p>© 2026 BusJatri — West Bengal Bus Timetable<br>
-    Not affiliated with any transport corporation</p>
+    <p><strong>BusJatri</strong> — West Bengal Bus Timetable<br>
+    Not affiliated with any transport corporation<br>
+    Contact: <a href="mailto:busjatri@zohomail.in">busjatri@zohomail.in</a></p>
   </div>
 </footer>"""
 
@@ -400,79 +406,10 @@ def shell(title, description, canonical, body, schema=""):
 <link rel="stylesheet" href="../css/seo.css">
 <link rel="stylesheet" href="../css/extras.css">
 {schema}
-<script>
-function seoTheme(){{var d=document.body;d.classList.toggle('dark');document.getElementById('themeBtn').textContent=d.classList.contains('dark')?'☀️':'🌙';try{{localStorage.setItem('seo-theme',d.classList.contains('dark')?'dark':'light')}}catch(e){{}}}}
-function seoLang(){{var b=document.body;b.classList.toggle('lang-bn');document.getElementById('langBtn').textContent=b.classList.contains('lang-bn')?'English':'বাংলা';try{{localStorage.setItem('seo-lang',b.classList.contains('lang-bn')?'bn':'en')}}catch(e){{}}}}
-function toggleBus(card,e){{if(e&&e.target&&e.target.closest('a'))return;card.classList.toggle('open')}}
-function toggleAllBuses(btn){{var h=document.querySelectorAll('.bus-card.hidden-bus');var s=h.length>0&&h[0].classList.contains('show');h.forEach(function(c){{c.classList.toggle('show',!s)}});btn.innerHTML=s?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg> Show all buses':'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m18 15-6-6-6 6"/></svg> Show fewer'}}
-function swapFromTo(){{var f=document.getElementById('fromInput'),t=document.getElementById('toInput');if(!f||!t)return;var x=f.value;f.value=t.value;t.value=x}}
-function seoSearch(){{var f=document.getElementById('fromInput'),t=document.getElementById('toInput'),s=document.getElementById('stopInput');if(!f)return;var from=f.value.trim(),to=t?t.value.trim():'',stop=s?s.value.trim():'';if(from&&to){{window.location.href='../index.html#/search?from='+encodeURIComponent(from)+'&to='+encodeURIComponent(to)}}else if(stop){{window.location.href='../index.html#/search?stop='+encodeURIComponent(stop)}}else if(from){{window.location.href='../index.html#/search?from='+encodeURIComponent(from)}}}}
-(function(){{try{{var th=localStorage.getItem('seo-theme');if(th==='dark')document.body.classList.add('dark');var ln=localStorage.getItem('seo-lang');if(ln==='bn')document.body.classList.add('lang-bn')}}catch(e){{}}}})();
-function openTimeUpdate(busId,btn){{
-  var card=btn.closest('.bus-card');
-  var existing=card.querySelector('.time-update-form');
-  if(existing){{existing.remove();return}}
-  var f=document.createElement('div');
-  f.className='time-update-form';
-  f.innerHTML='<input type="time" id="tu_'+busId+'" step="600"><button onclick="saveBusTime(\''+busId+'\')" class="tu-save">Save</button><button onclick="this.parentElement.remove()" class="tu-cancel">Cancel</button>';
-  btn.parentElement.appendChild(f);
-  var inp=f.querySelector('input');
-  if(inp)inp.focus();
-}}
-function saveBusTime(busId){{
-  var inp=document.getElementById('tu_'+busId);
-  if(!inp||!inp.value){{alert('Please enter a valid time');return}}
-  var parts=inp.value.split(':');
-  var h=parseInt(parts[0]),m=parts[1];
-  var ap=h>=12?'PM':'AM';
-  var h12=h%12||12;
-  var timeStr=h12+':'+m+' '+ap;
-  try{{
-    var updates=JSON.parse(localStorage.getItem('bj-user-times')||'{{}}');
-    updates[busId]={{time:timeStr,ts:Date.now()}};
-    localStorage.setItem('bj=user-times',JSON.stringify(updates));
-  }}catch(e){{}}
-  var span=document.querySelector('[data-bus-id="'+busId+'"]');
-  if(span){{
-    span.textContent=timeStr;
-    span.className='dep.time user-updated';
-    if(!span.parentElement.querySelector('.user-badge')){{
-      var badge=document.createElement('span');
-      badge.className='user-badge';
-      badge.innerHTML='<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> User updated';
-      span.parentElement.appendChild(badge);
-    }}
-  }}
-  var form=document.querySelector('.time-update-form');
-  if(form)form.remove();
-  var page=document.title.split('|')[0].trim();
-  var msg='BusJatri time update:\n'+page+'\nBus: '+busId+'\nNew departure: '+timeStr+'\n(Please verify & update master data)';
-  window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
-}}
-function restoreUserTimes(){{
-  try{{
-    var updates=JSON.parse(localStorage.getItem('bj=user-times')||'{{}}');
-    for(var busId in updates){{
-      var span=document.querySelector('[data-bus-id="'+busId+'"]');
-      if(span&&span.className.indexOf('no-time')>=0){{
-        span.textContent=updates[busId].time;
-        span.className='dep.time user-updated';
-        if(!span.parentElement.querySelector('.user-badge')){{
-          var badge=document.createElement('span');
-          badge.className='user-badge';
-          badge.innerHTML='<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> User updated';
-          span.parentElement.appendChild(badge);
-        }}
-      }}
-    }}
-  }}catch(e){{}}
-}}
-document.addEventListener('DOMContentLoaded',restoreUserTimes);
-</script>
 </head>
 <body>
 {header_html()}
-<main class="container" style="padding-top:14px;padding-bottom:48px">
+<main class="container seo-main" style="padding-top:18px;padding-bottom:48px;max-width:720px">
 {body}
 </main>
 {footer_html()}
@@ -635,71 +572,32 @@ def route_stops_html(buses):
 </section>"""
 
 
-
-
-
-def bus_card(bus, idx=0):
+def bus_card(bus):
     name = clean_text(bus.get("bus_name")) or "Bus service"
     dep = format_time(parse_time(bus.get("departure_time")))
     arr = format_time(parse_time(bus.get("arrival_time")))
     operator = operator_name(bus)
-    stops_list = bus_stops(bus)
-    n_stops = len(stops_list)
+    stops = total_stops(bus)
     duration = calculate_duration(bus)
     dur_text = fmt_duration(duration) if duration else "—"
     fare = clean_text(bus.get("fare")) or "—"
     bt_raw = (bus.get("bus_type") or "").lower()
-    badge = ""
     if "gov" in bt_raw or "sbstc" in bt_raw or "nbstc" in bt_raw or "wbtc" in bt_raw:
         badge = '<span class="badge badge-govt">Govt</span>'
-    elif "private" in bt_raw:
-        badge = '<span class="badge badge-private">Private</span>'
-    if " ac" in bt_raw and "non" not in bt_raw:
-        badge += '<span class="badge badge-ac">AC</span>'
-    elif "non ac" in bt_raw:
-        badge += '<span class="badge badge-nonac">Non-AC</span>'
-
-    origin = clean_text(bus.get("origin")) or ""
-    destination = clean_text(bus.get("destination")) or ""
-    bus_id = clean_text(bus.get("id")) or f"{slug(origin)}-{slug(destination)}-{idx}"
-    if dep != "—":
-        dep_html = f'<span class="dep.time" data-bus-id="{esc(bus_id)}">{esc(dep)}</span>'
+    elif "ac" in bt_raw and "non" not in bt_raw:
+        badge = '<span class="badge badge-ac">AC</span>'
     else:
-        dep_html = (
-            f'<span class="no-time" data-bus-id="{esc(bus_id)}">Not Available</span>'
-            f'<button class="update-time-btn" onclick="openTimeUpdate(\'{esc(bus_id)}\',this)">'
-            '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">'
-            '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Add Time</button>'
-        )
-
-    meta = '<div class="bus-meta-grid">'
+        badge = '<span class="badge badge-priv">Private</span>'
+    op_line = esc(name)
     if operator:
-        meta += f'<div class="meta-item"><div class="lb">Operator</div><div class="vl">{esc(operator)}</div></div>'
-    meta += f'<div class="meta-item"><div class="lb">Stops</div><div class="vl">{n_stops}</div></div>'
-    if duration:
-        meta += f'<div class="meta-item"><div class="lb">Duration</div><div class="vl">{esc(dur_text)}</div></div>'
-    if fare != "—":
-        meta += f'<div class="meta-item"><div class="lb">Fare</div><div class="vl">{esc(fare)}</div></div>'
-    meta += '</div>'
-
-    tl = '<div class="mini-timeline">'
-    for st in stops_list:
-        tl += f'<div class="mini-stop"><span class="dot"></span><span class="st-name">{esc(st)}</span></div>'
-    tl += '</div>'
-
-    return f"""<div class="bus-card" style="--i:{idx}" data-bus-id="{esc(bus_id)}" onclick="toggleBus(this,event)">
-  <div class="bus-head">
-    <div class="bus-info">
-      <div class="name">{esc(name)} {badge}</div>
-      <div class="route">{esc(origin)} \u2192 {esc(destination)}</div>
-    </div>
-    {dep_html}
-    <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        op_line += f' · {esc(operator)}'
+    return f"""<div class="bus-row">
+  <div class="dep">{esc(dep)}<small>{esc(arr)} arr</small></div>
+  <div class="bmid">
+    <div class="op">{op_line}</div>
+    <div class="mrow"><span>{esc(fare)}</span><span>~{esc(dur_text)}</span><span>{stops or 0} stops</span></div>
   </div>
-  <div class="bus-body"><div class="bus-body-inner">
-    {meta}
-    {tl}
-  </div></div>
+  {badge}
 </div>"""
 
 
@@ -736,160 +634,81 @@ def generate_route_page(origin, destination, buses):
     duration = stats["duration"]
     operators = stats["operators"]
     count = len(buses)
-    dur_text = fmt_duration(duration) if duration else "\u2014"
+    dur_text = fmt_duration(duration) if duration else "—"
 
     title = f"{origin} to {destination} Bus Time Table | {SITE_NAME}"
-    if stats["first"] is not None:
-        description = f"{origin} to {destination} bus timings. {count} buses listed. First {first}, last {last}. Check stoppages & operators."[:300]
-    else:
-        description = f"{origin} to {destination} bus timings and stoppages. {count} buses listed. Departure times vary \u2014 check the timetable below or help by adding times."[:300]
+    description = f"{origin} to {destination} bus timings, operators, stoppages. {count} buses listed. First {first}, last {last}."[:300]
     canonical = f"{BASE}/bus-time-table/{filename}"
     major_stops = stoppage_summary(buses)
 
     faqs = [
         (f"What is the first bus from {origin} to {destination}?",
-         f"The first bus departs at {first}." if stats["first"] is not None else "Check the timetable above for departure times."),
+         f"The first bus departs at {first}." if stats["first"] is not None else "Check the timetable above."),
         (f"What is the last bus from {origin} to {destination}?",
-         f"The last bus departs at {last}." if stats["last"] is not None else "Check the timetable above for departure times."),
+         f"The last bus departs at {last}." if stats["last"] is not None else "Check the timetable above."),
         (f"How many buses run from {origin} to {destination}?",
          f"{count} bus services are listed on this route."),
-        (f"How long is the journey from {origin} to {destination}?",
-         f"The journey takes approximately {dur_text}." if duration else "Journey time varies by bus and traffic."),
     ]
 
-    bn_sub = f'<span class="label-bn" style="display:none">{esc(route_bn)} \u09ac\u09be\u09b8\u09c7\u09b0 \u09b8\u09ae\u09af\u09bc\u09b8\u09c2\u099a\u09c0</span>' if route_bn else ""
-    operators_str = ", ".join(operators[:3]) if operators else "Multiple operators"
-    arrow = "\u2192"
-
-    if stats["first"] is not None:
-        first_last_chips = f'<span class="stat-chip">First <strong>{esc(first)}</strong></span>\n    <span class="stat-chip">Last <strong>{esc(last)}</strong></span>'
-    else:
-        first_last_chips = '<span class="stat-chip">Departure times not listed \u2014 help by adding times</span>'
-    hero = f"""<div class="breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="./">Bus Time Table</a><span class="sep">/</span><span>{esc(origin)} {arrow} {esc(destination)}</span></div>
-<div class="hero">
-  <div class="hero-route-line"><svg class="icon" viewBox="0 0 24 24"><path d="M4 16V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10"/><path d="M4 16h16"/><path d="M4 16v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2"/><path d="M17 16v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2"/><path d="M6 10h12"/></svg></div>
-  <span class="eyebrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4Z"/><path d="M10 6v12" stroke-dasharray="2 3"/></svg> {esc(origin)} {arrow} {esc(destination)} \u00b7 West Bengal</span>
-  <h1>{esc(origin)} <span class="arrow">{arrow}</span> <span class="accent">{esc(destination)}</span> Bus Time Table</h1>
+    bn_sub = f'<p class="bn-sub">{esc(route_bn)} বাসের সময়সূচী</p>' if route_bn else ""
+    hero = f"""<div class="crumbs"><a href="../index.html">Home</a> › <a href="./">Bus Timetable</a> › <span>{esc(origin)} → {esc(destination)}</span></div>
+<div class="seo-hero">
+  <h1>{esc(origin)} <span class="arr">→</span> {esc(destination)}</h1>
   {bn_sub}
-  <p class="tagline">Complete bus timings, operators and stoppages. {count} buses on this route.</p>
   <div class="stat-chips">
-    <span class="stat-chip"><strong>{count}</strong> buses</span>
-    {first_last_chips}
-    <span class="stat-chip">~<strong>{esc(dur_text)}</strong> journey</span>
-    <span class="stat-chip">{esc(operators_str)}</span>
+    <span class="schip">🚌 {count} buses</span>
+    <span class="schip hot">⏰ First {esc(first)}</span>
+    <span class="schip">⏰ Last {esc(last)}</span>
+    <span class="schip">⏱ ~{esc(dur_text)}</span>
   </div>
 </div>"""
-
-    search_html = f"""<div class="search-box">
-  <div class="search-row">
-    <div class="search-field">
-      <label><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-6.1 7-11.3A7 7 0 0 0 5 9.7C5 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg> From</label>
-      <input id="fromInput" placeholder="e.g. {esc(origin)}" value="{esc(origin)}">
-    </div>
-    <button class="swap-btn" onclick="swapFromTo()" title="Swap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 3h5v5"/><path d="M8 3H3v5"/><path d="M21 3 12 12"/><path d="M3 3l9 9"/></svg></button>
-    <div class="search-field">
-      <label><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 3v2.2M12 18.8V21M21 12h-2.2M5.2 12H3"/></svg> To</label>
-      <input id="toInput" placeholder="e.g. {esc(destination)}" value="{esc(destination)}">
-    </div>
-    <div class="search-field">
-      <label><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="2"/><circle cx="6" cy="18" r="2"/><path d="M6 8v8"/><path d="M6 12h9a3 3 0 0 0 3-3V7"/></svg> Stoppage <span class="via-hint">(optional)</span></label>
-      <input id="stopInput" placeholder="e.g. Kolaghat">
-    </div>
-  </div>
-  <div class="search-actions">
-    <button class="search-btn" onclick="seoSearch()">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m20 20-4.3-4.3"/></svg>
-      Search buses
-    </button>
-  </div>
-</div>"""
-
-    board_json = _board_data(origin, destination)
-    tabs_keys = list(json.loads(board_json).keys())
-    first_tab = esc(tabs_keys[0]) if tabs_keys else ""
-
-    board_html = f"""<div class="lv-wrap">
-  <div class="lv-clock-wrap">
-    <div>
-      <div class="lv-clock-label"><span class="ldot"></span> Live Departures</div>
-      <div class="lv-clock-big" id="lvClock">--:--:--<small>IST</small></div>
-    </div>
-    <div class="lv-geo" id="lvGeo">West Bengal</div>
-  </div>
-  <div class="lv-board">
-    <div class="lv-tabs" id="lvTabs"></div>
-    <div id="lvRows"></div>
-  </div>
-</div>
-<script>
-var SEO_TABS={board_json};
-var boardTab="{first_tab}";
-function t2m(t){{var m=String(t).match(/^(\\d+):#+)\s*(AM|PM)?/i);if(!m)return null;var h=+m[1],mm=+m[2],ap=(m[3]|"").toUpperCase();if(mm>59)return null;if(ap){{if(h<1||h>12)return null}}else{{if(h>23)return null}}if(ap==="PM"&&h<12)h+=12;if(ap==="AM"&&h===12)h=0;return h*60+mm}}
-function minutesNow(){{var d=new Date();return d.getHours()*60+d.getMinutes()}}
-function cd(m){{if(m<60)return m+"m";var h=Math.floor(m/60),r=m%60;return h+"h "+r?r+"m":"")}}
-function fmtT(m){{var h=Math.floor(m/60),mm=m%60;var ap=h>=12?"PM":"AM";if(h>12)h-=12;if(h===0)h=12;return h+":"+String(mm).padStart(2,"0")+" "+ap}}
-function renderBoard(anim){{var el=document.getElementById("lvRows");if(el)el.classList.toggle("still",anim===false);var tabs=Object.keys(SEO_TABS);document.getElementById("lvTabs").innerHTML=tabs.map(function(t){{return '<button class="lv-tab'+(t===boardTab?" on":"")+'" onclick="boardTab=\\''+t+'\\';renderBoard(true)">'+t+'</button>'}}).join("");var deps=SEO_TABS[boardTab]||[],now=minutesNow();var nextIdx=-1;for(var i=0;i<deps.length;i++){{if(deps[i].t>now){{nextIdx=i;break}}}}if(nextIdx<0&&deps.length)nextIdx=0;var rows=deps.map(function(n,i){{var cls="",right="";if(i===nextIdx){{cls="next";right='<span class="ltag">'+(n.t<=now?"tmrw +":"in ")+cd(Math.abs(n.t-now))+'</span>'}}else if(i>nextIdx){{right='<span class="lgone">+'+cd(n.t-now)+'</span>'}}else{{cls="past";right='<span class="lgone">departed</span>'}}return '<div class="lv-row '+cls+'" style="animation-delay:'+(i*0.07)+'s">'+'<span class="lt">'+fmtT(n.t).replace(" ","")+'</span>'+'<span class="lnm">'+n.n+'</span>'+'<span class="ldst">'+arrow+' '+n.d+'</span>'+right+'</div>'}}).join("");el.innerHTML=rows||'<div class="lv-row"><span class="lnm">No timed departures</span></div>'}}
-function tickClock(){{var t=new Date().toLocaleTimeString("en-IN",{{hour12:false,timeZone:"Asia/Kolkata"}});document.getElementById("lvClock").innerHTML=t+"<small>IST</small>"}}
-tickClock();setInterval(tickClock,1000);renderBoard(true);setInterval(function(){{renderBoard(false)}},30000);
-</script>"""
 
     sorted_buses = sorted(buses, key=lambda b: parse_time(b.get("departure_time")) or 9999)
-    visible = 4
-    cards = "".join(bus_card(b, i) for i, b in enumerate(sorted_buses[:visible]))
-    hidden_cards = ""
-    for i, b in enumerate(sorted_buses[visible:]):
-        bc = bus_card(b, i + visible)
-        bc = bc.replace('<div class="bus-card"', '<div class="bus-card hidden-bus"', 1)
-        hidden_cards += bc
-    show_all = ""
-    if len(sorted_buses) > visible:
-        show_all = f'<button class="show-all-btn" id="showAllBtn" onclick="toggleAllBuses(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg> Show all {len(sorted_buses)} buses</button>'
-
-    bus_list = f"""<section class="section">
-  <div class="section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4z"/><path d="M10 6v12" stroke-dasharray="2 3"/></svg> All Buses on This Route</div>
-  <div class="bus-list">{cards}{hidden_cards}</div>
-  {show_all}
+    timetable = f"""<section class="seo-section">
+  <h3 class="section-title">Today's Departures</h3>
+  {''.join(bus_card(b) for b in sorted_buses)}
 </section>"""
 
     route_section = route_stops_html(buses)
 
     major_section = ""
     if major_stops:
-        chips = "".join(f'<a class="via-chip" style="--i:{i}" href="{slug(origin)}-to-{slug(destination)}-via-{slug(s)}.html">{esc(s)}</a>' for i, s in enumerate(major_stops))
-        major_section = f"""<section class="section">
-  <div class="section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="2"/><circle cx="6" cy="18" r="2"/><path d="M6 8v8"/><path d="M6 12h9a3 3 0 0 0 3-3V7"/></svg> Popular Stops on This Route</div>
-  <div class="via-chips">{chips}</div>
+        chips = "".join(f'<span class="via-chip">{esc(s)}</span>' for s in major_stops)
+        major_section = f"""<section class="seo-section">
+  <h3 class="section-title">Via Stoppages</h3>
+  <div class="chip-row">{chips}</div>
 </section>"""
 
     faq_html = "".join(
-        f'<div class="faq-item" style="--i:{i}" onclick="this.classList.toggle(\'open\')"><div class="faq-q">{esc(q)}<svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div><div class="faq-a"><p>{esc(a)}</p></div></div>'
+        f'<details{" open" if i==0 else ""}><summary>{esc(q)}</summary><div class="fa-body">{esc(a)}</div></details>'
         for i, (q, a) in enumerate(faqs)
     )
-    faq_section = f"""<section class="section">
-  <div class="section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.5h.01"/></svg> Frequently Asked Questions</div>
-  <div class="faq-list">{faq_html}</div>
+    faq_section = f"""<section class="seo-section">
+  <h3 class="section-title">FAQ</h3>
+  {faq_html}
 </section>"""
 
     related = [(o, t) for (o, t) in route_meta if o == origin and t != destination]
     related = sorted(related, key=lambda p: -len(route_meta[p]))[:8]
     related_section = ""
     if related:
-        links = "".join(f'<a class="rel-chip" style="--i:{i}" href="{slug(o)}-to-{slug(t)}.html">{esc(o)} {arrow} {esc(t)}</a>' for i, (o, t) in enumerate(related))
-        related_section = f"""<section class="section">
-  <div class="section-title">More Routes from {esc(origin)}</div>
+        links = "".join(
+            f'<a class="rel-chip" href="{slug(o)}-to-{slug(t)}.html">{esc(o)} → {esc(t)}</a>'
+            for o, t in related
+        )
+        related_section = f"""<section class="seo-section">
+  <h3 class="section-title">More Routes from {esc(origin)}</h3>
   <div class="chip-row">{links}</div>
 </section>"""
 
     reverse_section = ""
     if (destination, origin) in route_meta:
         rev_file = f"{slug(destination)}-to-{slug(origin)}.html"
-        reverse_section = f'<section class="section"><a class="rel-chip" href="{rev_file}">\u21a9 {esc(destination)} {arrow} {esc(origin)} (return)</a></section>'
+        reverse_section = f"""<section class="seo-section">
+  <a class="rel-chip" href="{rev_file}">↩ {esc(destination)} → {esc(origin)} (return)</a>
+</section>"""
 
-    ad1 = '<div class="ad-zone" id="ad1"></div>'
-    ad2 = '<div class="ad-zone" id="ad2"></div>'
-    ad3 = '<div class="ad-zone" id="ad3"></div>'
-
-    body = hero + search_html + board_html + ad1 + bus_list + route_section + major_section + ad2 + faq_section + reverse_section + related_section + ad3
+    body = hero + timetable + route_section + major_section + faq_section + reverse_section + related_section
 
     schema = (
         faq_schema(faqs) + "\n" +
