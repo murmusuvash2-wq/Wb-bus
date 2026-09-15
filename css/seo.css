@@ -213,3 +213,17 @@ body.lang-bn .badge{text-transform:none;letter-spacing:0}
   .stat-chip{padding:5px 10px;font-size:11px}
   .lv-clock-big{font-size:22px}
 }
+/* ===== User time update ===== */
+.no-time{font-size:11px;color:var(--ink-dim);font-weight:700;text-transform:uppercase;letter-spacing:.03em}
+.update-time-btn{background:var(--amber-soft);border:1px solid color-mix(in srgb,var(--amber) 50%,transparent);border-radius:999px;padding:5px 11px;font-size:11px;font-weight:700;color:var(--amber-ink);cursor:pointer;font-family:var(--font-mono);min-height:32px;display:inline-flex;align-items:center;gap:3px;transition:all .15s;white-space:nowrap}
+.update-time-btn:hover{background:var(--amber);color:#fff;border-color:var(--amber)}
+.user-updated{color:var(--green)!important}
+.user-badge{font-size:10px;color:var(--green);font-weight:700;background:var(--green-soft);padding:2px 8px;border-radius:999px;margin-left:4px;display:inline-flex;align-items:center;gap:3px;font-family:var(--font-mono);white-space:nowrap}
+.user-badge svg{flex-shrink:0}
+.time-update-form{display:flex;gap:6px;align-items:center;margin-top:6px;padding:8px 10px;background:var(--surface-2);border-radius:9px;border:1px solid var(--line)}
+.time-update-form input[type="time"]{padding:8px 10px;border:1px solid var(--line-strong);border-radius:6px;background:var(--surface);color:var(--ink);font-family:var(--font-mono);font-size:14px;font-weight:700;min-height:44px;flex:1;max-width:140px}
+.tu-save{background:var(--green);color:#fff;border:none;border-radius:6px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer;min-height:44px;font-family:var(--font-body)}
+.tu-save:hover{opacity:.85}
+.tu-cancel{background:none;border:none;color:var(--ink-dim);font-size:13px;cursor:pointer;min-height:44px;padding:8px}
+@media(prefers-reduced-motion:reduce){.update-time-btn,.user-badge{transition:none}}
+/* ===== End user time update ===== */

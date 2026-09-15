@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Badanganj to Tarkeshwar Bus Time Table | BusJatri</title>
-<meta name="description" content="Badanganj to Tarkeshwar bus timings, operators, stoppages. 2 buses listed. First 12:30 PM, last 12:30 PM.">
+<meta name="description" content="Badanganj to Tarkeshwar bus timings. 2 buses listed. First 12:30 PM, last 12:30 PM. Check stoppages &amp; operators.">
 <link rel="canonical" href="https://wb-bus.vercel.app/bus-time-table/badanganj-to-tarkeshwar.html">
 <meta property="og:title" content="Badanganj to Tarkeshwar Bus Time Table | BusJatri">
-<meta property="og:description" content="Badanganj to Tarkeshwar bus timings, operators, stoppages. 2 buses listed. First 12:30 PM, last 12:30 PM.">
+<meta property="og:description" content="Badanganj to Tarkeshwar bus timings. 2 buses listed. First 12:30 PM, last 12:30 PM. Check stoppages &amp; operators.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://wb-bus.vercel.app/bus-time-table/badanganj-to-tarkeshwar.html">
 <meta name="theme-color" content="#b8791f">
@@ -24,6 +24,70 @@ function toggleAllBuses(btn){var h=document.querySelectorAll('.bus-card.hidden-b
 function swapFromTo(){var f=document.getElementById('fromInput'),t=document.getElementById('toInput');if(!f||!t)return;var x=f.value;f.value=t.value;t.value=x}
 function seoSearch(){var f=document.getElementById('fromInput'),t=document.getElementById('toInput'),s=document.getElementById('stopInput');if(!f)return;var from=f.value.trim(),to=t?t.value.trim():'',stop=s?s.value.trim():'';if(from&&to){window.location.href='../index.html#/search?from='+encodeURIComponent(from)+'&to='+encodeURIComponent(to)}else if(stop){window.location.href='../index.html#/search?stop='+encodeURIComponent(stop)}else if(from){window.location.href='../index.html#/search?from='+encodeURIComponent(from)}}
 (function(){try{var th=localStorage.getItem('seo-theme');if(th==='dark')document.body.classList.add('dark');var ln=localStorage.getItem('seo-lang');if(ln==='bn')document.body.classList.add('lang-bn')}catch(e){}})();
+function openTimeUpdate(busId,btn){
+  var card=btn.closest('.bus-card');
+  var existing=card.querySelector('.time-update-form');
+  if(existing){existing.remove();return}
+  var f=document.createElement('div');
+  f.className='time-update-form';
+  f.innerHTML='<input type="time" id="tu_'+busId+'" step="600"><button onclick="saveBusTime(''+busId+'')" class="tu-save">Save</button><button onclick="this.parentElement.remove()" class="tu-cancel">Cancel</button>';
+  btn.parentElement.appendChild(f);
+  var inp=f.querySelector('input');
+  if(inp)inp.focus();
+}
+function saveBusTime(busId){
+  var inp=document.getElementById('tu_'+busId);
+  if(!inp||!inp.value){alert('Please enter a valid time');return}
+  var parts=inp.value.split(':');
+  var h=parseInt(parts[0]),m=parts[1];
+  var ap=h>=12?'PM':'AM';
+  var h12=h%12||12;
+  var timeStr=h12+':'+m+' '+ap;
+  try{
+    var updates=JSON.parse(localStorage.getItem('bj-user-times')||'{}');
+    updates[busId]={time:timeStr,ts:Date.now()};
+    localStorage.setItem('bj=user-times',JSON.stringify(updates));
+  }catch(e){}
+  var span=document.querySelector('[data-bus-id="'+busId+'"]');
+  if(span){
+    span.textContent=timeStr;
+    span.className='dep.time user-updated';
+    if(!span.parentElement.querySelector('.user-badge')){
+      var badge=document.createElement('span');
+      badge.className='user-badge';
+      badge.innerHTML='<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> User updated';
+      span.parentElement.appendChild(badge);
+    }
+  }
+  var form=document.querySelector('.time-update-form');
+  if(form)form.remove();
+  var page=document.title.split('|')[0].trim();
+  var msg='BusJatri time update:
+'+page+'
+Bus: '+busId+'
+New departure: '+timeStr+'
+(Please verify & update master data)';
+  window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
+}
+function restoreUserTimes(){
+  try{
+    var updates=JSON.parse(localStorage.getItem('bj=user-times')||'{}');
+    for(var busId in updates){
+      var span=document.querySelector('[data-bus-id="'+busId+'"]');
+      if(span&&span.className.indexOf('no-time')>=0){
+        span.textContent=updates[busId].time;
+        span.className='dep.time user-updated';
+        if(!span.parentElement.querySelector('.user-badge')){
+          var badge=document.createElement('span');
+          badge.className='user-badge';
+          badge.innerHTML='<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> User updated';
+          span.parentElement.appendChild(badge);
+        }
+      }
+    }
+  }catch(e){}
+}
+document.addEventListener('DOMContentLoaded',restoreUserTimes);
 </script>
 </head>
 <body>
@@ -98,26 +162,26 @@ function tickClock(){var t=new Date().toLocaleTimeString("en-IN",{hour12:false,t
 tickClock();setInterval(tickClock,1000);renderBoard(true);setInterval(function(){renderBoard(false)},30000);
 </script><div class="ad-zone" id="ad1"></div><section class="section">
   <div class="section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4z"/><path d="M10 6v12" stroke-dasharray="2 3"/></svg> All Buses on This Route</div>
-  <div class="bus-list"><div class="bus-card" style="--i:0" onclick="toggleBus(this,event)">
+  <div class="bus-list"><div class="bus-card" style="--i:0" data-bus-id="bussathi-maa-laxmi-1" onclick="toggleBus(this,event)">
   <div class="bus-head">
     <div class="bus-info">
       <div class="name">MAA LAXMI <span class="badge badge-private">Private</span><span class="badge badge-nonac">Non-AC</span></div>
       <div class="route">Badanganj → Tarkeshwar</div>
     </div>
-    <span class="dep.time">12:30 PM</span>
+    <span class="dep.time" data-bus-id="bussathi-maa-laxmi-1">12:30 PM</span>
     <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
   </div>
   <div class="bus-body"><div class="bus-body-inner">
     <div class="bus-meta-grid"><div class="meta-item"><div class="lb">Operator</div><div class="vl">MAA LAXMI TRAVELS</div></div><div class="meta-item"><div class="lb">Stops</div><div class="vl">7</div></div><div class="meta-item"><div class="lb">Duration</div><div class="vl">2h 05m</div></div></div>
     <div class="mini-timeline"><div class="mini-stop"><span class="dot"></span><span class="st-name">Badanganj</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">Kamarpukur</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">Goghat</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">Arambagh</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">Mayapur</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">Champadanga</span></div><div class="mini-stop"><span class="dot"></span><span class="st-name">Tarkeshwar</span></div></div>
   </div></div>
-</div><div class="bus-card" style="--i:1" onclick="toggleBus(this,event)">
+</div><div class="bus-card" style="--i:1" data-bus-id="wbbus-in-maa-laxmi-1370" onclick="toggleBus(this,event)">
   <div class="bus-head">
     <div class="bus-info">
       <div class="name">MAA LAXMI <span class="badge badge-private">Private</span><span class="badge badge-nonac">Non-AC</span></div>
       <div class="route">Badanganj → Tarkeshwar</div>
     </div>
-    <span class="no-time">—:—</span>
+    <span class="no-time" data-bus-id="wbbus-in-maa-laxmi-1370">Not Available</span><button class="update-time-btn" onclick="openTimeUpdate('wbbus-in-maa-laxmi-1370',this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Add Time</button>
     <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
   </div>
   <div class="bus-body"><div class="bus-body-inner">

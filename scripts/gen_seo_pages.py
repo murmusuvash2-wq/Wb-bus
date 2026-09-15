@@ -408,6 +408,66 @@ function toggleAllBuses(btn){{var h=document.querySelectorAll('.bus-card.hidden-
 function swapFromTo(){{var f=document.getElementById('fromInput'),t=document.getElementById('toInput');if(!f||!t)return;var x=f.value;f.value=t.value;t.value=x}}
 function seoSearch(){{var f=document.getElementById('fromInput'),t=document.getElementById('toInput'),s=document.getElementById('stopInput');if(!f)return;var from=f.value.trim(),to=t?t.value.trim():'',stop=s?s.value.trim():'';if(from&&to){{window.location.href='../index.html#/search?from='+encodeURIComponent(from)+'&to='+encodeURIComponent(to)}}else if(stop){{window.location.href='../index.html#/search?stop='+encodeURIComponent(stop)}}else if(from){{window.location.href='../index.html#/search?from='+encodeURIComponent(from)}}}}
 (function(){{try{{var th=localStorage.getItem('seo-theme');if(th==='dark')document.body.classList.add('dark');var ln=localStorage.getItem('seo-lang');if(ln==='bn')document.body.classList.add('lang-bn')}}catch(e){{}}}})();
+function openTimeUpdate(busId,btn){{
+  var card=btn.closest('.bus-card');
+  var existing=card.querySelector('.time-update-form');
+  if(existing){{existing.remove();return}}
+  var f=document.createElement('div');
+  f.className='time-update-form';
+  f.innerHTML='<input type="time" id="tu_'+busId+'" step="600"><button onclick="saveBusTime(\''+busId+'\')" class="tu-save">Save</button><button onclick="this.parentElement.remove()" class="tu-cancel">Cancel</button>';
+  btn.parentElement.appendChild(f);
+  var inp=f.querySelector('input');
+  if(inp)inp.focus();
+}}
+function saveBusTime(busId){{
+  var inp=document.getElementById('tu_'+busId);
+  if(!inp||!inp.value){{alert('Please enter a valid time');return}}
+  var parts=inp.value.split(':');
+  var h=parseInt(parts[0]),m=parts[1];
+  var ap=h>=12?'PM':'AM';
+  var h12=h%12||12;
+  var timeStr=h12+':'+m+' '+ap;
+  try{{
+    var updates=JSON.parse(localStorage.getItem('bj-user-times')||'{{}}');
+    updates[busId]={{time:timeStr,ts:Date.now()}};
+    localStorage.setItem('bj=user-times',JSON.stringify(updates));
+  }}catch(e){{}}
+  var span=document.querySelector('[data-bus-id="'+busId+'"]');
+  if(span){{
+    span.textContent=timeStr;
+    span.className='dep.time user-updated';
+    if(!span.parentElement.querySelector('.user-badge')){{
+      var badge=document.createElement('span');
+      badge.className='user-badge';
+      badge.innerHTML='<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> User updated';
+      span.parentElement.appendChild(badge);
+    }}
+  }}
+  var form=document.querySelector('.time-update-form');
+  if(form)form.remove();
+  var page=document.title.split('|')[0].trim();
+  var msg='BusJatri time update:\n'+page+'\nBus: '+busId+'\nNew departure: '+timeStr+'\n(Please verify & update master data)';
+  window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
+}}
+function restoreUserTimes(){{
+  try{{
+    var updates=JSON.parse(localStorage.getItem('bj=user-times')||'{{}}');
+    for(var busId in updates){{
+      var span=document.querySelector('[data-bus-id="'+busId+'"]');
+      if(span&&span.className.indexOf('no-time')>=0){{
+        span.textContent=updates[busId].time;
+        span.className='dep.time user-updated';
+        if(!span.parentElement.querySelector('.user-badge')){{
+          var badge=document.createElement('span');
+          badge.className='user-badge';
+          badge.innerHTML='<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> User updated';
+          span.parentElement.appendChild(badge);
+        }}
+      }}
+    }}
+  }}catch(e){{}}
+}}
+document.addEventListener('DOMContentLoaded',restoreUserTimes);
 </script>
 </head>
 <body>
@@ -601,7 +661,16 @@ def bus_card(bus, idx=0):
 
     origin = clean_text(bus.get("origin")) or ""
     destination = clean_text(bus.get("destination")) or ""
-    dep_html = f'<span class="dep.time">{esc(dep)}</span>' if dep != "—" else '<span class="no-time">—:—</span>'
+    bus_id = clean_text(bus.get("id")) or f"{slug(origin)}-{slug(destination)}-{idx}"
+    if dep != "—":
+        dep_html = f'<span class="dep.time" data-bus-id="{esc(bus_id)}">{esc(dep)}</span>'
+    else:
+        dep_html = (
+            f'<span class="no-time" data-bus-id="{esc(bus_id)}">Not Available</span>'
+            f'<button class="update-time-btn" onclick="openTimeUpdate(\'{esc(bus_id)}\',this)">'
+            '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">'
+            '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Add Time</button>'
+        )
 
     meta = '<div class="bus-meta-grid">'
     if operator:
@@ -618,7 +687,7 @@ def bus_card(bus, idx=0):
         tl += f'<div class="mini-stop"><span class="dot"></span><span class="st-name">{esc(st)}</span></div>'
     tl += '</div>'
 
-    return f"""<div class="bus-card" style="--i:{idx}" onclick="toggleBus(this,event)">
+    return f"""<div class="bus-card" style="--i:{idx}" data-bus-id="{esc(bus_id)}" onclick="toggleBus(this,event)">
   <div class="bus-head">
     <div class="bus-info">
       <div class="name">{esc(name)} {badge}</div>
@@ -670,7 +739,10 @@ def generate_route_page(origin, destination, buses):
     dur_text = fmt_duration(duration) if duration else "\u2014"
 
     title = f"{origin} to {destination} Bus Time Table | {SITE_NAME}"
-    description = f"{origin} to {destination} bus timings, operators, stoppages. {count} buses listed. First {first}, last {last}."[:300]
+    if stats["first"] is not None:
+        description = f"{origin} to {destination} bus timings. {count} buses listed. First {first}, last {last}. Check stoppages & operators."[:300]
+    else:
+        description = f"{origin} to {destination} bus timings and stoppages. {count} buses listed. Departure times vary \u2014 check the timetable below or help by adding times."[:300]
     canonical = f"{BASE}/bus-time-table/{filename}"
     major_stops = stoppage_summary(buses)
 
@@ -689,6 +761,10 @@ def generate_route_page(origin, destination, buses):
     operators_str = ", ".join(operators[:3]) if operators else "Multiple operators"
     arrow = "\u2192"
 
+    if stats["first"] is not None:
+        first_last_chips = f'<span class="stat-chip">First <strong>{esc(first)}</strong></span>\n    <span class="stat-chip">Last <strong>{esc(last)}</strong></span>'
+    else:
+        first_last_chips = '<span class="stat-chip">Departure times not listed \u2014 help by adding times</span>'
     hero = f"""<div class="breadcrumb"><a href="../index.html">Home</a><span class="sep">/</span><a href="./">Bus Time Table</a><span class="sep">/</span><span>{esc(origin)} {arrow} {esc(destination)}</span></div>
 <div class="hero">
   <div class="hero-route-line"><svg class="icon" viewBox="0 0 24 24"><path d="M4 16V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10"/><path d="M4 16h16"/><path d="M4 16v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2"/><path d="M17 16v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2"/><path d="M6 10h12"/></svg></div>
@@ -698,8 +774,7 @@ def generate_route_page(origin, destination, buses):
   <p class="tagline">Complete bus timings, operators and stoppages. {count} buses on this route.</p>
   <div class="stat-chips">
     <span class="stat-chip"><strong>{count}</strong> buses</span>
-    <span class="stat-chip">First <strong>{esc(first)}</strong></span>
-    <span class="stat-chip">Last <strong>{esc(last)}</strong></span>
+    {first_last_chips}
     <span class="stat-chip">~<strong>{esc(dur_text)}</strong> journey</span>
     <span class="stat-chip">{esc(operators_str)}</span>
   </div>
