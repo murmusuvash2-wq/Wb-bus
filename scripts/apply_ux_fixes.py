@@ -20,38 +20,194 @@ if 'no-time">Time N/A' in src and 'if len(buses) >= 1' in src:
 P = []
 
 # ---- P1: include single-bus routes ----
-P.append(
-'''gÂoups =ÂˆÙ^Nˆ\Ù\Âˆ›ÜˆÙ^K\Ù\È[ˆÜ›İ\Ëš][\Ê
-BˆYˆ[Š\Ù\ÊHH‚ŸIÉÉË‰ÉÉÙÜ›İ\ÈHÂˆÙ^Nˆ\Ù\Âˆ›ÜˆÙ^K\Ù\È[ˆÜ›İ\Ëš][\Ê
-BˆYˆ[Š\Ù\ÊHHBŸIÉÉËˆš[˜ÛYHÚ[™ÛKX\È›İ]\ÈŠJB‚ˆÈKKKHˆ\×ØØ\™[YH‹ĞHKKKB”˜\[™
-‰ÉÉÈ™]\›ˆˆˆˆ]ˆÛ\ÜÏH˜\Ë\›İÈ‚ˆ]ˆÛ\ÜÏH™\Ù\ØÊ\
-_OÛX[Ù\ØÊ\œŠ_H\œÜÛX[Ù]‰ÉÉË‰ÉÉÈYˆ\OH—LŒM‚ˆ\Ú[H	ÏÜ[ˆÛ\ÜÏH››Ë][YH•[YH‹ĞOÜÜ[‰Âˆ[ÙN‚ˆ\Ú[HˆÙ\ØÊ\
-_OÛX[Ù\ØÊ\œŠ_H\œÜÛX[ˆ‚ˆ™]\›ˆˆˆˆ]ˆÛ\ÜÏH˜\Ë\›İÈ‚ˆ]ˆÛ\ÜÏH™\Ù\Ú[OÙ]‰ÉÉËˆ˜\×ØØ\™[YH‹ĞHŠJB‚ˆÈKKKHÎˆ›İ]H\›ÈÜ˜[[X\ˆKKKB”˜\[™
+P.append((
+'''groups = {
+    key: buses
+    for key, buses in groups.items()
+    if len(buses) >= 2
+}''',
+'''groups = {
+    key: buses
+    for key, buses in groups.items()
+    if len(buses) >= 1
+}''',
+"include single-bus routes"))
 
-‰ÉÉÏÜ[ˆÛ\ÜÏHœØÚ\—LQÈØÛİ[H\Ù\ÏÜÜ[‰ÉÉË‰ÉÉÏÜ[ˆÛ\ÜÏHœØÚ\—LQÈØÛİ[H\ŞÉÙ\ÉÈYˆÛİ[OHH[ÙH	ÉßOÜÜ[‰ÉÉËˆœ›İ]H\›ÈH\ÈÜ˜[[X\ˆŠJB‚ˆÈKKKHˆ[™^‹[ˆÜ˜[[X\ˆ
-œ˜YÛY[
-HKKKB”˜\[™
+# ---- P2: bus_card Time N/A ----
+P.append((
+'''    return f"""<div class="bus-row">
+  <div class="dep">{esc(dep)}<small>{esc(arr)} arr</small></div>''',
+'''    if dep == "â€”":
+        dep_html = '<span class="no-time">Time N/A</span>'
+    else:
+        dep_html = f"{esc(dep)}<small>{esc(arr)} arr</small>"
+    return f"""<div class="bus-row">
+  <div class="dep">{dep_html}</div>''',
+"bus_card Time N/A"))
 
-ˆÛ[ŠœÊ_H›İ]\ÏÜÜ[ˆ‹ˆÛ[ŠœÊ_H›İ]^ÉÜÉÈYˆ[ŠœÊHOHH[ÙH	ÉßOÜÜ[ˆ‹ˆš[™^‹[ˆÜ˜[[X\ˆŠJB‚ˆÈKKKHNˆXÙHYÙH›İ]K[[šÜÈÜ˜[[X\ˆKKKB”˜\[™
-‰ÉÉÈÛ[X™\ŸH\Ù\ÂˆÜÜ[‰ÉÉË‰ÉÉÈÛ[X™\ŸH\ŞÉÙ\ÉÈYˆ[X™\ˆOHH[ÙH	ÉßBˆÜÜ[‰ÉÉËˆœXÙHYÙH\Ù\ÈÜ˜[[X\ˆŠJB‚ˆÈKKKHˆ[™^Hš[[™İX[KKKB”˜\[™
-‰ÉÉÈO•Ù\İ™[™Ø[Ü[ˆÛ\ÜÏH˜XØÙ[\È[YHX›OÜÜ[ÚO‰ÉÉË‰ÉÉÈOÜ[ˆÛ\ÜÏH›X™[Y[ˆ•Ù\İ™[™Ø[Ü[ˆÛ\ÜÏH˜XØÙ[\È[YHX›OÜÜ[ÜÜ[Ü[ˆÛ\ÜÏH›X™[X›ˆ¸)ª¸)­¸)ãx)®8)¯ø)«¸)«8)æx)ãx)¥ÈÜ[ˆÛ\ÜÏH˜XØÙ[¸)«8)¯¸)®8)§ø)áø)«8)¯ø)¬ÜÜ[ÜÜ[ÚO‰ÉÉËˆš[™^Hš[[™İX[ŠJB‚ˆÈKKKHÎˆYÛ[™Hš[[™İX[KKKB”˜\[™
+# ---- P3: route hero grammar ----
+P.append((
+'''<span class="schip">ğŸšŒ {count} buses</span>''',
+'''<span class="schip">ğŸšŒ {count} bus{'es' if count != 1 else ''}</span>''',
+"route hero 1 bus grammar"))
 
-‰ÉÉÈÛ\ÜÏHYÛ[™HÛÛ\]H\È[Z[™ÜÈ›Üˆ]™\H›İ]H8 %Ğ”ÕËĞ•Ë”ÕÈ[™š]˜]HÜ\˜]ÜœÈXÜ›ÜÜÈ[\İšXİËÜ‰ÉÉË‰ÉÉÈÛ\ÜÏHYÛ[™HÜ[ˆÛ\ÜÏH›X™[Y[ˆÛÛ\]H\È[Z[™ÜÈ›Üˆ]™\H›İ]H8 %Ğ”ÕËĞ•Ë”ÕÈ[™š]˜]HÜ\˜]ÜœÈXÜ›ÜÜÈ[\İšXİËÜÜ[Ü[ˆÛ\ÜÏH›X™[X›ˆ¸)ª¸)ãx)¬8)©8)¯ø)§ø)¯È8)¬8)àx)§ø)áø)¬8)«8)¯¸)®8)áø)¬8)®8)«¸)ãx)ª¸)à¸)¬8)ãx)¨È8)®8)«¸)«ø)¯8)®8)à¸)¦¸)à8 %Ğ”ÕËĞ•Ë”ÕÈ8)¤È8)ª¸)ãx)¬8)¯¸)¡ø)«x)áø)§È8)¡x)ª¸)¯¸)¬8)áø)§ø)¬8)iÜÜ[Ü‰ÉÉËˆYÛ[™Hš[[™İX[ŠJB‚ˆÈKKKHˆİ]Ú\Èš[[™İX[KKKB”˜\[™
+# ---- P4: index pr-n grammar (fragment) ----
+P.append((
+"{len(rs)} routes</span>",
+"{len(rs)} route{'s' if len(rs) != 1 else ''}</span>",
+"index pr-n grammar"))
 
-‰ÉÉÏİ›Û™È]KXÛİ[H×İİ[ÜXÙ\ßHŒÜİ›Û™ÏˆXÙ\ÏÜÜ[‰ÉÉË‰ÉÉÏİ›Û™È]KXÛİ[H×İİ[ÜXÙ\ßHŒÜİ›Û™ÏˆÜ[ˆÛ\ÜÏH›X™[Y[ˆœXÙ\ÏÜÜ[Ü[ˆÛ\ÜÏH›X™[X›ˆ¸)®8)ãx)©x)¯¸)ªÜÜ[ÜÜ[‰ÉÉËˆœİ]Ú\XÙ\ÈŠJB”˜\[™
+# ---- P5: place page route-links grammar ----
+P.append((
+'''    {number} buses
+  </span>''',
+'''    {number} bus{'es' if number != 1 else ''}
+  </span>''',
+"place page buses grammar"))
 
-‰ÉÉÏİ›Û™È]KXÛİ[H×İİ[Ü›İ]\ßHŒÜİ›Û™Ïˆ›İ]\ÏÜÜ[‰ÉÉË‰ÉÉÏİ›Û™È]KXÛİ[H×İİ[Ü›İ]\ßHŒÜİ›Û™ÏˆÜ[ˆÛ\ÜÏH›X™[Y[ˆœ›İ]\ÏÜÜ[Ü[ˆÛ\ÜÏH›X™[X›ˆ¸)¬8)àx)§ÏÜÜ[ÜÜ[‰ÉÉËˆœİ]Ú\›İ]\ÈŠJB”˜\[™
-‰ÉÉÏİ›Û™È]KXÛİ[H×İİ[Ø\Ù\ßHŒÜİ›Û™Ïˆ\ÈÙ\šXÙ\ÏÜÜ[‰ÉÉË‰ÉÉÏİ›Û™È]KXÛİ[H×İİ[Ø\Ù\ßHŒÜİ›Û™ÏˆÜ[ˆÛ\ÜÏH›X™[Y[ˆ˜\ÈÙ\šXÙ\ÏÜÜ[Ü[ˆÛ\ÜÏH›X™[X›ˆ¸)«8)¯¸)ª¸)§ø)¨H8)®8)¯¸)¬8)ãx)«x)¯ø)®ÜÜ[ÜÜ[‰ÉÉËˆœİ]Ú\\Ù\ÈŠJB‚ˆÈKKKHNˆÙX\˜ÚX™[š[[™İX[KKKB”˜\[™
-‰ÉÉÏÜ[ˆÛ\ÜÏH›]™KYİÜÜ[ˆÙX\˜ÚXÙHÜˆ›İ]OÛX™[‰ÉÉË‰ÉÉÏÜ[ˆÛ\ÜÏH›]™KYİÜÜ[ˆÜ[ˆÛ\ÜÏH›X™[Y[ˆ”ÙX\˜ÚXÙHÜˆ›İ]OÜÜ[Ü[ˆÛ\ÜÏH›X™[X›ˆ¸)®8)ãx)©x)¯¸)ª8)«8)¯ˆ8)¬8)àx)§È8)¥¸)àx) x)§8)àx)ªÜÜ[ÛX™[‰ÉÉËˆœÙX\˜ÚX™[š[[™İX[ŠJB‚ˆÈKKKHLˆ]ZXÚÈX™[š[[™İX[KKKB”˜\[™
-‰ÉÉÈÜ[ˆÛ\ÜÏHœXÚ\Ë[”]ZXÚÎÜÜ[‰ÉÉË‰ÉÉÈÜ[ˆÛ\ÜÏHœXÚ\Ë[Ü[ˆÛ\ÜÏH›X™[Y[ˆ”]ZXÚÎÜÜ[Ü[ˆÛ\ÜÏH›X™[X›ˆ¸)©¸)ãx)¬8)àx)©ÜÜ[ÜÜ[‰ÉÉËˆœ]ZXÚÈX™[š[[™İX[ŠJB‚ˆÈKKKHLNˆÙXİ[Ûˆ]\Èš[[™İX[KKKB”˜\[™
+# ---- P6: index h1 bilingual ----
+P.append((
+'''  <h1>West Bengal <span class="accent">Bus Time Table</span></h1>''',
+'''  <h1><span class="label-en">West Bengal <span class="accent">Bus Time Table</span></span><span class="label-bn">à¦ªà¦¶à§à¦šà¦¿à¦®à¦¬à¦™à§à¦— <span class="accent">à¦¬à¦¾à¦¸ à¦Ÿà¦¾à¦‡à¦® à¦Ÿà§‡à¦¬à¦¿à¦²</span></span></h1>''',
+"index h1 bilingual"))
 
-‰ÉÉÏÜİ™ÏˆX]Ú[™È›İ]\ÏÙ]‰ÉÉË‰ÉÉÏÜİ™ÏˆÜ[ˆÛ\ÜÏH›X™[Y[ˆ“X]Ú[™È›İ]\ÏÜÜ[Ü[ˆÛ\ÜÏH›X™[X›ˆ¸)«¸)¯ø)¬¸)¦ø)áÈ8)£ø)«¸)ª8)¬8)àx)§ÏÜÜ[Ù]‰ÉÉËˆ›X]Ú[™È›İ]\È]HŠJB”˜\[™
+# ---- P7: tagline bilingual ----
+P.append((
+'''  <p class="tagline">Complete bus timings for every route â€” SBSTC, WBTC, NBSTC and private operators across all districts.</p>''',
+'''  <p class="tagline"><span class="label-en">Complete bus timings for every route â€” SBSTC, WBTC, NBSTC and private operators across all districts.</span><span class="label-bn">à¦ªà§à¦°à¦¤à¦¿à¦Ÿà¦¿ à¦°à§à¦Ÿà§‡à¦° à¦¬à¦¾à¦¸à§‡à¦° à¦¸à¦®à§à¦ªà§‚à¦°à§à¦£ à¦¸à¦®à¦¯à¦¼à¦¸à§‚à¦šà§€ â€” SBSTC, WBTC, NBSTC à¦“ à¦ªà§à¦°à¦¾à¦‡à¦­à§‡à¦Ÿ à¦…à¦ªà¦¾à¦°à§‡à¦Ÿà¦°à¥¤</span></p>''',
+"tagline bilingual"))
 
-‰ÉÉÏÜİ™ÏˆÜ[\ˆİ\[™ÈXÙ\ÏÙ]‰ÉÉË‰ÉÉÏÜİ™ÏˆÜ[ˆÛ\ÜÏH›X™[Y[ˆ”Ü[\ˆİ\[™ÈXÙ\ÏÜÜ[Ü[ˆÛ\ÜÏH›X™[X›ˆ¸)§8)ª8)ª¸)ãx)¬8)¯ø)«ø)¯8)¦ø)¯¸)¨x)¯8)¯¸)¬8)§8)¯¸)«ø)¯8)¥ø)¯ÜÜ[Ù]‰ÉÉËˆœÜ[\ˆ]HŠJB”˜\[™
-‰ÉÉÏÜİ™Ïˆ[XÙ\È	›ZYİÈHÈÙ]‰ÉÉË‰ÉÉÏÜİ™ÏˆÜ[ˆÛ\ÜÏH›X™[Y[ˆ[XÙ\È	›ZYİÈHÈÜÜ[Ü[ˆÛ\ÜÏH›X™[X›ˆ¸)®8)«8)§8)¯¸)«ø)¯8)¥ø)¯ˆ	›ZYİÈx $ÖÜÜ[Ù]‰ÉÉËˆ˜^ˆ]HŠJB‚ˆÈKKKHLˆ[\Hİ]Hš[[™İX[KKKB”˜\[™
+# ---- P8: stat chips bilingual ----
+P.append((
+'''<strong data-count="{_total_places}">0</strong> places</span>''',
+'''<strong data-count="{_total_places}">0</strong> <span class="label-en">places</span><span class="label-bn">à¦¸à§à¦¥à¦¾à¦¨</span></span>''',
+"stat chip places"))
+P.append((
+'''<strong data-count="{_total_routes}">0</strong> routes</span>''',
+'''<strong data-count="{_total_routes}">0</strong> <span class="label-en">routes</span><span class="label-bn">à¦°à§à¦Ÿ</span></span>''',
+"stat chip routes"))
+P.append((
+'''<strong data-count="{_total_buses}">0</strong> bus services</span>''',
+'''<strong data-count="{_total_buses}">0</strong> <span class="label-en">bus services</span><span class="label-bn">à¦¬à¦¾à¦¸ à¦¸à¦¾à¦°à§à¦­à¦¿à¦¸</span></span>''',
+"stat chip buses"))
 
-‰ÉÉÈ“›ÈX]Ú\È›İ[™Ø•HHY™™\™[XÙH˜[YIÉÉË‰ÉÉÈÜ[ˆÛ\ÜÏH›X™[Y[ˆ“›ÈX]Ú\È›İ[™ÜÜ[Ü[ˆÛ\ÜÏH›X™[X›ˆ¸)¥x)¯ø)¦ø)àH8)ª¸)¯¸)$ø)«ø)¯8)¯ˆ8)¬8)¯¸)¬8)¯8)®8)¯ÏÜÜ[ØÜ[ˆÛ\ÜÏH›X™[Y[ˆ•HHY™™\™[XÙH˜[YOÜÜ[Ü[ˆÛ\ÜÏH›X™[X›ˆ¸)¡x)ª8)ãx)«È8)ª8)¯¸)«8)¬¸+ş
-i^
-yş
-j
-jÂ÷7ãârrrÀ¢&V×G’7FFR&–Æ–æwVÂ"’ ¢2ÒÒÒÒÃ3¢6V&6‚67&öÆÂf—‚ÒÒÒĞ¥æVæB‚€¢rrvgVæ7F–öâ6V&6‚‡—°¢Fö7VÖVçBævWDVÆVÖVçD'”–B‚'"’çfÇVS×¶Fõ6V&6‚‚“°¢Fö7VÖVçBævWDVÆVÖVçD'”–B‚'÷6V7F–öâ"’ç67&öÆÄ–çFõf–Wr‡¶&V†f–÷#¢'6Öö÷F‚"Æ&Æö6³¢'7F'B'Ò“°§ÒrrrÀ¢rrvgVæ7F–öâ6V&6‚‡—°¢Fö7VÖVçBævWDVÆVÖVçD'”–B‚'"’çfÇVS×¶Fõ6V&6‚‚“°¢f"CÖFö7VÖVçBævWDVÆVÖVçD'”–B‚'&÷WFTÖF6†W56V2"“°¢–b‡BbgBç7G–ÆRæF—7ÆÓÒ&æöæR"—Bç67&öÆÄ–çFõf–Wr‡¶&V†f–÷#¢'6Öö÷F‚"Æ&Æö6³¢'7F'B'Ò“°§ÒrrrÀ¢'6V&6‚67&öÆÂf—‚"’ ¢2ÒÒÒÒC¢Æær–æ—B(	B6—FR¶W’²WFòÖFWFV7BÒÒÒĞ¥æVæB€¢rrrf"ÃÖÆö6Å7F÷&vRævWD—FVÒ‚'6VòÖÆær"“°¢–b†ÃÓÓÒ&&â"—¶Fö7VÖVçBæ&öG’æ6Æ74Æ—7BæFB‚&ÆærÖ&â"“¶–b†Fö7VÖVçBævWDVÆVÖVçD'”–B‚&Ææt'Fâ"’–Fö7VÖVçBævWDVÆVÖVçD'”–B‚&Ææt'Fâ"’çFW‡D6öçFVçCÒ$VævÆ—6‚'ÒrrrÀ¢rrrf"ÃÖçVÆÃ°¢G'—¶ÃÖÆö6Å7F÷&vRævWD—FVÒ‚&&¢ÖÆær"—ÇÆÆö6Å7F÷&vRævWD—FVÒ‚'6VòÖÆær"—Ö6F6‚†R—·Ğ¢–b‚Âbb‚†æf–vF÷"æÆæwVvWÇÂ""’çFôÆ÷vW$66R‚’æ–æFW„öb‚&&â"“ÓÓÓ’–ÃÒ&&â#°¢–b†ÃÓÓÒ&&â"—¶Fö7VÖVçBæ&öG’æ6Æ74Æ—7BæFB‚&ÆærÖ&â"“¶–b†Fö7VÖVçBævWDVÆVÖVçD'”–B‚&Ææt'Fâ"’–Fö7VÖVçBævWDVÆVÖVçD'”–B‚&Ææt'Fâ"’çFW‡D6öçFVçCÒ$VævÆ—6‚'ÒrrrÀ¢&Æær–æ—B&¢ÖÆær²WFòÖFWFV7B"’ ¢2ÒÒÒÒRõc¢¥26†—2w&ÖÖ"†g&vÖVçG2’ÒÒÒĞ¥æVæB‚€¢"·%³Ò²r'W6W2"À¢"·%³Ò²‚‡%³ÓÓÓÓ“òr'W2s¢r'W6W2r’²r"À¢'Æ6R6†—2'W2w&ÖÖ""’¥æVæB€¢"·'E³Ò²r'W6W2"À¢"·'E³Ò²‚‡'E³Òb3C“³Ó“òr'W2s¢r'W6W2r’²r"À¢'6V&6‚6†—2'W2w&ÖÖ""’ ¢2ÒÒÒÒs¢FövvÆTÆær²Æær'WGFöâ–æ¦V7F–öâÒÒÒĞ¥æVæB‚€¢rrr&VæFW$¢‚“°¢–æ—Dæ–Ò‚“°§Ò’‚“°£Â÷67&—Câ"""rrrÀ¢rrr&VæFW$¢‚“°¢–æ—Dæ–Ò‚“°§Ò’‚“°¦gVæ7F–öâFövvÆTÆær‚—°¢f"&äÖöFSÖFö7VÖVçBæ&öG’æ6Æ74Æ—7BçFövvÆR‚&ÆærÖ&â"“°¢G'—¶Æö6Å7F÷&vRç6WD—FVÒ‚&&¢ÖÆær"Æ&äÖöFSò&&â#¢&Vâ"—Ö6F6‚†R—·Ğ¢f"#ÖFö7VÖVçBævWDVÆVÖVçD'”–B‚&Ææt'Fâ"“°¢–b†"–"çFW‡D6öçFVçCÖ&äÖöFSò$VævÆ—6‚#¢%ÇS–5ÇS–&UÇS“ƒ%ÇS–#%ÇS–&R#°¢f"ÖFö7VÖVçBævWDVÆVÖVçD'”–B‚'"“°¢–b‡—Æ6V†öÆFW#Ö&äÖöFSò%ÇS–eÇS–3uÇS–UÇS–ƒ¢ÇS“†eÇS–#…ÇS–ÇS–6EÇS–#%ÇS–3uÇS–…ÇS–6EÇS–ÂÇS–eÇS–3ÇS““…ÇS–&RÂÇS–5ÇS–&UÇS“ƒÇS““UÇS–3ÇS–F5ÇS–&Râââ#¢&RærâW7ÆæFRÂF–v†Â&æ·W&âââ#°§Ğ¢†gVæ7F–öâ‚—°¢f"æcÖFö7VÖVçBçVW'•6VÆV7F÷"‚"æ†VFW"Ö–ææW"æb"“°¢–b†æb—°¢f"#ÖFö7VÖVçBæ7&VFTVÆVÖVçB‚&'WGFöâ"“°¢"æ–CÒ&Ææt'Fâ#°¢"çG—SÒ&'WGFöâ#°¢"çFW‡D6öçFVçCÒ%ÇS–5ÇS–&UÇS“ƒ%ÇS–#%ÇS–&R#°¢–b†Fö7VÖVçBæ&öG’æ6Æ74Æ—7Bæ6öçF–ç2‚&ÆærÖ&â"’—°¢"çFW‡D6öçFVçCÒ$VævÆ—6‚#°¢f"ÖFö7VÖVçBævWDVÆVÖVçD'”–B‚'"“°¢–b‡—çÆ6V†öÆFW#Ò%ÇS–eÇS–3uÇS–UÇS–ƒ¢ÇS“†eÇS–#…ÇS–ÇS–6EÇS–#%ÇS–3uÇS–…ÇS–6EÇS–ÂÇS–eÇS–3ÇS““…ÇS–&RÂÇS–5ÇS–&UÇS“ƒÇS““UÇS–3ÇS–F5ÇS–&Râââ#°¢Ğ¢"ç7G–ÆRæ775FW‡CÒ&föçBÖfÖ–Ç“§f"‚ÒÖföçBÖ&öG’“¶föçB×6—¦S£7ƒ¶föçB×vV–v‡C£s¶&6¶w&÷VæC§f"‚Ò×7W&f6R“¶&÷&FW#£‚6öÆ–Bf"‚ÒÖÆ–æR“¶&÷&FW"×&F—W3£““—ƒ·FF–æs£g‚7ƒ¶7W'6÷#§ö–çFW#¶6öÆ÷#§f"‚ÒÖ–æ²ÖF–Ò“¶Ö–âÖ†V–v‡C£3Gƒ¶Æ–æRÖ†V–v‡C£#°¢"æöæ6Æ–6³×FövvÆTÆæs°¢æbæVæD6†–ÆB†"“°¢Ğ§Ò’‚“°£Â÷67&—Câ"""rrrÀ¢'FövvÆTÆær²Æær'WGFöâ"’ ¢2ÒÒÒÒÇ“¢ÄÂ×W7BÖF6‚W†7FÇ’öæ6RÂVÇ6R&÷'Bv—F†÷WBw&—F–ærÒÒÒĞ¦ö²ÒG'VP¦f÷"’Â†öÆBÂæWrÂFW62’–âVçVÖW&FR…Â“ ¢âÒ7&2æ6÷VçB†öÆB¢–bâÒ ¢&–çB†b$d”Â¶—Ò‡¶FW67Ò“¢f÷VæB¶çÒö67W'&Væ6W2†æVVBW†7FÇ’’"¢ö²ÒfÇ6P¢VÇ6S ¢7&2Ò7&2ç&WÆ6R†öÆBÂæWr¢&–çB†b$ô²¶—Ó¢¶FW67Ò" ¦–bæ÷Bö³ ¢&–çB‚$$õ%DTB(	Bf–ÆRäõBw&—GFVâ"¢7—2æW†—Bƒ ¦÷Vâ…D‚Â'r"ÂVæ6öF–æsÒ'WFbÓ‚"’çw&—FR‡7&2§&–çB†b%ÆäÆÂ¶ÆVâ…—ÒF6†W2Æ–VB(i"µD‡Ò‡¶ÆVâ‡7&2—Ò'—FW2’" 
+# ---- P9: search label bilingual ----
+P.append((
+'''<span class="live-dot"></span> Search place or route</label>''',
+'''<span class="live-dot"></span> <span class="label-en">Search place or route</span><span class="label-bn">à¦¸à§à¦¥à¦¾à¦¨ à¦¬à¦¾ à¦°à§à¦Ÿ à¦–à§à¦à¦œà§à¦¨</span></label>''',
+"search label bilingual"))
+
+# ---- P10: Quick label bilingual ----
+P.append((
+'''  <span class="qchips-l">Quick:</span>''',
+'''  <span class="qchips-l"><span class="label-en">Quick:</span><span class="label-bn">à¦¦à§à¦°à§à¦¤:</span></span>''',
+"quick label bilingual"))
+
+# ---- P11: section titles bilingual ----
+P.append((
+'''</svg> Matching Routes</div>''',
+'''</svg> <span class="label-en">Matching Routes</span><span class="label-bn">à¦®à¦¿à¦²à¦›à§‡ à¦à¦®à¦¨ à¦°à§à¦Ÿ</span></div>''',
+"matching routes title"))
+P.append((
+'''</svg> Popular Starting Places</div>''',
+'''</svg> <span class="label-en">Popular Starting Places</span><span class="label-bn">à¦œà¦¨à¦ªà§à¦°à¦¿à¦¯à¦¼ à¦›à¦¾à¦¡à¦¼à¦¾à¦° à¦œà¦¾à¦¯à¦¼à¦—à¦¾</span></div>''',
+"popular title"))
+P.append((
+'''</svg> All Places &middot; A to Z</div>''',
+'''</svg> <span class="label-en">All Places &middot; A to Z</span><span class="label-bn">à¦¸à¦¬ à¦œà¦¾à¦¯à¦¼à¦—à¦¾ &middot; Aâ€“Z</span></div>''',
+"az title"))
+
+# ---- P12: empty state bilingual ----
+P.append((
+'''    <b>No matches found</b>Try a different place name''',
+'''    <b><span class="label-en">No matches found</span><span class="label-bn">à¦•à¦¿à¦›à§ à¦ªà¦¾à¦“à¦¯à¦¼à¦¾ à¦¯à¦¾à¦¯à¦¼à¦¨à¦¿</span></b><span class="label-en">Try a different place name</span><span class="label-bn">à¦…à¦¨à§à¦¯ à¦¨à¦¾à¦® à¦²à¦¿à¦–à§‡ à¦¦à§‡à¦–à§à¦¨</span>''',
+"empty state bilingual"))
+
+# ---- P13: qsearch scroll fix ----
+P.append((
+'''function qsearch(q){
+  document.getElementById("q").value=q;doSearch();
+  document.getElementById("popSection").scrollIntoView({behavior:"smooth",block:"start"});
+}''',
+'''function qsearch(q){
+  document.getElementById("q").value=q;doSearch();
+  var t=document.getElementById("routeMatchesSec");
+  if(t&&t.style.display!=="none")t.scrollIntoView({behavior:"smooth",block:"start"});
+}''',
+"qsearch scroll fix"))
+
+# ---- P14: lang init â€” site key + auto-detect ----
+P.append((
+'''    var l=localStorage.getItem("seo-lang");
+    if(l==="bn"){document.body.classList.add("lang-bn");if(document.getElementById("langBtn"))document.getElementById("langBtn").textContent="English"}''',
+'''    var l=null;
+    try{l=localStorage.getItem("bj-lang")||localStorage.getItem("seo-lang")}catch(e){}
+    if(!l&&((navigator.language||"").toLowerCase().indexOf("bn")===0))l="bn";
+    if(l==="bn"){document.body.classList.add("lang-bn");if(document.getElementById("langBtn"))document.getElementById("langBtn").textContent="English"}''',
+"lang init bj-lang + auto-detect"))
+
+# ---- P15/P16: JS chips grammar (fragments) ----
+P.append((
+"+r[1]+' buses",
+"+r[1]+((r[1]===1)?' bus':' buses')+'",
+"place chips 1 bus grammar"))
+P.append((
+"+rt[1]+' buses",
+"+rt[1]+((rt[1]===1)?' bus':' buses')+'",
+"search chips 1 bus grammar"))
+
+# ---- P17: toggleLang + lang button injection ----
+P.append((
+'''  renderAZ();
+  initAnim();
+})();
+</script>"""''',
+'''  renderAZ();
+  initAnim();
+})();
+function toggleLang(){
+  var bnMode=document.body.classList.toggle("lang-bn");
+  try{localStorage.setItem("bj-lang",bnMode?"bn":"en")}catch(e){}
+  var b=document.getElementById("langBtn");
+  if(b)b.textContent=bnMode?"English":"à¦¬à¦¾à¦‚à¦²à¦¾";
+  var q=document.getElementById("q");
+  if(q)q.placeholder=bnMode?"à¦¯à§‡à¦®à¦¨: à¦à¦¸à¦ªà§à¦²à§‡à¦¨à§à¦¡, à¦¦à§€à¦˜à¦¾, à¦¬à¦¾à¦à¦•à§à¦¡à¦¼à¦¾...":"e.g. Esplanade, Digha, Bankura...";
+}
+(function(){
+  var nav=document.querySelector(".header-inner nav");
+  if(nav){
+    var b=document.createElement("button");
+    b.id="langBtn";
+    b.type="button";
+    b.textContent="à¦¬à¦¾à¦‚à¦²à¦¾";
+    if(document.body.classList.contains("lang-bn")){
+      b.textContent="English";
+      var q=document.getElementById("q");
+      if(q)q.placeholder="à¦¯à§‡à¦®à¦¨: à¦à¦¸à¦ªà§à¦²à§‡à¦¨à§à¦¡, à¦¦à§€à¦˜à¦¾, à¦¬à¦¾à¦à¦•à§à¦¡à¦¼à¦¾...";
+    }
+    b.style.cssText="font-family:var(--font-body);font-size:13px;font-weight:700;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 13px;cursor:pointer;color:var(--ink-dim);min-height:34px;line-height:1";
+    b.onclick=toggleLang;
+    nav.appendChild(b);
+  }
+})();
+</script>"""''',
+"toggleLang + lang button"))
+
+# ---- apply: ALL must match exactly once, else abort without writing ----
+ok = True
+for i, (old, new, desc) in enumerate(P, 1):
+    n = src.count(old)
+    if n != 1:
+        print(f"FAIL P{i} ({desc}): found {n} occurrences (need exactly 1)")
+        ok = False
+    else:
+        src = src.replace(old, new)
+        print(f"OK   P{i}: {desc}")
+
+if not ok:
+    print("ABORTED â€” file NOT written")
+    sys.exit(1)
+
+open(PATH, "w", encoding="utf-8").write(src)
+print("")
+print(f"All {len(P)} patches applied â†’ {PATH} ({len(src)} bytes)")

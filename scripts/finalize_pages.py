@@ -11,11 +11,11 @@ buses = int(meta.get('total_buses', 0))
 updated = str(meta.get('last_updated', ''))
 source_text = ' · '.join(meta.get('sources', [])[:4])
 trust = (f'<div class="trust-note" role="note"><strong>Schedule data refreshed {updated}</strong> · '
-        'Listed schedules can change; confirm with the operator before travel.</div>')
+         'Listed schedules can change; confirm with the operator before travel.</div>')
 seo_css = '''<style id="busjatri-ux-polish">
 .trust-note{margin:12px 0;padding:10px 14px;border:1px solid color-mix(in srgb,var(--accent,#b8791f) 35%,transparent);border-radius:12px;background:color-mix(in srgb,var(--accent,#b8791f) 8%,transparent);color:var(--ink-dim,#665);font-size:.82rem;line-height:1.5}.trust-note strong{color:var(--ink,#222)}
 .no-results,.empty-state{display:none}.bus-card{transition:transform .18s ease,box-shadow .18s ease}.bus-card:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(50,35,10,.10)}.bus-card .dep{font-variant-numeric:tabular-nums;white-space:nowrap}.missing-data{color:var(--ink-dim,#777);font-style:italic}
-@media(min-width:760px){.bus-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr)));gap:12px}.bus-card{height:fit-content}.search-panel,.search-box{position:sticky;top:10px;z-index:4}.letter-nav{position:sticky;top:0;z-index:3;background:var(--paper,#fbf7ee);padding:8px 0}}
+@media(min-width:760px){.bus-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.bus-card{height:fit-content}.search-panel,.search-box{position:sticky;top:10px;z-index:4}.letter-nav{position:sticky;top:0;z-index:3;background:var(--paper,#fbf7ee);padding:8px 0}}
 @media(max-width:759px){.bus-card{border-radius:14px}.trust-note{font-size:.76rem}.letter-nav{overflow-x:auto;white-space:nowrap}}
 </style>'''
 
@@ -33,14 +33,14 @@ p.write_text(s, encoding='utf-8')
 # Generated timetable index: use the same dataset truth everywhere.
 p = ROOT / 'bus-time-table' / 'index.html'
 s = p.read_text(encoding='utf-8')
-old_desc = re.compile(r'Complete West Bengal bus time table: [^\"]+')
+old_desc = re.compile('Complete West Bengal bus time table: [^' + chr(34) + ']+')
 new_desc = f'Complete West Bengal bus time table: {routes:,} routes from {stops:,} stops. Find SBSTC, WBTC, NBSTC and private bus timings with departure times, operators and stoppages.'
 s = old_desc.sub(new_desc, s)
-s = re.sub(r'<strong data-count="\d+">\d+</strong> <span class="label-en">places</span>', f'<strong data-count="{stops}">{stops:,}</strong> <span class="label-en">stops</span>', s)
-s = re.sub(r'<strong data-count="\d+">\d+</strong> <span class="label-en">routes</span>', f'<strong data-count="{routes}">{routes:,}</strong> <span class="label-en">routes</span>', s)
-s = re.sub(r'<strong data-count="\d+">\d+</strong> <span class="label-en">bus services</span>', f'<strong data-count="{buses}">{buses:,}</strong> <span class="label-en">bus services</span>', s)
-s = s.replace('<span class="label-bn">\u09b8\u09cd\u09a5\u09be\u09a8</span>', '<span class="label-bn">\u09b8\u09cd\u099f\u09aa</span>')
-s = re.sub(r'The timetable covers [^<]+daily bus services listed\.', f'The timetable covers {routes:,} bus routes connecting {stops:,} stops across West Bengal, with {buses:,} listed bus services.', s)
+s = re.sub(r'<strong data-count="[0-9]+">[0-9]+</strong> <span class="label-en">places</span>', f'<strong data-count="{stops}">{stops:,}</strong> <span class="label-en">stops</span>', s)
+s = re.sub(r'<strong data-count="[0-9]+">[0-9]+</strong> <span class="label-en">routes</span>', f'<strong data-count="{routes}">{routes:,}</strong> <span class="label-en">routes</span>', s)
+s = re.sub(r'<strong data-count="[0-9]+">[0-9]+</strong> <span class="label-en">bus services</span>', f'<strong data-count="{buses}">{buses:,}</strong> <span class="label-en">bus services</span>', s)
+s = s.replace('<span class="label-bn">স্থান</span>', '<span class="label-bn">স্টপ</span>')
+s = re.sub(r'The timetable covers [^<]+daily bus services listed[.]', f'The timetable covers {routes:,} bus routes connecting {stops:,} stops across West Bengal, with {buses:,} listed bus services.', s)
 s = s.replace('<b>No matches found</b>', '<b class="no-results">No matches found</b>')
 s = s.replace('buses daily', 'listed buses')
 s = inject_once(s, '<div class="stat-chips">', trust)
