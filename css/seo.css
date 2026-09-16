@@ -283,3 +283,21 @@ body.lang-bn .badge{text-transform:none;letter-spacing:0}
   .rm-stop{width:48px}
   .rm-name{font-size:8.5px}
 }
+/* ================================================
+   Route-map v2 — staggered labels fix (compat fix 2)
+   With 10 stops the long names overlap on one line;
+   alternate labels above/below the track so they
+   never collide, anchor first/last labels inward so
+   they are not clipped by the card edge.
+   ================================================ */
+.rm-track{height:64px;margin-top:10px}
+.rm-stop{position:relative}
+.rm-name{position:absolute;left:50%;transform:translateX(-50%);white-space:nowrap;top:26px}
+.rm-stop:nth-child(even) .rm-name{top:-15px}
+.rm-stop:first-child .rm-name{left:0;transform:none;text-align:left}
+.rm-stop:last-child .rm-name{left:auto;right:0;transform:none;text-align:right}
+.rm-more{font-size:10px;color:var(--ink-dim);font-family:var(--font-mono);text-align:center;padding-top:2px}
+@media(max-width:560px){
+  .rm-name{font-size:8px}
+  .rm-stop:nth-child(even) .rm-name{top:-14px}
+}
