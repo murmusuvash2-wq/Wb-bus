@@ -299,7 +299,7 @@ for (origin, destination), buses in FWD.items():
 groups = {
     key: buses
     for key, buses in groups.items()
-    if len(buses) >= 2
+    if len(buses) >= 1
 }
 
 
@@ -591,8 +591,12 @@ def bus_card(bus):
     op_line = esc(name)
     if operator:
         op_line += f' · {esc(operator)}'
+    if dep == "—":
+        dep_html = '<span class="no-time">Time N/A</span>'
+    else:
+        dep_html = f"{esc(dep)}<small>{esc(arr)} arr</small>"
     return f"""<div class="bus-row">
-  <div class="dep">{esc(dep)}<small>{esc(arr)} arr</small></div>
+  <div class="dep">{dep_html}</div>
   <div class="bmid">
     <div class="op">{op_line}</div>
     <div class="mrow"><span>{esc(fare)}</span><span>~{esc(dur_text)}</span><span>{stops or 0} stops</span></div>
@@ -656,7 +660,7 @@ def generate_route_page(origin, destination, buses):
   <h1>{esc(origin)} <span class="arr">→</span> {esc(destination)}</h1>
   {bn_sub}
   <div class="stat-chips">
-    <span class="schip">🚌 {count} buses</span>
+    <span class="schip">🚌 {count} bus{'es' if count != 1 else ''}</span>
     <span class="schip hot">⏰ First {esc(first)}</span>
     <span class="schip">⏰ Last {esc(last)}</span>
     <span class="schip">⏱ ~{esc(dur_text)}</span>
@@ -788,7 +792,7 @@ def generate_place_page(place, buses):
     font-size:13px;
     white-space:nowrap;
   ">
-    {number} buses
+    {number} bus{'es' if number != 1 else ''}
   </span>
 
 </a>
@@ -1250,7 +1254,7 @@ for letter in _az_letters:
             f'<div class="pr-head" onclick="togglePlace(this,event)">'
             f'<span class="pr-dots"></span>'
             f'<span class="pr-name">{esc(p)}</span>'
-            f'<span class="pr-n">{len(rs)} routes</span>'
+            f'<span class="pr-n">{len(rs)} route{'s' if len(rs) != 1 else ''}</span>'
             f'<svg class="pr-chev" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>'
             f'</div><div class="pr-body"><div class="pr-inner"></div></div></div>'
         )
@@ -1406,14 +1410,15 @@ function togglePlace(head,e){
     var routes=BTT[place]||[];
     inner.innerHTML=routes.map(function(r,ci){
       var href=slug(place)+'-to-'+slug(r[0])+'.html';
-      return '<a class="route-chip" style="--i:'+ci+'" href="'+href+'"><span class="arr">\\u2192</span><span class="to">'+r[0]+'</span><span class="n">'+r[1]+' buses</span></a>';
+      return '<a class="route-chip" style="--i:'+ci+'" href="'+href+'"><span class="arr">\\u2192</span><span class="to">'+r[0]+'</span><span class="n">'+r[1]+((r[1]===1)?' bus':' buses')+'</span></a>';
     }).join("")||'<div class="pr-empty">No routes</div>';
   }
   row.classList.toggle("open");
 }
 function qsearch(q){
   document.getElementById("q").value=q;doSearch();
-  document.getElementById("popSection").scrollIntoView({behavior:"smooth",block:"start"});
+  var t=document.getElementById("routeMatchesSec");
+  if(t&&t.style.display!=="none")t.scrollIntoView({behavior:"smooth",block:"start"});
 }
 function doSearch(){
   var q=document.getElementById("q").value.trim().toLowerCase();
@@ -1434,7 +1439,7 @@ function doSearch(){
       rs.forEach(function(rt){
         if(rt[0].toLowerCase().indexOf(q)>=0&&routeChips.length<24){
           var href=slug(n)+'-to-'+slug(rt[0])+'.html';
-          routeChips.push('<a class="rm-chip" href="'+href+'">'+n+' <span class="arr">\\u2192</span> '+rt[0]+' <span class="n">'+rt[1]+' buses</span></a>');
+          routeChips.push('<a class="rm-chip" href="'+href+'">'+n+' <span class="arr">\\u2192</span> '+rt[0]+' <span class="n">'+rt[1]+((rt[1]===1)?' bus':' buses')+'</span></a>');
         }
       });
     });
@@ -1479,11 +1484,38 @@ function initAnim(){
     var t=localStorage.getItem("seo-theme");
     if(t==="dark")document.body.classList.add("dark");
     if(t==="dark"&&document.getElementById("themeBtn"))document.getElementById("themeBtn").textContent="\\u2600\\ufe0f";
-    var l=localStorage.getItem("seo-lang");
+    var l=null;
+    try{l=localStorage.getItem("bj-lang")||localStorage.getItem("seo-lang")}catch(e){}
+    if(!l&&((navigator.language||"").toLowerCase().indexOf("bn")===0))l="bn";
     if(l==="bn"){document.body.classList.add("lang-bn");if(document.getElementById("langBtn"))document.getElementById("langBtn").textContent="English"}
   }catch(e){}
   renderAZ();
   initAnim();
+})();
+function toggleLang(){
+  var bnMode=document.body.classList.toggle("lang-bn");
+  try{localStorage.setItem("bj-lang",bnMode?"bn":"en")}catch(e){}
+  var b=document.getElementById("langBtn");
+  if(b)b.textContent=bnMode?"English":"বাংলা";
+  var q=document.getElementById("q");
+  if(q)q.placeholder=bnMode?"যেমন: এসপ্লেন্ড, দীঘা, বাঁকুড়া...":"e.g. Esplanade, Digha, Bankura...";
+}
+(function(){
+  var nav=document.querySelector(".header-inner nav");
+  if(nav){
+    var b=document.createElement("button");
+    b.id="langBtn";
+    b.type="button";
+    b.textContent="বাংলা";
+    if(document.body.classList.contains("lang-bn")){
+      b.textContent="English";
+      var q=document.getElementById("q");
+      if(q)q.placeholder="যেমন: এসপ্লেন্ড, দীঘা, বাঁকুড়া...";
+    }
+    b.style.cssText="font-family:var(--font-body);font-size:13px;font-weight:700;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 13px;cursor:pointer;color:var(--ink-dim);min-height:34px;line-height:1";
+    b.onclick=toggleLang;
+    nav.appendChild(b);
+  }
 })();
 </script>"""
 
@@ -1494,25 +1526,25 @@ _index_body = f"""{_btt_css}
 
 <div class="hero">
   <span class="eyebrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 16V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10"/><path d="M4 16h16"/></svg> West Bengal Bus Routes</span>
-  <h1>West Bengal <span class="accent">Bus Time Table</span></h1>
-  <p class="tagline">Complete bus timings for every route — SBSTC, WBTC, NBSTC and private operators across all districts.</p>
+  <h1><span class="label-en">West Bengal <span class="accent">Bus Time Table</span></span><span class="label-bn">পশ্চিমবঙ্গ <span class="accent">বাস টাইম টেবিল</span></span></h1>
+  <p class="tagline"><span class="label-en">Complete bus timings for every route — SBSTC, WBTC, NBSTC and private operators across all districts.</span><span class="label-bn">প্রতিটি রুটের বাসের সম্পূর্ণ সময়সূচী — SBSTC, WBTC, NBSTC ও প্রাইভেট অপারেটর।</span></p>
   <div class="stat-chips">
-    <span class="stat-chip"><strong data-count="{_total_places}">0</strong> places</span>
-    <span class="stat-chip"><strong data-count="{_total_routes}">0</strong> routes</span>
-    <span class="stat-chip"><strong data-count="{_total_buses}">0</strong> bus services</span>
+    <span class="stat-chip"><strong data-count="{_total_places}">0</strong> <span class="label-en">places</span><span class="label-bn">স্থান</span></span>
+    <span class="stat-chip"><strong data-count="{_total_routes}">0</strong> <span class="label-en">routes</span><span class="label-bn">রুট</span></span>
+    <span class="stat-chip"><strong data-count="{_total_buses}">0</strong> <span class="label-en">bus services</span><span class="label-bn">বাস সার্ভিস</span></span>
   </div>
 </div>
 
 <div class="search-box">
   <div class="search-row">
     <div class="search-field">
-      <label><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m20 20-4.3-4.3"/></svg> <span class="live-dot"></span> Search place or route</label>
+      <label><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m20 20-4.3-4.3"/></svg> <span class="live-dot"></span> <span class="label-en">Search place or route</span><span class="label-bn">স্থান বা রুট খুঁজুন</span></label>
       <input id="q" type="text" placeholder="e.g. Esplanade, Digha, Bankura..." oninput="doSearch()" autocomplete="off">
     </div>
     <button class="clear-btn" id="clearBtn" onclick="document.getElementById('q').value='';doSearch()" title="Clear"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
   </div>
   <div class="qchips">
-    <span class="qchips-l">Quick:</span>
+    <span class="qchips-l"><span class="label-en">Quick:</span><span class="label-bn">দ্রুত:</span></span>
     {_quick_html}
   </div>
 </div>
@@ -1521,24 +1553,24 @@ _index_body = f"""{_btt_css}
 <div class="ad-zone" id="ad1"></div>
 
 <section class="section" id="routeMatchesSec" style="display:none">
-  <div class="section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4z"/><path d="M10 6v12" stroke-dasharray="2 3"/></svg> Matching Routes</div>
+  <div class="section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4z"/><path d="M10 6v12" stroke-dasharray="2 3"/></svg> <span class="label-en">Matching Routes</span><span class="label-bn">মিলছে এমন রুট</span></div>
   <div class="chip-row" id="rmChips"></div>
 </section>
 
 <section class="section" id="popSection">
-  <div class="section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.1-7-11.3A7 7 0 0 0 5 9.7C5 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg> Popular Starting Places</div>
+  <div class="section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.1-7-11.3A7 7 0 0 0 5 9.7C5 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg> <span class="label-en">Popular Starting Places</span><span class="label-bn">জনপ্রিয় ছাড়ার জায়গা</span></div>
   <div class="place-grid">
 {_popular_html}
   </div>
 </section>
 
 <section class="section">
-  <div class="section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h12"/></svg> All Places &middot; A to Z</div>
+  <div class="section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h12"/></svg> <span class="label-en">All Places &middot; A to Z</span><span class="label-bn">সব জায়গা &middot; A–Z</span></div>
   <div class="az-nav" id="azNav"></div>
   <div id="azGroups">{_az_html}</div>
   <div class="empty" id="emptyState">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-    <b>No matches found</b>Try a different place name
+    <b><span class="label-en">No matches found</span><span class="label-bn">কিছু পাওয়া যায়নি</span></b><span class="label-en">Try a different place name</span><span class="label-bn">অন্য নাম লিখে দেখুন</span>
   </div>
 </section>
 
