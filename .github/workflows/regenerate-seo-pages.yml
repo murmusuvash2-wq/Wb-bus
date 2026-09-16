@@ -7,7 +7,9 @@ on:
       - main
     paths:
       - 'data/busjatri_data.json'
-      - 'scripts/apply_seo_redesign.py'
+      - 'scripts/apply_ux_fixes.py'
+      - 'scripts/gen_seo_pages.py'
+      - 'scripts/finalize_pages.py'
       - '.github/workflows/regenerate-seo-pages.yml'
 
 jobs:
@@ -28,8 +30,8 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Apply SEO redesign patch
-        run: python3 scripts/apply_seo_redesign.py
+      - name: Apply UX fixes patch
+        run: python3 scripts/apply_ux_fixes.py
 
       - name: Regenerate SEO pages
         run: |
@@ -43,5 +45,5 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add scripts/gen_seo_pages.py bus-time-table/ sitemap.xml data/app-index.json data/bus-details.json
           git diff --staged --quiet && echo "No changes to commit" && exit 0
-          git commit -m "Auto: regenerate SEO pages with compact departure-board design [skip ci]"
+          git commit -m "Auto: regenerate SEO pages — +single-bus routes, Time N/A, bn toggle [skip ci]"
           git push
